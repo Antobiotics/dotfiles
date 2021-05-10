@@ -1,0 +1,200 @@
+
+# Hadoop
+alias hstart="$HADOOP_HOME/sbin/start-dfs.sh;$HADOOP_HOME/sbin/start-yarn.sh"
+alias hstop="$HADOOP_HOME/sbin/stop-yarn.sh;$HADOOP_HOME/sbin/stop-dfs.sh"
+
+# ls
+if ! command -v lsd &> /dev/null
+then
+    alias ls='ls -CF --color=auto'
+    alias ll='ls -hl'
+    alias la='ls -a'
+else
+    alias ls='lsd'
+    alias ll='ls -al'
+    alias lt='ls --tree'
+fi
+
+alias tree="tree -C"
+
+alias ptpython="python -m ptpython"
+
+# Find
+alias fr='find . -name'
+alias fh='find $HOME -name'
+
+# Grep
+alias grep='grep --color=auto'
+alias egrep='egrep --color=auto'
+alias fgrep='fgrep --color=auto'
+
+# Disk Usage
+alias df='df -H'
+alias du='du -sh'
+
+# Others
+alias pingoo="ping -c 3 www.google.com"
+alias ewq="nvim"
+alias j="jump"
+alias less="less -s -M +Gg"
+alias crontabedit="env EDITOR=nvim crontab -e"
+tailf='tail -f'
+
+# Git
+alias gpom="git push origin master"
+alias gpo="git push origin "
+alias gpof="git push origin --force"
+alias gpall="git push --all"
+alias gs='git status -s'
+alias gc='git commit'
+alias ga='git add'
+alias gd='git diff'
+alias gb='git branch'
+alias gl='git log -p --graph --abbrev-commit'
+alias gsb='git show-branch'
+alias gco='git checkout'
+alias gg='git grep --ignore-case'
+alias gk='gitk --all'
+alias gr='git rebase'
+alias gri='git rebase --interactive'
+alias gcp='git cherry-pick'
+alias grm='git rm'
+alias gcaa='git commit -a --amend -C HEAD'
+alias gca='git commit --amend -C HEAD'
+
+alias weather='curl wttr.in'
+alias moon='curl wttr.in/Moon'
+alias timeout='gtimeout'
+alias myip='dig +short myip.opendns.com @resolver1.opendns.com'
+
+alias yarn='yarnpkg'
+
+# Data utils
+alias csvcols="awk -F',' '{print NF}'"
+alias pp='python -m json.tool'
+
+
+alias restart_audio='launchctl stop com.apple.audio.coreaudiod && sudo launchctl start com.apple.audio.coreaudio'
+
+function monitor_ {
+    while true; do eval ${1}; sleep 1; clear; done
+}
+
+function tracecmd {
+    while true; do eval ${1}; sleep 1; done
+}
+
+function stouch {
+    touch ${1} && chmod +x ${1}
+}
+
+# Docker
+function docker-bash {
+    docker run -it ${1} bash
+}
+
+function docker-reset {
+    docker kill $(docker ps -a -q) && docker rm $(docker ps -a -q)
+}
+
+function docker-remove-all-images {
+    docker rmi $(docker images -q)
+}
+
+# Pretty print JSON
+function sserver {
+    python -m SimpleHTTPServer $1
+}
+
+function frall {
+    find * -type f | xargs perl -pi -e 's/$1/$2/g'
+}
+
+# Search in bash_history
+function hsearch {
+    history | grep -i $1
+}
+
+function psg {
+    ps -e | grep -in $1
+}
+
+# Profile Shortcuts
+function source_zshrc {
+    source $HOME/.zshrc
+}
+
+# wget Shortcut
+function getsrc {
+    wget $1 -O `echo "$1" | sed 's/\/$//' | awk -F/ '{print $NF }'`
+}
+
+function rsketch {
+    mkdir -p /tmp/processing
+        processing-java --output=/tmp/processing/ --force --run --sketch=$PWD
+}
+
+function define() {
+    curl -s "http://www.collinsdictionary.com/dictionary/english/$*" | \
+        sed -n '/class="def"/p' | \
+        awk '{gsub(/.*<span class="def">|<\/span>.*/,"");print}' | \
+        sed "s/<[^>]\+>//g";
+}
+
+fancy-ctrl-z () {
+    if [[ $#BUFFER -eq 0 ]]; then
+        BUFFER="fg"
+            zle accept-line
+    else
+        zle push-input
+            zle clear-screen
+            fi
+}
+zle -N fancy-ctrl-z
+bindkey '^Z' fancy-ctrl-z
+
+
+k8s_job_list() {
+    namespace=${1}
+
+    if [ "$#" -ne 1 ]; then
+        echo "Usage: $0 <namespace>" >&2
+            return 1
+            fi
+
+            kubectl --namespace "${namespace}" get sparkapplications.sparkoperator.k8s.io
+}
+
+k8s_restart() {
+    namespace=${1}
+    job=${2}
+
+    if [ "$#" -ne 2 ]; then
+        echo "Usage: $0 <namespace> <job>" >&2
+            return 1
+            fi
+
+            job_yaml=$(mktemp -t "${job}".yaml)
+            kubectl --namespace "${namespace}" get sparkapplications.sparkoperator.k8s.io \
+            "${job}" -o yaml > "${job_yaml}"
+
+
+            kubectl delete -f "${job_yaml}"
+            sleep 3
+            kubectl apply -f "${job_yaml}"
+
+}
+
+k8s_ns() {
+    kubectl config set-context $(kubectl config current-context) --namespace="$1"
+}
+
+
+boot_kafka() {
+    docker run \
+    -p 2181:2181 \
+    -p 9092:9092 \
+    --env ADVERTISED_HOST=`docker-machine ip \`docker-machine active\`` \
+    --env ADVERTISED_PORT=9092 \
+    spotify/kafka
+}

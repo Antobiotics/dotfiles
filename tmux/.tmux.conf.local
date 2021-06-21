@@ -111,9 +111,9 @@ tmux_conf_theme_terminal_title='#h ❐ #S ● #I #W'
 tmux_conf_theme_window_status_fg='#8a8a8a'              # light gray
 tmux_conf_theme_window_status_bg='#080808'              # dark gray
 tmux_conf_theme_window_status_attr='none'
-tmux_conf_theme_window_status_format='#I #W'
+#tmux_conf_theme_window_status_format='#I #W'
 #tmux_conf_theme_window_status_format='#{circled_window_index} #W'
-#tmux_conf_theme_window_status_format='#I #W#{?window_bell_flag,🔔,}#{?window_zoomed_flag,🔍,}'
+tmux_conf_theme_window_status_format='#I #W#{?window_bell_flag,🔔,}#{?window_zoomed_flag,🔍,}'
 
 # window current status style
 #   - built-in variables are:
@@ -126,9 +126,9 @@ tmux_conf_theme_window_status_format='#I #W'
 tmux_conf_theme_window_status_current_fg='#000000'      # black
 tmux_conf_theme_window_status_current_bg='#00afff'      # light blue
 tmux_conf_theme_window_status_current_attr='bold'
-tmux_conf_theme_window_status_current_format='#I #W'
+#tmux_conf_theme_window_status_current_format='#I #W'
 #tmux_conf_theme_window_status_current_format='#{circled_window_index} #W'
-#tmux_conf_theme_window_status_current_format='#I #W#{?window_zoomed_flag,🔍,}'
+tmux_conf_theme_window_status_current_format='#I #W#{?window_zoomed_flag,🔍,}'
 
 # window activity status style
 tmux_conf_theme_window_status_activity_fg='default'
@@ -292,7 +292,9 @@ set -g mouse on
 # set -g prefix C-a
 # bind C-a send-prefix
 
-# bind l send-keys -R; display "Cleared"
+
+bind l send-keys -R; display "Cleared"
+
 
 bind N previous-window
 bind n next-window
@@ -300,16 +302,18 @@ bind n next-window
 bind -n S-Left  previous-window
 bind -n S-Right next-window
 
+bind-key -n C-S-Left swap-window -t -1
+bind-key -n C-S-Right swap-window -t +1
+
 #open window with currrent path
 bind c new-window -c '#{pane_current_path}'
+
 #open panel with current path
 bind v split-window -h -c '#{pane_current_path}'
 bind s split-window -v -c '#{pane_current_path}'
 
 bind + run 'cut -c3- ~/.tmux.conf | sh -s _maximize_pane "* #{session_name}" #D'
 bind -n S-Up run 'cut -c3- ~/.tmux.conf | sh -s _maximize_pane "#{session_name}" #D'
-# move status line to top
-#set -g status-position top
 
 # -- plugins -------------------------------------------------------------------
 # set -g @plugin 'tmux-plugins/tmux-resurrect'

@@ -149,9 +149,11 @@ nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
 nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list.
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
+nnoremap <silent><nowait> <space>y  :<C-u>CocList -A --normal yank<cr>
 
 let g:coc_global_extensions=[
 \"coc-prettier",
+\"coc-yank",
 \"coc-pyright",
 \"coc-json",
 \"coc-html",
@@ -167,5 +169,7 @@ let g:coc_global_extensions=[
 \"coc-sh",
 \"coc-git",
 \"coc-snippets",
-\"coc-lists"
+\"coc-lists",
+\"coc-sqlfluff"
 \]
+

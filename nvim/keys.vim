@@ -17,8 +17,8 @@ nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <Plug>(ale_next_wrap)
 
 nnoremap <silent> <leader>f :GFiles<CR>
-nnoremap <silent> <leader>y :Ag!<CR>
-noremap <leader>l  :Ag <C-r>=expand('<cword>')<CR>
+nnoremap <silent> <leader>y :Rg!<CR>
+noremap <leader>l  :Rg <C-r>=expand('<cword>')<CR>
 
 "=================[ Windows ]
 nmap <silent> <Leader>w :wincmd k<CR>

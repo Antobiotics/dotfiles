@@ -6,32 +6,8 @@ Plug 'xolox/vim-misc'
 Plug 'tpope/vim-repeat'
 Plug 'skywind3000/asyncrun.vim'
 
-Plug 'easymotion/vim-easymotion'
-"Plug 'justinmk/vim-sneak'
-"let g:sneak#label = 1
-
-let g:easymotion#is_active = 0
-function! EasyMotionCoc() abort
-  if EasyMotion#is_active()
-    let g:easymotion#is_active = 1
-    CocDisable
-  else
-    if g:easymotion#is_active == 1
-      let g:easymotion#is_active = 0
-      CocEnable
-    endif
-  endif
-endfunction
-autocmd TextChanged,CursorMoved * call EasyMotionCoc()
-
-" Move to word
-let g:EasyMotion_do_mapping = 0 " Disable default mappings
-let g:EasyMotion_smartcase = 1
-nmap s <Plug>(easymotion-overwin-f2)
-map  <Leader>w <Plug>(easymotion-bd-l)
-nmap <Leader>w <Plug>(easymotion-overwin-l)
-map <Leader>j <Plug>(easymotion-j)
-map <Leader>k <Plug>(easymotion-k)
+Plug 'justinmk/vim-sneak'
+let g:sneak#label = 1
 
 "=================[ Filetypes ]
 Plug 'chrisbra/csv.vim'
@@ -76,11 +52,19 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'antoinemadec/coc-fzf'
 
+function! RipgrepFzf(query, fullscreen)
+  let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case -- %s || true'
+  let initial_command = printf(command_fmt, shellescape(a:query))
+  let reload_command = printf(command_fmt, '{q}')
+  let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
+  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
+endfunction
 
-"Plug 'mileszs/ack.vim'
-if executable('rg')
-    let g:ackprg = 'rg --vimgrep --smart-case --hidden --follow'
-endif
+command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
+
+"if executable('rg')
+    "let g:ackprg = "rg --vimgrep --smart-case --hidden --follow --glob='!.lock'"
+"endif
 cnoreabbrev Ack Ack!
 
 
@@ -122,39 +106,6 @@ let g:indent_guides_auto_colors=1
 Plug 'psf/black', { 'tag': '19.10b0' }
 let g:black_linelength = 80
 let g:black_skip_string_normalization = 0
-" Plug 'fisadev/vim-isort'
-"Plug 'davidhalter/jedi-vim'
-
-"Plug 'w0rp/ale'
-"let g:ale_linters = {
-            "\ 'jsx': ['stylelint', 'eslint'],
-            "\ 'python': ['pylint', 'flake8', 'mypy'],
-            "\ 'go': ['gometalinter'],
-            "\}
-
-"let g:ale_fixers = {
-            "\ 'javascript': ['eslint'],
-            "\ }
-
-"let g:ale_python_pylint_options = '--rcfile=~/.pylintrc'
-
-"let g:ale_go_gometalinter_options = '
-            "\ --aggregate
-            "\ --disable=gas
-            "\ --disable=goconst
-            "\ --disable=gocyclo
-            "\ --disable=gotype
-            "\ --fast
-            "\ --sort=line
-            "\ --tests
-            "\ --vendor
-            "\ '
-
-"let g:ale_lint_on_save = 1
-"let g:ale_lint_on_text_changed=0
-"let g:ale_sign_error = '✗'
-"let g:ale_sign_warning = '≈'
-"let g:ale_statusline_format = ['⨉ %d', '⚠ %d', a⬥ ok']
 
 Plug 'Chiel92/vim-autoformat'
 let g:autoformat_autoindent = 0
@@ -196,13 +147,13 @@ let g:go_metalinter_enabled = [
 let g:go_metalinter_disabled = ['gotype']
 
 " =================[ Others ]
-Plug 'kyuhi/vim-emoji-complete'
 Plug 'myusuf3/numbers.vim'
 Plug 'majutsushi/tagbar'
 
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
 Plug 'airblade/vim-gitgutter'
+Plug 'idanarye/vim-merginal'
 
 let g:jsx_ext_required = 0 " Allow JSX in normal JS files
 

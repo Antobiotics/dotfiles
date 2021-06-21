@@ -74,7 +74,11 @@ alias csvcols="awk -F',' '{print NF}'"
 alias pp='python -m json.tool'
 
 
-alias restart_audio='launchctl stop com.apple.audio.coreaudiod && sudo launchctl start com.apple.audio.coreaudio'
+alias audio_restart='launchctl stop com.apple.audio.coreaudiod && sudo launchctl start com.apple.audio.coreaudio'
+
+function ssh_tmux {
+    ssh -t "$@" tmux new -A ssh_tmux
+}
 
 function monitor_ {
     while true; do eval ${1}; sleep 1; clear; done
@@ -84,15 +88,8 @@ function tracecmd {
     while true; do eval ${1}; sleep 1; done
 }
 
-function stouch {
-    touch ${1} && chmod +x ${1}
-}
 
 # Docker
-function docker-bash {
-    docker run -it ${1} bash
-}
-
 function docker-reset {
     docker kill $(docker ps -a -q) && docker rm $(docker ps -a -q)
 }
@@ -101,7 +98,6 @@ function docker-remove-all-images {
     docker rmi $(docker images -q)
 }
 
-# Pretty print JSON
 function sserver {
     python -m SimpleHTTPServer $1
 }

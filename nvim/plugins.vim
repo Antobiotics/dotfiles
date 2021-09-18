@@ -5,7 +5,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'xolox/vim-misc'
 Plug 'tpope/vim-repeat'
 Plug 'skywind3000/asyncrun.vim'
-
+Plug 'jamessan/vim-gnupg'
 Plug 'justinmk/vim-sneak'
 let g:sneak#label = 1
 
@@ -21,11 +21,15 @@ Plug 'rust-lang/rust.vim'
 Plug 'racer-rust/vim-racer'
 Plug 'cespare/vim-toml'
 Plug 'lepture/vim-jinja'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
 "=================[ Languages ]
 Plug 'sheerun/vim-polyglot'
 Plug 'jalvesaq/Nvim-R', {'branch': 'stable'}
 let R_assign = 2
+let R_external_term = 1
+let R_notmuxconf = 1
+let R_csv_app = 'tmux new-window vd'
 
 Plug 'slashmili/alchemist.vim'
 Plug 'adimit/prolog.vim'
@@ -38,14 +42,6 @@ let g:javascript_plugin_flow = 1
 let g:jsx_ext_required = 0
 
 autocmd BufWritePost *.js AsyncRun -post=checktime eslint --fix %
-
-"Plug 'google/vim-maktaba'
-"Plug 'bazelbuild/vim-bazel'
-
-"=================[ DBT ]
-"au BufNewFile,BufRead */macros/*.sql set ft=jinja
-"au BufNewFile,BufRead */models/*.sql set ft=jinja
-"au BufNewFile,BufRead */sources/*.sql set ft=jinja
 
 "=================[ Navigation ]
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -61,10 +57,6 @@ function! RipgrepFzf(query, fullscreen)
 endfunction
 
 command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
-
-"if executable('rg')
-    "let g:ackprg = "rg --vimgrep --smart-case --hidden --follow --glob='!.lock'"
-"endif
 cnoreabbrev Ack Ack!
 
 
@@ -75,6 +67,7 @@ let g:VM_maps['Find Under']         = '<C-d>' " replace C-n
 let g:VM_maps['Find Subword Under'] = '<C-d>' " replace visual C-n
 
 Plug 'scrooloose/nerdtree'
+let g:NERDTreeWinPos = "right"
 let NERDTreeDirArrows=1
 let NERDTreeShowHidden=1
 let g:NERDTreeChDirMode=2
@@ -82,9 +75,10 @@ let NERDTreeIgnore = ['\.pyc$', '\.git$', '__pycache__$']
 Plug 'Xuyuanp/nerdtree-git-plugin'
 
 Plug 'preservim/nerdcommenter'
-Plug 'terryma/vim-expand-region' " _/+
+Plug 'gcmt/wildfire.vim'
 
-"=================[ Colors ]
+"=================[ Themes ]
+Plug 'ryanoasis/vim-devicons'
 Plug 'altercation/vim-colors-solarized'
 Plug 'flazz/vim-colorschemes'
 Plug 'xolox/vim-colorscheme-switcher'
@@ -102,10 +96,9 @@ let g:indent_guides_guide_size=1
 let g:indent_guides_auto_colors=1
 
 "=================[ Syntax ]
-" Plug 'python/black'
 Plug 'psf/black', { 'tag': '19.10b0' }
-let g:black_linelength = 80
-let g:black_skip_string_normalization = 0
+let g:black_linelength = 100
+let g:black_skip_string_normalization = 1
 
 Plug 'Chiel92/vim-autoformat'
 let g:autoformat_autoindent = 0
@@ -154,6 +147,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'idanarye/vim-merginal'
+Plug 'rhysd/conflict-marker.vim'
 
 let g:jsx_ext_required = 0 " Allow JSX in normal JS files
 

@@ -169,7 +169,6 @@ let g:coc_global_extensions=[
 \"coc-sh",
 \"coc-git",
 \"coc-snippets",
-\"coc-lists",
-\"coc-sqlfluff"
+\"coc-lists"
 \]
 

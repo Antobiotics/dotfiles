@@ -59,5 +59,9 @@ let g:solarized_contrast = "high"
 colorscheme base16-gruvbox-light-soft
 
 let g:rainbow_active = 1
-let g:rainbow_conf = {}
+let g:rainbow_conf = {
+	\	'separately': {
+	\		'nerdtree': 0,
+	\	}
+	\}
 let g:rainbow_conf.ctermfgs = ['darkyellow', 'darkred', 'darkblue']

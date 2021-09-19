@@ -83,4 +83,4 @@ function! ToggleNvimTree()
 
 nnoremap <silent> <C-n> :call ToggleNvimTree()<CR>
 
-
+nnoremap <silent><leader>bb :Gitsigns blame_line<CR>

@@ -13,6 +13,6 @@ require("options")
 
 -- source our mappings last(may change)
 vim.cmd("source ~/.config/nvim/viml/maps.vim")
--- auto-commands
--- vim.cmd("source ~/.config/nvim/viml/autocmd.vim")
 
+-- auto-commands
+vim.cmd("source ~/.config/nvim/viml/autocmd.vim")

@@ -3,19 +3,20 @@ local opt = vim.opt
 
 opt.clipboard = "unnamedplus"
 opt.mouse = "a"
-opt.updatetime = 250
 opt.foldmethod = "manual"
 opt.expandtab = true
 
 -- Noise
 opt.smartindent = true
 opt.autoindent = true
+opt.wrap = false
 
 -- Save buffer automatically when changing files
 opt.autowrite = true
 
 -- Save buffer every 10 chars typed
 opt.updatecount = 10
+opt.updatetime = 250
 
 -- Always reload buffer when external changes detected
 opt.autoread = true

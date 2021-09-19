@@ -1,14 +1,13 @@
-local vim = vim
-local g = vim.g
+require 'indent_blankline'.setup {
+    indentLine_enabled = 1,
+    space_char_blankline = " ",
 
-g.indentLine_enabled = 1
-g.space_char_blankline = " "
+    show_current_context = true,
+    show_trailing_blankline_indent = false,
+    show_first_indent_level = false,
 
-g.show_current_context = true
-g.show_trailing_blankline_indent = false
-g.show_first_indent_level = false
-
-g.buftype_exclude = {
-    "help",
-    "terminal"
+    buftype_exclude = {
+        "help",
+        "terminal"
+    },
 }

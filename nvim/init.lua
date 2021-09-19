@@ -19,6 +19,7 @@ cmd(
   "silent! command PackerUpdate lua require 'plugins' require('packer').update()"
 )
 
+
 require("options")
 
 -- source our mappings last(may change)

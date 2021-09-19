@@ -35,6 +35,10 @@ return packer.startup(function()
   })
 
   use({
+    "RRethy/nvim-base16",
+  })
+
+  use({
     "lukas-reineke/indent-blankline.nvim",
     event = "BufRead",
     config = function()

@@ -105,5 +105,6 @@ opt.hlsearch = true
 opt.virtualedit = "block"
 
 -- Theme
-vim.cmd("colorscheme NeoSolarized")
+-- vim.cmd("colorscheme NeoSolarized")
+vim.cmd("colorscheme base16-gruvbox-light-soft")
 opt.background = "light"

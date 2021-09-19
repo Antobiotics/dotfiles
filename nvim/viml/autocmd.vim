@@ -1,1 +1,2 @@
-au BufWrite * :Neoformat
+autocmd BufWrite * :Neoformat
+autocmd BufWritePost *.py Neoformat black

@@ -84,3 +84,15 @@ function! ToggleNvimTree()
 nnoremap <silent> <C-n> :call ToggleNvimTree()<CR>
 
 nnoremap <silent><leader>bb :Gitsigns blame_line<CR>
+
+" Telescope
+nnoremap <silent><leader>ff :Telescope find_files hidden=true<CR>
+" Fuzzy buffer finder
+nnoremap <silent><leader>fb :Telescope buffers<CR>
+" Search with ripgrep
+nnoremap <silent><leader>fi :Telescope live_grep<CR>
+nnoremap <silent><leader>l :Telescope grep_string<CR>
+
+
+" Black
+nmap <leader>b :Black<CR>

@@ -65,3 +65,4 @@ let g:rainbow_conf = {
 	\	}
 	\}
 let g:rainbow_conf.ctermfgs = ['darkyellow', 'darkred', 'darkblue']
+

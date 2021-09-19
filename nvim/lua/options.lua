@@ -25,7 +25,7 @@ opt.backspace = "indent,eol,start"
 opt.fileformats = "unix,mac,dos" -- Handle Mac and DOS line-endings
 
 -- Scroll when 4 lines from top/bottom
-opt.scrolloff=4
+opt.scrolloff = 4
 
 -- GUI
 opt.ruler = true
@@ -37,46 +37,46 @@ opt.relativenumber = true
 -- opt.colorcolumn = 79
 
 -- Wildmode
-opt.wildmode="list:longest,full"
+opt.wildmode = "list:longest,full"
 opt.wildignore = {
-   '*.o',
-   '*.obj',
-   '*~ ',
-   '*vim/backups',
-   "*sass-cache*",
-   "*DS_Store*",
-   "vendor/rails/**",
-   "vendor/cache/**",
-   "*.gem",
-   "log/**",
-   "tmp/**",
-   "*.png",
-   "*.jpg",
-   "*.gif",
-   "*DS_Store*",
-   ".git",
-   ".gitkeep",
-   "*.so",
-   "*.swp",
-   "*.zip",
-   "*/.Trash/**",
-   "*.pdf",
-   "*.dmg",
-   "*/Library/**",
-   "*/.rbenv/**",
-   "*.pyc",
-   "eggs/**",
-   "*.egg-info/**"
+  "*.o",
+  "*.obj",
+  "*~ ",
+  "*vim/backups",
+  "*sass-cache*",
+  "*DS_Store*",
+  "vendor/rails/**",
+  "vendor/cache/**",
+  "*.gem",
+  "log/**",
+  "tmp/**",
+  "*.png",
+  "*.jpg",
+  "*.gif",
+  "*DS_Store*",
+  ".git",
+  ".gitkeep",
+  "*.so",
+  "*.swp",
+  "*.zip",
+  "*/.Trash/**",
+  "*.pdf",
+  "*.dmg",
+  "*/Library/**",
+  "*/.rbenv/**",
+  "*.pyc",
+  "eggs/**",
+  "*.egg-info/**",
 }
 
 -- Show Naughty Chars
 opt.list = true
 -- opt.listchars="tab:>.,trail:.,extends:#,nbsp:."
 opt.listchars = {
-   tab = '>.',
-   trail = '.',
-   extends = '#',
-   nbsp = '.'
+  tab = ">.",
+  trail = ".",
+  extends = "#",
+  nbsp = ".",
 }
 
 -- Tabulation
@@ -106,4 +106,4 @@ opt.virtualedit = "block"
 
 -- Theme
 vim.cmd("colorscheme NeoSolarized")
-opt.background="light"
+opt.background = "light"

@@ -27,7 +27,6 @@ return packer.startup(function()
       require("plugins.configs.nvim_tree")
     end,
   })
-
   use({
     "overcache/NeoSolarized",
     config = function()
@@ -132,6 +131,19 @@ return packer.startup(function()
   })
 
   use({
+    "nvim-telescope/telescope.nvim",
+    requires = {
+      { "nvim-lua/popup.nvim" },
+      { "nvim-lua/plenary.nvim" },
+    },
+  })
+
+  use({
+    "nvim-telescope/telescope-fzf-native.nvim",
+    run = "make",
+  })
+
+  use({
     "preservim/nerdcommenter",
   })
 
@@ -143,11 +155,16 @@ return packer.startup(function()
 
   use({
     "luochen1990/rainbow",
-    config = function()
-      require("plugins.configs.rainbow")
-    end,
   })
 
   use("psf/black")
   use("myusuf3/numbers.vim")
+
+  use({
+    "famiu/feline.nvim",
+    tag = "v0.1",
+    config = function()
+      require("plugins.configs.feline")
+    end,
+  })
 end)

@@ -30,6 +30,7 @@ nmap <silent> <Leader>m <C-W>m
 "=================[ Tabs ]
 nmap <silent> <Leader>e :tabn<CR>
 nmap <silent> <Leader>q :tabp<CR>
+
 "=================[ Typos ]
 nmap :Wq :wq
 nmap :wQ :wq

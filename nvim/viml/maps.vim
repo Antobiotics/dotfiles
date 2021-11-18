@@ -1,4 +1,4 @@
-nnoremap <Space> <PageDown>
+" nnoremap <Space> <PageDown>
 
 " Windows
 nmap <silent> <Leader>w :wincmd k<CR>
@@ -90,9 +90,22 @@ nnoremap <silent><leader>ff :Telescope find_files hidden=true<CR>
 " Fuzzy buffer finder
 nnoremap <silent><leader>fb :Telescope buffers<CR>
 " Search with ripgrep
-nnoremap <silent><leader>fi :Telescope live_grep<CR>
+nnoremap <silent><leader>f :Telescope live_grep<CR>
 nnoremap <silent><leader>l :Telescope grep_string<CR>
 
 
 " Black
 nmap <leader>b :Black<CR>
+
+" LSPsaga
+nnoremap <silent><leader>gh :Lspsaga lsp_finder<CR>
+nnoremap <silent><leader>ga :Lspsaga code_action<CR>
+nnoremap <silent><leader>gs :Lspsaga signature_help<CR>
+nnoremap <silent><leader>k :Lspsaga hover_doc<CR>
+nnoremap <silent><leader>gd :Lspsaga preview_definition<CR>
+
+" scroll down hover doc or scroll in definition preview
+nnoremap <silent> <C-f> <cmd>lua require('lspsaga.action').smart_scroll_with_saga(1)<CR>
+" scroll up hover doc
+nnoremap <silent> <C-b> <cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1)<CR>
+nnoremap <silent> <C-j> :Lspsaga diagnostic_jump_next<CR>

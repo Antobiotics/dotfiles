@@ -73,10 +73,11 @@ fi
 zplug load
 
 if which pyenv > /dev/null; then
+    eval "$(pyenv init --path)"
     eval "$(pyenv init -)"
+    eval "$(pyenv virtualenv-init -)"
     export PYENV_ROOT=$(pyenv root)
 fi
-
 
 source_if_exists $HOME/.dbt-completion.bash
 source_if_exists $HOME/.fzf.zsh
@@ -102,3 +103,5 @@ export GPG_TTY=$(tty)
 if [ -e /Users/gregoirelejay/.nix-profile/etc/profile.d/nix.sh ]; then . /Users/gregoirelejay/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
 
 export PATH="$HOME/.poetry/bin:$PATH"
+
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"

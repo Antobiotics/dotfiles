@@ -67,7 +67,7 @@ alias moon='curl wttr.in/Moon'
 alias timeout='gtimeout'
 alias myip='dig +short myip.opendns.com @resolver1.opendns.com'
 
-alias yarn='yarnpkg'
+# alias yarn='yarnpkg'
 
 # Data utils
 alias csvcols="awk -F',' '{print NF}'"

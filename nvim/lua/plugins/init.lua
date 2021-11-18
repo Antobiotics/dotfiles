@@ -79,6 +79,13 @@ return packer.startup(function()
   })
 
   use({
+    "tami5/lspsaga.nvim",
+    config = function()
+      require("lua.plugins.configs.lspsaga")
+    end,
+  })
+
+  use({
     "kabouzeid/nvim-lspinstall",
   })
 
@@ -165,10 +172,17 @@ return packer.startup(function()
   use("myusuf3/numbers.vim")
 
   use({
-    "famiu/feline.nvim",
-    tag = "v0.1",
+    "pwntester/octo.nvim",
     config = function()
-      require("plugins.configs.feline")
+      require("octo").setup()
+    end,
+  })
+
+  use({
+    "nvim-lualine/lualine.nvim",
+    requires = "kyazdani42/nvim-web-devicons",
+    config = function()
+      require("plugins.configs.lualine")
     end,
   })
 end)

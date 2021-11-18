@@ -292,9 +292,7 @@ set -g mode-keys vi
 # set -g prefix C-a
 # bind C-a send-prefix
 
-
 bind l send-keys -R; display "Cleared"
-
 
 bind N previous-window
 bind n next-window
@@ -302,8 +300,8 @@ bind n next-window
 bind -n S-Left  previous-window
 bind -n S-Right next-window
 
-bind-key -n C-S-Left swap-window -t -1
-bind-key -n C-S-Right swap-window -t +1
+bind-key -n C-S-Left swap-window -d -t -1
+bind-key -n C-S-Right swap-window -d -t +1
 
 #open window with currrent path
 bind c new-window -c '#{pane_current_path}'

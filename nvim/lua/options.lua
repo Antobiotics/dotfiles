@@ -5,6 +5,7 @@ opt.clipboard = "unnamedplus"
 opt.mouse = "a"
 opt.foldmethod = "manual"
 opt.expandtab = true
+opt.modelines = 0
 
 -- Noise
 opt.smartindent = true
@@ -34,7 +35,7 @@ opt.cursorline = true
 opt.number = true
 opt.termguicolors = true
 opt.relativenumber = true
--- opt.colorcolumn = 79
+opt.colorcolumn = "79"
 
 -- Wildmode
 opt.wildmode = "list:longest,full"

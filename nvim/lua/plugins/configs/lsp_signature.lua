@@ -1,8 +1,11 @@
 require("lsp_signature").setup({
   bind = true,
   doc_lines = 2,
-  floating_window = true,
-  fix_pos = true,
+  floating_window = false,
+  always_trigger = false,
+  fix_pos = false,
+  transparency = 25,
+  floating_window_above_cur_line = false,
   hint_enable = true,
   hint_prefix = " ",
   hint_scheme = "String",

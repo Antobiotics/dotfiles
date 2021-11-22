@@ -1,9 +1,5 @@
 "=================[ GUI ]
-set t_vb=
-autocmd! GUIEnter * set vb t_vb=
-
 set synmaxcol=200
-" set termguicolors
 
 set guioptions=gtrLm
 if has("gui_running")
@@ -49,9 +45,9 @@ else
     set background=dark
 endif
 
-set termguicolors
+" set termguicolors
 set background=light
-let g:solarized_termtrans = 1
+" let g:solarized_termtrans = 1
 let g:solarized_contrast = "high"
  "colorscheme solarized
 " colorscheme turtle
@@ -60,9 +56,9 @@ colorscheme base16-gruvbox-light-soft
 
 let g:rainbow_active = 1
 let g:rainbow_conf = {
-	\	'separately': {
-	\		'nerdtree': 0,
-	\	}
-	\}
+    \   'separately': {
+    \       'nerdtree': 0,
+    \   }
+    \}
 let g:rainbow_conf.ctermfgs = ['darkyellow', 'darkred', 'darkblue']
 

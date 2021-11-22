@@ -35,8 +35,11 @@ ZSH_AUTOSUGGEST_MANUAL_REBIND=1
 COMPLETION_WAITING_DOTS=true
 DISABLE_UNTRACKED_FILES_DIRTY=true
 
+export ZPLUG_HOME=$(brew --prefix)/opt/zplug
+
 source_if_exists $ZSH/oh-my-zsh.sh
 source_if_exists $HOME/.bashrc
+source_if_exists $ZPLUG_HOME/init.zsh
 source_if_exists $HOME/.init_dice.sh
 source_if_exists $HOME/.env
 source_if_exists $HOME/.aliases
@@ -44,6 +47,7 @@ source_if_exists $HOME/.kube_comp.sh
 
 fpath=(/usr/local/share/zsh-completions $fpath)
 fpath=($ZSH/completions $fpath)
+
 if type brew &>/dev/null; then
     FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
 
@@ -51,8 +55,6 @@ if type brew &>/dev/null; then
     compinit
 fi
 
-export ZPLUG_HOME=/usr/local/opt/zplug
-source_if_exists $ZPLUG_HOME/init.zsh
 
 zplug "stedolan/jq", \
     from:gh-r, \

@@ -13,7 +13,8 @@ if has("unix")
     let g:python3_host_prog='/usr/bin/python3'
     if s:uname == "Darwin\n"
         let g:python_host_prog='/usr/local/Cellar/python@2/2.7.16/bin/python2'
-        let g:python3_host_prog='/Users/gregoirelejay/.pyenv/shims/python3'
+        " let g:python3_host_prog='/Users/gregoirelejay/.pyenv/shims/python3'
+        let g:python3_host_prog = $HOME . '/.local/venv/nvim/bin/python'
     endif
 endif
 

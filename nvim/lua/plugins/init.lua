@@ -168,7 +168,8 @@ return packer.startup(function()
     "luochen1990/rainbow",
   })
 
-  use("psf/black")
+  -- use("psf/black")
+  use("averms/black-nvim")
   use("myusuf3/numbers.vim")
 
   use({

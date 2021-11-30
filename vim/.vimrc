@@ -353,28 +353,6 @@ set ignorecase      "Ignore case in all searches...
 set smartcase       "unless uppercase letters used
 set hlsearch        "Highlight all matches
 
-"Delete in normal mode to switch off highlighting till next search and clear messages...
-Nmap <silent> <BS> [Cancel highlighting]  :nohlsearch <BAR> call Toggle_CursorColumn('off')<CR>
-
-"Double-delete to remove search highlighting *and* trailing whitespace...
-Nmap <silent> <BS><BS>  [Cancel highlighting and remove trailing whitespace]
-\             mz:%s/\s\+$//g<CR>`z:nohlsearch<CR>
-
-"====[ Handle encoding issues ]============
-set encoding=utf-8
-
-Nmap <silent> U [Toggle UTF8]  :call ToggleUTF8()<CR>
-
-function! ToggleUTF8 ()
-    if &fileencoding =~ 'utf-\?8'
-        set fileencoding=latin1
-    else
-        set fileencoding=utf8
-    endif
-    echo '[' . &fileencoding . ']'
-endfunction
-
-"=====[ There can be only one (one Vim session per file) ]=====================
 " I keep that option but for now on, I don't need swap files
 set nobackup
 set noswapfile
@@ -490,12 +468,6 @@ highlight clear CursorColumn
 highlight CursorColumn term=none cterm=none
 set cursorcolumn
 
-" Toggle cursor row highlighting on request...
-"highlight CursorLine   term=bold ctermfg=black ctermbg=cyan  cterm=bold
-Nmap <silent> ;r [Toggle cursor line highlighting] :set cursorline!<CR>
-
- "Toggle cursor column highlighting on request...
-Nmap <silent> ;c [Toggle cursor row highlighting] :silent call Toggle_CursorColumn('flip')<CR>
 
 
 " Implement cursor toggle...

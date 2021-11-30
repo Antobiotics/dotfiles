@@ -23,6 +23,7 @@ plugins=(git
 
 setopt CORRECT
 setopt RM_STAR_SILENT
+unsetopt AUTO_CD
 
 function source_if_exists {
     if [ -f $1 ]; then

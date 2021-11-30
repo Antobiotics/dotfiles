@@ -28,7 +28,6 @@ cask 'docker'
 cask 'docker-toolbox'
 
 brew 'the_silver_searcher'
-brew 'jq'
 brew 'jsonnet'
 
 brew 'kafka'
@@ -144,5 +143,9 @@ brew 'yq'
 
 brew 'lazygit'
 brew 'gh'
+brew 'git-lfs'
 
 brew 'reattach-to-user-namespace'
+
+brew 'pyenv'
+brew 'pyenv-virtualenv'

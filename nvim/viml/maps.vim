@@ -95,7 +95,9 @@ nnoremap <silent><leader>l :Telescope grep_string<CR>
 
 
 " Black
-nmap <leader>b :Black<CR>
+" nmap <leader>b :Black<CR>
+nnoremap <buffer><silent> <leader>b <cmd>call Black()<cr>
+inoremap <buffer><silent> <leader>b <cmd>call Black()<cr>
 
 " LSPsaga
 nnoremap <silent><leader>gh :Lspsaga lsp_finder<CR>

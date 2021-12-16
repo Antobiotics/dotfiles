@@ -1,3 +1,4 @@
+local vim = vim
 vim.opt.completeopt = "menuone,noselect"
 
 local cmp = require("cmp")
@@ -22,7 +23,20 @@ cmp.setup({
         nvim_lsp = "[LSP]",
         nvim_lua = "[Lua]",
         buffer = "[BUF]",
+        path = "[PATH]",
+        luasnip = "[snip]",
+        fzy_buffer = "[fzbuf]",
+        fuzzy_path = "[fzpath]",
+        cmdline = "[cmd]",
+        cmdline_history = "[cmd-hist]",
+        emoji = "[emoji]"
       })[entry.source.name]
+
+      vim_item.dup = ({
+        buffer = 1,
+        path = 1,
+        nvim_lsp = 0,
+      })[entry.source.name] or 0
 
       return vim_item
     end,
@@ -84,5 +98,26 @@ cmp.setup({
     { name = "luasnip" },
     { name = "buffer" },
     { name = "nvim_lua" },
+    { name = "path" },
+    { name = 'fuzzy_path' },
+    { name = 'fzy_buffer' },
+    { name = 'fuzzy_path' },
+    { name = 'emoji' },
+  },
+  experimental = {
+    ghost_text = true
   },
 })
+
+-- Use cmdline & path source for ':'.
+for _, cmd_type in ipairs({':', '/', '?', '@', '='}) do
+    cmp.setup.cmdline(cmd_type, {
+        sources = {
+            { name = 'cmdline' },
+            { name = 'fzy_buffer' },
+            { name = 'path' },
+            { name = 'fuzzy_path' },
+            { name = 'cmdline_history' },
+        }
+    })
+end

@@ -1,7 +1,7 @@
 require("lsp_signature").setup({
   bind = true,
   doc_lines = 2,
-  floating_window = false,
+  floating_window = true,
   always_trigger = false,
   fix_pos = false,
   transparency = 25,

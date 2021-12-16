@@ -76,6 +76,7 @@ return packer.startup(function()
     config = function()
       require("plugins.configs.lsp_config")
     end,
+    -- after = "cmp-nvim-lsp",
   })
 
   use({
@@ -85,8 +86,9 @@ return packer.startup(function()
     end,
   })
 
+
   use({
-    "kabouzeid/nvim-lspinstall",
+    "williamboman/nvim-lsp-installer"
   })
 
   use({
@@ -137,8 +139,35 @@ return packer.startup(function()
   })
 
   use({
+    "hrsh7th/cmp-path",
+    after = "nvim-cmp",
+  })
+
+  use({
+    "hrsh7th/cmp-emoji",
+    after = "nvim-cmp",
+  })
+
+  use({
+    "hrsh7th/cmp-cmdline",
+    after = "nvim-cmp",
+  })
+
+  use({
     "sbdchd/neoformat",
     cmd = "Neoformat",
+  })
+
+  use({
+      'tzachar/cmp-fzy-buffer',
+      requires = {'hrsh7th/nvim-cmp', 'tzachar/fuzzy.nvim', 'romgrk/fzy-lua-native'},
+      after = "nvim-cmp",
+  })
+
+  use({
+      'tzachar/cmp-fuzzy-path',
+      requires = {'hrsh7th/nvim-cmp', 'tzachar/fuzzy.nvim', 'romgrk/fzy-lua-native'},
+      after = "nvim-cmp",
   })
 
   use({
@@ -164,12 +193,14 @@ return packer.startup(function()
 
   use("gcmt/wildfire.vim")
 
+  use("sakhnik/nvim-gdb")
+
   use({
     "luochen1990/rainbow",
   })
 
-  -- use("psf/black")
-  use("averms/black-nvim")
+  use('psf/black')
+  -- use("averms/black-nvim")
   use("myusuf3/numbers.vim")
 
   use({

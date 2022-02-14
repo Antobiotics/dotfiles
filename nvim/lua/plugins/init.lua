@@ -82,7 +82,7 @@ return packer.startup(function()
   use({
     "tami5/lspsaga.nvim",
     config = function()
-      require("lua.plugins.configs.lspsaga")
+      require("plugins.configs.lspsaga")
     end,
   })
 
@@ -160,13 +160,13 @@ return packer.startup(function()
 
   use({
       'tzachar/cmp-fzy-buffer',
-      requires = {'hrsh7th/nvim-cmp', 'tzachar/fuzzy.nvim', 'romgrk/fzy-lua-native'},
+      requires = {'hrsh7th/nvim-cmp', 'tzachar/fuzzy.nvim'},
       after = "nvim-cmp",
   })
 
   use({
       'tzachar/cmp-fuzzy-path',
-      requires = {'hrsh7th/nvim-cmp', 'tzachar/fuzzy.nvim', 'romgrk/fzy-lua-native'},
+      requires = {'hrsh7th/nvim-cmp', 'tzachar/fuzzy.nvim'},
       after = "nvim-cmp",
   })
 

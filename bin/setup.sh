@@ -9,5 +9,6 @@ brew bundle
 git clone https://github.com/supercrabtree/k "$HOME"/.oh-my-zsh/custom/plugins/k
 
 mkdir -p ~/.config/
-
 mkdir -p ~/.config/nvim/colors
+
+pip install emoji-fzf

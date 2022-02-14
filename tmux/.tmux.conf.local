@@ -294,9 +294,6 @@ set -g mode-keys vi
 
 bind l send-keys -R; display "Cleared"
 
-bind N previous-window
-bind n next-window
-
 bind -n S-Left  previous-window
 bind -n S-Right next-window
 

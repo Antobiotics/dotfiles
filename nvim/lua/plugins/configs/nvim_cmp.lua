@@ -90,9 +90,8 @@ cmp.setup({
     },
     { name = "nvim_lua" },
     { name = "path" },
-    { name = 'fuzzy_path' },
     { name = 'fzy_buffer' },
-    { name = 'fuzzy_path' },
+    -- { name = 'fuzzy_path' },
     { name = 'emoji' },
   },
   experimental = {
@@ -107,7 +106,7 @@ for _, cmd_type in ipairs({':', '/', '?', '@', '='}) do
             { name = 'cmdline' },
             { name = 'fzy_buffer' },
             { name = 'path' },
-            { name = 'fuzzy_path' },
+            -- { name = 'fuzzy_path' },
             { name = 'cmdline_history' },
         }
     })

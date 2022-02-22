@@ -83,6 +83,10 @@ if which pyenv > /dev/null; then
     export PYENV_ROOT=$(pyenv root)
 fi
 
+if which direnv > /dev/null; then
+    eval "$(direnv hook zsh)"
+fi
+
 source_if_exists $HOME/.dbt-completion.bash
 source_if_exists $HOME/.fzf.zsh
 source_if_exists $HOME/.autosuggestions

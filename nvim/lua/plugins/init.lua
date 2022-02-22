@@ -164,11 +164,11 @@ return packer.startup(function()
       after = "nvim-cmp",
   })
 
-  use({
-      'tzachar/cmp-fuzzy-path',
-      requires = {'hrsh7th/nvim-cmp', 'tzachar/fuzzy.nvim'},
-      after = "nvim-cmp",
-  })
+  -- use({
+      -- 'tzachar/cmp-fuzzy-path',
+      -- requires = {'hrsh7th/nvim-cmp', 'tzachar/fuzzy.nvim'},
+      -- after = "nvim-cmp",
+  -- })
 
   use({
     "nvim-telescope/telescope.nvim",

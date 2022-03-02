@@ -98,7 +98,7 @@ cmp.setup({
     { name = "luasnip" },
     { name = "buffer" },
     { name = "nvim_lua" },
-    { name = "path" },
+    -- { name = "path" },
     { name = 'fuzzy_path' },
     { name = 'fzy_buffer' },
     { name = 'fuzzy_path' },
@@ -115,7 +115,7 @@ for _, cmd_type in ipairs({':', '/', '?', '@', '='}) do
         sources = {
             { name = 'cmdline' },
             { name = 'fzy_buffer' },
-            { name = 'path' },
+            -- { name = 'path' },
             { name = 'fuzzy_path' },
             { name = 'cmdline_history' },
         }

@@ -4,7 +4,7 @@ autocmd BufWrite * :Neoformat
 autocmd BufRead,BufNewFile *.md setlocal spell
 autocmd BufRead,BufNewFile *.txt setlocal spell
 
-autocmd CursorHold,CursorHoldI * lua vim.lsp.diagnostic.show_line_diagnostics({focusable=false})
+autocmd CursorHold,CursorHoldI * lua vim.diagnostic.show()
 
 augroup highlight_yank
     autocmd!

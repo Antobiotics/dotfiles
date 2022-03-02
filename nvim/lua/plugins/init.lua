@@ -76,13 +76,12 @@ return packer.startup(function()
     config = function()
       require("plugins.configs.lsp_config")
     end,
-    -- after = "cmp-nvim-lsp",
   })
 
   use({
     "tami5/lspsaga.nvim",
     config = function()
-      require("lua.plugins.configs.lspsaga")
+      require("plugins.configs.lspsaga")
     end,
   })
 
@@ -138,10 +137,10 @@ return packer.startup(function()
     after = "cmp-nvim-lsp",
   })
 
-  use({
-    "hrsh7th/cmp-path",
-    after = "nvim-cmp",
-  })
+  -- use({
+  --  "hrsh7th/cmp-path",
+  --  after = "nvim-cmp",
+  -- })
 
   use({
     "hrsh7th/cmp-emoji",
@@ -164,11 +163,11 @@ return packer.startup(function()
       after = "nvim-cmp",
   })
 
-  use({
-      'tzachar/cmp-fuzzy-path',
-      requires = {'hrsh7th/nvim-cmp', 'tzachar/fuzzy.nvim', 'romgrk/fzy-lua-native'},
-      after = "nvim-cmp",
-  })
+  -- use({
+  --    'tzachar/cmp-fuzzy-path',
+  --    requires = {'hrsh7th/nvim-cmp', 'tzachar/fuzzy.nvim', 'romgrk/fzy-lua-native'},
+  --    after = "nvim-cmp",
+  -- })
 
   use({
     "nvim-telescope/telescope.nvim",
@@ -200,7 +199,6 @@ return packer.startup(function()
   })
 
   use('psf/black')
-  -- use("averms/black-nvim")
   use("myusuf3/numbers.vim")
 
   use({

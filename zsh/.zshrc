@@ -14,11 +14,10 @@ plugins=(git
     docker
     pip
     kubectl
-    cargo
+    rust
     golang
     fzf
-    zsh-syntax-highlighting
-    zsh-completions
+    # zsh-completions
 )
 
 setopt CORRECT
@@ -36,10 +35,15 @@ ZSH_AUTOSUGGEST_MANUAL_REBIND=1
 COMPLETION_WAITING_DOTS=true
 DISABLE_UNTRACKED_FILES_DIRTY=true
 
-export ZPLUG_HOME=$(brew --prefix)/opt/zplug
+platform=$(uname)
+
+export ZPLUG_HOME=$HOME/.zplug
+if [[ "$platform" != "Linux" ]]; then
+    export ZPLUG_HOME=$(brew --prefix)/opt/zplug
+fi
 
 source_if_exists $ZSH/oh-my-zsh.sh
-source_if_exists $HOME/.bashrc
+# source_if_exists $HOME/.bashrc
 source_if_exists $ZPLUG_HOME/init.zsh
 source_if_exists $HOME/.init_dice.sh
 source_if_exists $HOME/.env
@@ -49,11 +53,12 @@ source_if_exists $HOME/.kube_comp.sh
 fpath=(/usr/local/share/zsh-completions $fpath)
 fpath=($ZSH/completions $fpath)
 
-if type brew &>/dev/null; then
-    FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
-
-    autoload -Uz compinit
-    compinit
+if [[ "$platform" != "Linux" ]]; then
+    if type brew &>/dev/null; then
+        FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
+        autoload -Uz compinit
+        compinit
+    fi
 fi
 
 
@@ -65,6 +70,11 @@ zplug "b4b4r07/emoji-cli", \
     on:"stedolan/jq"
 
 zplug romkatv/powerlevel10k, as:theme, depth:1
+
+zplug "zsh-users/zsh-completions",              defer:0
+zplug "zsh-users/zsh-autosuggestions",          defer:2, on:"zsh-users/zsh-completions"
+zplug "zsh-users/zsh-syntax-highlighting",      defer:3, on:"zsh-users/zsh-autosuggestions"
+zplug "zsh-users/zsh-history-substring-search", defer:3, on:"zsh-users/zsh-syntax-highlighting"
 
 if ! zplug check --verbose; then
     printf "Install? [y/N]: "
@@ -108,3 +118,5 @@ if [ -e /Users/gregoirelejay/.nix-profile/etc/profile.d/nix.sh ]; then . /Users/
 export PATH="$HOME/.poetry/bin:$PATH"
 
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+
+if [ -e /home/glbob/.nix-profile/etc/profile.d/nix.sh ]; then . /home/glbob/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer

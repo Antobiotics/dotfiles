@@ -1,13 +1,13 @@
 #!/bin/bash
 
-source ./bin/env.sh
-/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-
-brew bundle
-
-git clone https://github.com/supercrabtree/k "$HOME"/.oh-my-zsh/custom/plugins/k
+set -ex
 
 mkdir -p ~/.config/
 
+source ./bin/env.sh
+source ./bin/packages.sh
+source ./bin/oh_my_zsh.sh
+
+
+git clone https://github.com/supercrabtree/k "$HOME"/.oh-my-zsh/custom/plugins/k
 mkdir -p ~/.config/nvim/colors

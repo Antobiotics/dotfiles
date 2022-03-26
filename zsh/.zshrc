@@ -66,8 +66,11 @@ zplug "stedolan/jq", \
     from:gh-r, \
     as:command, \
     rename-to:jq
-zplug "b4b4r07/emoji-cli", \
-    on:"stedolan/jq"
+# zplug "b4b4r07/emoji-cli", \
+    # on:"stedolan/jq"
+
+zplug "pschmitt/emoji-fzf.zsh"
+EMOJI_FZF_BINDKEY="^s"
 
 zplug romkatv/powerlevel10k, as:theme, depth:1
 

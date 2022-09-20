@@ -82,13 +82,12 @@ return packer.startup(function()
   use({
     "tami5/lspsaga.nvim",
     config = function()
-      require("plugins.configs.lspsaga")
+      require("plugins.configs.lspsaga_conf")
     end,
   })
 
-
   use({
-    "williamboman/nvim-lsp-installer"
+    "williamboman/nvim-lsp-installer",
   })
 
   use({
@@ -159,15 +158,15 @@ return packer.startup(function()
   })
 
   use({
-      'tzachar/cmp-fzy-buffer',
-      requires = {'hrsh7th/nvim-cmp', 'tzachar/fuzzy.nvim'},
-      after = "nvim-cmp",
+    "tzachar/cmp-fzy-buffer",
+    requires = { "hrsh7th/nvim-cmp", "tzachar/fuzzy.nvim" },
+    after = "nvim-cmp",
   })
 
   -- use({
-      -- 'tzachar/cmp-fuzzy-path',
-      -- requires = {'hrsh7th/nvim-cmp', 'tzachar/fuzzy.nvim'},
-      -- after = "nvim-cmp",
+  -- 'tzachar/cmp-fuzzy-path',
+  -- requires = {'hrsh7th/nvim-cmp', 'tzachar/fuzzy.nvim'},
+  -- after = "nvim-cmp",
   -- })
 
   use({
@@ -199,14 +198,14 @@ return packer.startup(function()
     "luochen1990/rainbow",
   })
 
-  use('psf/black')
+  use("psf/black")
   -- use("averms/black-nvim")
   use("myusuf3/numbers.vim")
 
   use({
     "pwntester/octo.nvim",
     config = function()
-      require("octo").setup()
+      require("plugins.configs.octo_conf")
     end,
   })
 
@@ -214,7 +213,32 @@ return packer.startup(function()
     "nvim-lualine/lualine.nvim",
     requires = "kyazdani42/nvim-web-devicons",
     config = function()
-      require("plugins.configs.lualine")
+      require("plugins.configs.lualine_conf")
     end,
+  })
+
+  use({ "folke/which-key.nvim" })
+
+  use({
+    "mfussenegger/nvim-dap",
+    config = function()
+      require("plugins.configs.dapcore")
+    end,
+  })
+
+  use({
+    "mfussenegger/nvim-dap-python",
+    requires = "mfussenegger/nvim-dap",
+  })
+
+  use({
+    "rcarriga/nvim-dap-ui",
+    config = function()
+      require("plugins.configs.dapui")
+    end,
+    requires = {
+      "mfussenegger/nvim-dap",
+      "Pocco81/DAPInstall.nvim",
+    },
   })
 end)

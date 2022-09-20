@@ -19,8 +19,6 @@ nmap :WQ :wq
 nmap :Q  :q
 nmap :W  :w
 
-nmap :E  :e
-
 nmap :te :tabe
 nmap :Te :tabe
 
@@ -86,16 +84,18 @@ nnoremap <silent> <C-n> :call ToggleNvimTree()<CR>
 nnoremap <silent><leader>bb :Gitsigns blame_line<CR>
 
 " Telescope
-nnoremap <silent><leader>ff :Telescope find_files hidden=true<CR>
 " Fuzzy buffer finder
 nnoremap <silent><leader>fb :Telescope buffers<CR>
 " Search with ripgrep
 nnoremap <silent><leader>f :Telescope live_grep<CR>
-nnoremap <silent><leader>l :Telescope grep_string<CR>
+nnoremap <silent><leader>ff :Telescope find_files hidden=true<CR>
 
+" Find word under
+nnoremap <silent><leader>l :Telescope grep_string<CR>
+nnoremap <silent><leader>ll :execute 'Telescope find_files default_text=' . expand('<cword>')<CR>
 
 " Black
-nmap <leader>b :Black<CR>
+" nmap <leader>b :Black<CR>
 " nnoremap <buffer><silent> <leader>b <cmd>call Black()<cr>
 " inoremap <buffer><silent> <leader>b <cmd>call Black()<cr>
 
@@ -111,3 +111,6 @@ nnoremap <silent> <C-f> <cmd>lua require('lspsaga.action').smart_scroll_with_sag
 " scroll up hover doc
 nnoremap <silent> <C-b> <cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1)<CR>
 nnoremap <silent> <C-j> :Lspsaga diagnostic_jump_next<CR>
+
+
+" nnoremap <silent> <leader>dt <cmd>lua require'dap'.toggle_breakpoint()<CR>

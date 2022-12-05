@@ -29,6 +29,7 @@ meson
 libinput-tools
 gettext
 xdotool
+wmctrl
 appstream-util
 
 acpilight

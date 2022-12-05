@@ -1,3 +1,4 @@
+---@diagnostic disable: undefined-global
 local vim = vim
 local opt = vim.opt
 
@@ -107,5 +108,5 @@ opt.virtualedit = "block"
 
 -- Theme
 -- vim.cmd("colorscheme NeoSolarized")
-vim.cmd("colorscheme base16-gruvbox-light-soft")
+vim.cmd("colorscheme base16-gruvbox-material-light-soft")
 opt.background = "light"

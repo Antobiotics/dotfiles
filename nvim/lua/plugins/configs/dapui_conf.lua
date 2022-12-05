@@ -25,21 +25,37 @@ require("dapui").setup({
     {
       elements = {
         -- Elements can be strings or table with id and size keys.
-        { id = "scopes", size = 0.25 },
         "breakpoints",
-        "stacks",
         "watches",
+        "stacks",
+        { id = "scopes", size = 0.45 },
       },
-      size = 40, -- 40 columns
-      position = "left",
+      size = 50, -- 40 columns
+      position = "right",
     },
     {
       elements = {
         "repl",
-        "console",
+        -- "console",
       },
-      size = 0.25, -- 25% of total lines
+      size = 0.33, -- 33% of total lines
       position = "bottom",
+    },
+  },
+  controls = {
+    -- Requires Neovim nightly (or 0.8 when released)
+    enabled = true,
+    -- Display controls in this element
+    element = "repl",
+    icons = {
+      pause = "",
+      play = "",
+      step_into = "i",
+      step_over = "step",
+      step_out = "o",
+      step_back = "<-",
+      run_last = "↻",
+      terminate = "□",
     },
   },
   floating = {
@@ -55,3 +71,6 @@ require("dapui").setup({
     max_type_length = nil, -- Can be integer or nil.
   },
 })
+
+local wk = require("plugins.configs.utils").wk
+wk.register({ ["<leader>du"] = { "<cmd>lua require'dapui'.toggle()<cr>", "" } })

@@ -56,7 +56,7 @@ return packer.startup(function()
 
   use({
     "nvim-treesitter/nvim-treesitter",
-    branch = "0.5-compat",
+    -- branch = "0.5-compat",
     event = "BufRead",
     config = function()
       require("plugins.configs.treesitter")
@@ -80,7 +80,7 @@ return packer.startup(function()
   })
 
   use({
-    "tami5/lspsaga.nvim",
+    "glepnir/lspsaga.nvim",
     config = function()
       require("plugins.configs.lspsaga_conf")
     end,
@@ -183,7 +183,7 @@ return packer.startup(function()
   })
 
   use({
-    "preservim/nerdcommenter",
+    "tpope/vim-commentary",
   })
 
   use({
@@ -232,9 +232,14 @@ return packer.startup(function()
   })
 
   use({
+    "theHamsta/nvim-dap-virtual-text",
+    requires = "mfussenegger/nvim-dap",
+  })
+
+  use({
     "rcarriga/nvim-dap-ui",
     config = function()
-      require("plugins.configs.dapui")
+      require("plugins.configs.dapui_conf")
     end,
     requires = {
       "mfussenegger/nvim-dap",

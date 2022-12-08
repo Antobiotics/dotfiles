@@ -17,7 +17,6 @@ plugins=(git
     rust
     golang
     fzf
-    # zsh-completions
 )
 
 setopt CORRECT
@@ -66,8 +65,6 @@ zplug "stedolan/jq", \
     from:gh-r, \
     as:command, \
     rename-to:jq
-# zplug "b4b4r07/emoji-cli", \
-    # on:"stedolan/jq"
 
 zplug "pschmitt/emoji-fzf.zsh"
 EMOJI_FZF_BINDKEY="^s"
@@ -75,8 +72,8 @@ EMOJI_FZF_BINDKEY="^s"
 zplug romkatv/powerlevel10k, as:theme, depth:1
 
 zplug "zsh-users/zsh-completions",              defer:0
-zplug "zsh-users/zsh-autosuggestions",          defer:2, on:"zsh-users/zsh-completions"
-zplug "zsh-users/zsh-syntax-highlighting",      defer:3, on:"zsh-users/zsh-autosuggestions"
+# zplug "zsh-users/zsh-autosuggestions",          defer:2, on:"zsh-users/zsh-completions"
+zplug "zsh-users/zsh-syntax-highlighting",      defer:2, on:"zsh-users/zsh-completions"
 zplug "zsh-users/zsh-history-substring-search", defer:3, on:"zsh-users/zsh-syntax-highlighting"
 
 if ! zplug check --verbose; then
@@ -93,6 +90,10 @@ if which pyenv > /dev/null; then
     eval "$(pyenv init -)"
     eval "$(pyenv virtualenv-init -)"
     export PYENV_ROOT=$(pyenv root)
+fi
+
+if which direnv > /dev/null; then
+    eval "$(direnv hook zsh)"
 fi
 
 source_if_exists $HOME/.dbt-completion.bash

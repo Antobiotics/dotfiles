@@ -294,9 +294,6 @@ set -g mode-keys vi
 
 bind l send-keys -R; display "Cleared"
 
-bind N previous-window
-bind n next-window
-
 bind -n S-Left  previous-window
 bind -n S-Right next-window
 
@@ -314,7 +311,7 @@ bind + run 'cut -c3- ~/.tmux.conf | sh -s _maximize_pane "* #{session_name}" #D'
 bind -n S-Up run 'cut -c3- ~/.tmux.conf | sh -s _maximize_pane "#{session_name}" #D'
 
 # -- plugins -------------------------------------------------------------------
-# set -g @plugin 'tmux-plugins/tmux-resurrect'
+set -g @plugin 'tmux-plugins/tmux-resurrect'
 #
 set -g default-terminal "xterm-256color"
 set-option -ga terminal-overrides ",xterm-256color:Tc"

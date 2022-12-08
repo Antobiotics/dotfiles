@@ -56,7 +56,7 @@ return packer.startup(function()
 
   use({
     "nvim-treesitter/nvim-treesitter",
-    branch = "0.5-compat",
+    -- branch = "0.5-compat",
     event = "BufRead",
     config = function()
       require("plugins.configs.treesitter")
@@ -79,15 +79,14 @@ return packer.startup(function()
   })
 
   use({
-    "tami5/lspsaga.nvim",
+    "glepnir/lspsaga.nvim",
     config = function()
-      require("plugins.configs.lspsaga")
+      require("plugins.configs.lspsaga_conf")
     end,
   })
 
-
   use({
-    "williamboman/nvim-lsp-installer"
+    "williamboman/nvim-lsp-installer",
   })
 
   use({
@@ -158,9 +157,9 @@ return packer.startup(function()
   })
 
   use({
-      'tzachar/cmp-fzy-buffer',
-      requires = {'hrsh7th/nvim-cmp', 'tzachar/fuzzy.nvim', 'romgrk/fzy-lua-native'},
-      after = "nvim-cmp",
+    "tzachar/cmp-fzy-buffer",
+    requires = { "hrsh7th/nvim-cmp", "tzachar/fuzzy.nvim" },
+    after = "nvim-cmp",
   })
 
   -- use({
@@ -183,7 +182,7 @@ return packer.startup(function()
   })
 
   use({
-    "preservim/nerdcommenter",
+    "tpope/vim-commentary",
   })
 
   use({
@@ -204,7 +203,7 @@ return packer.startup(function()
   use({
     "pwntester/octo.nvim",
     config = function()
-      require("octo").setup()
+      require("plugins.configs.octo_conf")
     end,
   })
 
@@ -212,7 +211,37 @@ return packer.startup(function()
     "nvim-lualine/lualine.nvim",
     requires = "kyazdani42/nvim-web-devicons",
     config = function()
-      require("plugins.configs.lualine")
+      require("plugins.configs.lualine_conf")
     end,
+  })
+
+  use({ "folke/which-key.nvim" })
+
+  use({
+    "mfussenegger/nvim-dap",
+    config = function()
+      require("plugins.configs.dapcore")
+    end,
+  })
+
+  use({
+    "mfussenegger/nvim-dap-python",
+    requires = "mfussenegger/nvim-dap",
+  })
+
+  use({
+    "theHamsta/nvim-dap-virtual-text",
+    requires = "mfussenegger/nvim-dap",
+  })
+
+  use({
+    "rcarriga/nvim-dap-ui",
+    config = function()
+      require("plugins.configs.dapui_conf")
+    end,
+    requires = {
+      "mfussenegger/nvim-dap",
+      "Pocco81/DAPInstall.nvim",
+    },
   })
 end)

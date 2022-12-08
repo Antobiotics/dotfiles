@@ -100,7 +100,7 @@ scrolling:
 
   # Number of lines the viewport will move for every line scrolled when
   # scrollback is enabled (history > 0).
-  multiplier: 3
+  multiplier: 1
 
 # Font configuration (changes require restart)
 
@@ -248,7 +248,7 @@ cursor:
   # the style of the active value of the normal cursor.
   #
   # See `cursor.style` for available options.
-  #vi_mode_style: Beam
+  vi_mode_style: Block
 
   # Cursor blinking interval in milliseconds.
   #blink_interval: 750
@@ -763,6 +763,7 @@ key_bindings:
   #- { key: J, chars: "\x1b[F", mode: ~AppCursor }
   - { key: Back,     mods: Command, chars: "\x15"                        } # Delete line
   - { key: Back,     mods: Alt,     chars: "\x1b\x7f"                    } # Delete word
+
 debug:
   # Display the time it takes to redraw each frame.
   render_timer: false

@@ -1,5 +1,5 @@
 require("nvim-treesitter.configs").setup({
-  ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+  ensure_installed = "all", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
 
   highlight = {
     enable = true, -- false will disable the whole extension
@@ -18,5 +18,5 @@ local vim = vim
 require("nvim-treesitter.highlight")
 
 -- Hack to allow rainbow
-local hlmap = vim.treesitter.highlighter.hl_map
-hlmap["punctuation.bracket"] = nil
+-- local hlmap = vim.treesitter.highlighter.hl_map
+-- hlmap["punctuation.bracket"] = nil

@@ -308,7 +308,7 @@ let g:rainbow_active = 1
 if $VIMBACKGROUND != ""
     exec 'set background=' . $VIMBACKGROUND
 else
-    set background=dark
+    set background=light
 endif
 
 " ================[ Theme ]=======================

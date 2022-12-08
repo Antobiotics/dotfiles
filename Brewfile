@@ -149,3 +149,5 @@ brew 'reattach-to-user-namespace'
 
 brew 'pyenv'
 brew 'pyenv-virtualenv'
+
+brew 'rust'

@@ -4,8 +4,6 @@ autocmd BufWrite * :Neoformat
 autocmd BufRead,BufNewFile *.md setlocal spell
 autocmd BufRead,BufNewFile *.txt setlocal spell
 
-autocmd CursorHold,CursorHoldI * lua vim.diagnostic.show()
-
 augroup highlight_yank
     autocmd!
     au TextYankPost * silent! lua vim.highlight.on_yank{higroup="IncSearch", timeout=700}

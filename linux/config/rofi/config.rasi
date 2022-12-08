@@ -13,3 +13,9 @@ configuration {
   me-accept-entry: [ MousePrimary, MouseSecondary, MouseDPrimary ];
 
 }
+
+element {
+  orientation: horizontal;
+  children: [element-icon, element-text];
+  spacing: 5px;
+}

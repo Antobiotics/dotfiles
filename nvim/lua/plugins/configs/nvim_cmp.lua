@@ -1,3 +1,4 @@
+---@diagnostic disable: deprecated
 local vim = vim
 vim.opt.completeopt = "menu,menuone,noselect"
 
@@ -104,13 +105,6 @@ cmp.setup({
       },
     },
     { name = "nvim_lua" },
-<<<<<<< HEAD
-    -- { name = "path" },
-    { name = 'fuzzy_path' },
-    { name = 'fzy_buffer' },
-    { name = 'fuzzy_path' },
-    { name = 'emoji' },
-=======
     {
       name = "path",
       option = {
@@ -120,7 +114,6 @@ cmp.setup({
     { name = "fzy_buffer" },
     -- { name = 'fuzzy_path' },
     { name = "emoji" },
->>>>>>> a7fc1ba436296220d953699228f6159e9e7383e8
   },
   experimental = {
     ghost_text = true,
@@ -128,18 +121,6 @@ cmp.setup({
 })
 
 -- Use cmdline & path source for ':'.
-<<<<<<< HEAD
-for _, cmd_type in ipairs({':', '/', '?', '@', '='}) do
-    cmp.setup.cmdline(cmd_type, {
-        sources = {
-            { name = 'cmdline' },
-            { name = 'fzy_buffer' },
-            -- { name = 'path' },
-            { name = 'fuzzy_path' },
-            { name = 'cmdline_history' },
-        }
-    })
-=======
 for _, cmd_type in ipairs({ ":", "/", "?", "@", "=" }) do
   cmp.setup.cmdline(cmd_type, {
     sources = {
@@ -150,5 +131,4 @@ for _, cmd_type in ipairs({ ":", "/", "?", "@", "=" }) do
       { name = "cmdline_history" },
     },
   })
->>>>>>> a7fc1ba436296220d953699228f6159e9e7383e8
 end

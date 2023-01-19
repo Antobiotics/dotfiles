@@ -4,6 +4,7 @@ local g = vim.g
 local tree_cb = require("nvim-tree.config").nvim_tree_callback
 
 require("nvim-tree").setup({
+
   disable_netrw = true,
   hijack_netrw = false,
   update_cwd = false,
@@ -36,6 +37,10 @@ require("nvim-tree").setup({
   },
 
   view = {
+    float = {
+      enable = false,
+      quit_on_focus_loss = true,
+    },
     mappings = {
       custom_only = false,
       list = {

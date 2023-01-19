@@ -3,7 +3,7 @@ local vim = vim
 local keymap = vim.keymap.set
 local saga = require("lspsaga")
 
-saga.init_lsp_saga({
+saga.setup({
   -- error_sign = "",
   -- warn_sign = "",
   -- hint_sign = "",
@@ -84,6 +84,9 @@ saga.init_lsp_saga({
     enable = true,
     separator = "| ",
     show_file = true,
+    folder_level = 3,
+    color_mode = true,
+    respect_root = false,
     -- define how to customize filename, eg: %:., %
     -- if not set, use default value `%:t`
     -- more information see `vim.fn.expand` or `expand`
@@ -166,19 +169,19 @@ end
 
 local events = { "BufEnter", "BufWinEnter", "CursorMoved" }
 
-vim.api.nvim_create_autocmd(events, {
-  pattern = "*",
-  callback = function()
-    config_winbar_or_statusline()
-  end,
-})
+--vim.api.nvim_create_autocmd(events, {
+--  pattern = "*",
+--  callback = function()
+--    config_winbar_or_statusline()
+--  end,
+--})
 
-vim.api.nvim_create_autocmd("User", {
-  pattern = "LspsagaUpdateSymbol",
-  callback = function()
-    config_winbar_or_statusline()
-  end,
-})
+--vim.api.nvim_create_autocmd("User", {
+--  pattern = "LspsagaUpdateSymbol",
+--  callback = function()
+--    config_winbar_or_statusline()
+--  end,
+--})
 -- Lsp finder find the symbol definition implement reference
 -- if there is no implement it will hide
 -- when you use action in finder like open vsplit then you can
@@ -211,12 +214,12 @@ keymap(
 )
 
 -- Show cursor diagnostic
-keymap(
-  "n",
-  "<leader>cd",
-  "<cmd>Lspsaga show_cursor_diagnostics<CR>",
-  { silent = true }
-)
+-- keymap(
+--   "n",
+--   "<leader>cd",
+--   "<cmd>Lspsaga show_cursor_diagnostics<CR>",
+--   { silent = true }
+-- )
 
 -- Diagnsotic jump can use `<c-o>` to jump back
 keymap("n", "[e", "<cmd>Lspsaga diagnostic_jump_prev<CR>", { silent = true })

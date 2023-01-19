@@ -79,6 +79,10 @@ alias pp='python -m json.tool'
 
 alias audio_restart='launchctl stop com.apple.audio.coreaudiod && sudo launchctl start com.apple.audio.coreaudio'
 
+function show_pass {
+    keepassxc-cli show ~/Passwords.kdbx ${1} -s | grep "Password" | awk -F 'Password: ' '{print $2}'
+}
+
 function ssh_tmux {
     ssh -t "$@" tmux new -A ssh_tmux
 }

@@ -19,7 +19,6 @@ cmd(
   "silent! command PackerUpdate lua require 'plugins' require('packer').update()"
 )
 
-
 require("options")
 
 -- source our mappings last(may change)
@@ -30,3 +29,6 @@ vim.cmd("source ~/.config/nvim/viml/autocmd.vim")
 
 -- legacy
 vim.cmd("source ~/.config/nvim/viml/legacy.vim")
+
+-- plugins
+vim.cmd("source ~/.config/nvim/viml/plugins.vim")

@@ -21,12 +21,30 @@ return packer.startup(function()
   })
 
   use({
+    "cfmeyers/dbt.nvim",
+    requires = {
+      "nvim-lua/plenary.nvim",
+      "nvim-telescope/telescope.nvim",
+      "rcarriga/nvim-notify",
+    },
+  })
+
+  use({
+    "jpalardy/vim-slime",
+  })
+
+  use({
+    "urbainvaes/vim-ripple",
+  })
+
+  use({
     "kyazdani42/nvim-tree.lua",
     requires = "kyazdani42/nvim-web-devicons",
     config = function()
       require("plugins.configs.nvim_tree")
     end,
   })
+
   use({
     "overcache/NeoSolarized",
     config = function()
@@ -80,8 +98,11 @@ return packer.startup(function()
 
   use({
     "glepnir/lspsaga.nvim",
+    branch = "main",
+    event = "BufRead",
     config = function()
       require("plugins.configs.lspsaga_conf")
+      -- require("lspsaga").setup({})
     end,
   })
 

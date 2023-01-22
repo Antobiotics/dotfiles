@@ -6,6 +6,7 @@ tap 'homebrew/dupes'
 brew 'git'
 brew 'npm'
 
+cask '1password/tap/1password-cli'
 cask 'iterm2'
 cask 'flux'
 cask 'spectacle'

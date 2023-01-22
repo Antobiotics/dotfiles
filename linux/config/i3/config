@@ -25,18 +25,22 @@ set $purple #b16286
 set $aqua #689d68
 set $gray #a89984
 set $darkgray #1d2021
+set $white #ffffff
 
 # blue gruvbox
 # class                 border|backgr|text|indicator|child_border
 client.focused          $blue $blue $darkgray $purple $yellow
+client.focused          $blue $blue $darkgray $purple $green
 client.focused_inactive $darkgray $darkgray $yellow $purple $darkgray
 client.unfocused        $darkgray $darkgray $yellow $purple $darkgray
-client.urgent           $red $red $white $red $red
+client.urgent           $red $red $gray $red $red
 
 # #---Basic Definitions---# #
+# border_radius 4
 for_window [class="^.*"] border pixel 3
-gaps inner 1
-gaps outer 1
+smart_borders on
+gaps inner 3
+gaps outer 3
 
 # Set screen resolution
 exec xrandr --output eDP-1 --mode "1920x1200"
@@ -58,7 +62,7 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 bindsym $mod+Control+s exec --no-startup-id systemctl suspend
 
 # Shortcut to poweroff laptop
-bindsym $mod+Control+F11 exec --no-startup-id systemctl poweroff
+# bindsym $mod+Control+F11 exec --no-startup-id systemctl poweroff
 
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
@@ -96,8 +100,8 @@ bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
-bindsym XF86MonBrightnessDown exec "sudo brightnessctl s 100-"
-bindsym XF86MonBrightnessUp exec "sudo brightnessctl s 100+"
+bindsym XF86MonBrightnessDown exec "sudo brightnessctl s 200-"
+bindsym XF86MonBrightnessUp exec "sudo brightnessctl s 200+"
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -205,6 +209,8 @@ bindsym $mod+Ctrl+0 [workspace=$ws0] kill
 
 assign [class="Firefox"] $ws3
 for_window [class="Firefox"] move to workspace $ws2
+for_window [title="Thunar"] floating enable
+bindsym $mod+Shift+t exec thunar
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace number $ws1
@@ -272,6 +278,39 @@ mode "$mode_redshift" {
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
+
+# set shut down, restart and locking features
+# ⇒ type `$mod+Shift+Delete` then either `e`, `r` or `s`
+mode "$mode_system" {
+    bindsym e exec --no-startup-id i3-msg exit
+    bindsym r exec --no-startup-id systemctl reboot
+    bindsym s exec --no-startup-id systemctl poweroff
+
+    # exit system mode with "Enter" or "Escape"
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+set $mode_system (e)xit, (r)eboot, (s)hutdown
+bindsym $mod+Shift+Delete   mode "$mode_system"
+
+# Show the next scratchpad window or hide the focused scratchpad window.
+# If there are multiple scratchpad windows, this command cycles through them.
+# There is an additional keybinding to allow a floating window to be toggled
+# (recovered as a normal window).
+# keycode 76 = F10 button
+# keycode 95 = F11 button
+# (not the actual F10 key, but same button on my laptop with default function!)
+set $scratchpad-size 1920 1060
+mode "Scratchpad"{
+  bindcode 76 scratchpad show, resize set $scratchpad-size, move position center; \
+                scratchpad show, resize set $scratchpad-size, move position center
+  bindsym $mod+Shift+space  floating toggle; mode "default"
+  bindsym Escape kill; mode "default"
+  bindcode 95 scratchpad show; mode "default"
+}
+bindcode 76 mode "Scratchpad"; scratchpad show, resize set $scratchpad-size, move position center
+bindsym $mod+minus floating toggle; resize set $scratchpad-size, \
+                    move position center; move scratchpad
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)

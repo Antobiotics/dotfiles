@@ -1,7 +1,7 @@
 
 # Hadoop
-alias hstart="$HADOOP_HOME/sbin/start-dfs.sh;$HADOOP_HOME/sbin/start-yarn.sh"
-alias hstop="$HADOOP_HOME/sbin/stop-yarn.sh;$HADOOP_HOME/sbin/stop-dfs.sh"
+# alias hstart="$HADOOP_HOME/sbin/start-dfs.sh;$HADOOP_HOME/sbin/start-yarn.sh"
+# alias hstop="$HADOOP_HOME/sbin/stop-yarn.sh;$HADOOP_HOME/sbin/stop-dfs.sh"
 
 # ls
 if ! command -v lsd &> /dev/null
@@ -19,6 +19,8 @@ alias tree="tree -C"
 
 alias ptpython="python -m ptpython"
 
+alias cdr="cd $(git rev-parse --show-toplevel)"
+
 # Find
 alias fr='find . -name'
 alias fh='find $HOME -name'
@@ -35,6 +37,7 @@ alias du='du -sh'
 # Others
 alias pingoo="ping -c 3 www.google.com"
 alias ewq="nvim"
+alias tmux="tmux -u"
 alias j="jump"
 alias less="less -s -M +Gg"
 alias crontabedit="env EDITOR=nvim crontab -e"
@@ -61,20 +64,24 @@ alias gcp='git cherry-pick'
 alias grm='git rm'
 alias gcaa='git commit -a --amend -C HEAD'
 alias gca='git commit --amend -C HEAD'
+alias gam='git amend'
 
 alias weather='curl wttr.in'
 alias moon='curl wttr.in/Moon'
 alias timeout='gtimeout'
 alias myip='dig +short myip.opendns.com @resolver1.opendns.com'
 
-alias yarn='yarnpkg'
+# alias yarn='yarnpkg'
 
 # Data utils
-alias csvcols="awk -F',' '{print NF}'"
 alias pp='python -m json.tool'
 
 
 alias audio_restart='launchctl stop com.apple.audio.coreaudiod && sudo launchctl start com.apple.audio.coreaudio'
+
+function show_pass {
+    keepassxc-cli show ~/Passwords.kdbx ${1} -s | grep "Password" | awk -F 'Password: ' '{print $2}'
+}
 
 function ssh_tmux {
     ssh -t "$@" tmux new -A ssh_tmux
@@ -88,15 +95,6 @@ function tracecmd {
     while true; do eval ${1}; sleep 1; done
 }
 
-
-# Docker
-function docker-reset {
-    docker kill $(docker ps -a -q) && docker rm $(docker ps -a -q)
-}
-
-function docker-remove-all-images {
-    docker rmi $(docker images -q)
-}
 
 function sserver {
     python -m SimpleHTTPServer $1
@@ -125,11 +123,6 @@ function getsrc {
     wget $1 -O `echo "$1" | sed 's/\/$//' | awk -F/ '{print $NF }'`
 }
 
-function rsketch {
-    mkdir -p /tmp/processing
-        processing-java --output=/tmp/processing/ --force --run --sketch=$PWD
-}
-
 function define() {
     curl -s "http://www.collinsdictionary.com/dictionary/english/$*" | \
         sed -n '/class="def"/p' | \
@@ -148,49 +141,3 @@ fancy-ctrl-z () {
 }
 zle -N fancy-ctrl-z
 bindkey '^Z' fancy-ctrl-z
-
-
-k8s_job_list() {
-    namespace=${1}
-
-    if [ "$#" -ne 1 ]; then
-        echo "Usage: $0 <namespace>" >&2
-            return 1
-            fi
-
-            kubectl --namespace "${namespace}" get sparkapplications.sparkoperator.k8s.io
-}
-
-k8s_restart() {
-    namespace=${1}
-    job=${2}
-
-    if [ "$#" -ne 2 ]; then
-        echo "Usage: $0 <namespace> <job>" >&2
-            return 1
-            fi
-
-            job_yaml=$(mktemp -t "${job}".yaml)
-            kubectl --namespace "${namespace}" get sparkapplications.sparkoperator.k8s.io \
-            "${job}" -o yaml > "${job_yaml}"
-
-
-            kubectl delete -f "${job_yaml}"
-            sleep 3
-            kubectl apply -f "${job_yaml}"
-
-}
-
-k8s_ns() {
-    kubectl config set-context $(kubectl config current-context) --namespace="$1"
-}
-
-
-boot_kafka() {
-    docker run \
-    -p 2181:2181 \
-    -p 9092:9092 \
-    --env ADVERTISED_HOST=`docker-machine ip \`docker-machine active\`` \
-    --env ADVERTISED_PORT=9092 \
-    spotify/kafka
-}

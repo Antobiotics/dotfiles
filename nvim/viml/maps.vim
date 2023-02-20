@@ -99,18 +99,9 @@ nnoremap <silent><leader>ll :execute 'Telescope find_files default_text=' . expa
 " nnoremap <buffer><silent> <leader>b <cmd>call Black()<cr>
 " inoremap <buffer><silent> <leader>b <cmd>call Black()<cr>
 
-" LSPsaga
-nnoremap <silent><leader>gh :Lspsaga lsp_finder<CR>
-nnoremap <silent><leader>ga :Lspsaga code_action<CR>
-nnoremap <silent><leader>gs :Lspsaga signature_help<CR>
-nnoremap <silent><leader>k :Lspsaga hover_doc<CR>
-nnoremap <silent><leader>gd :Lspsaga preview_definition<CR>
+nmap <leader>s <Plug>(wildfire-quick-select)
+" This selects the next closest text object.
+map <ENTER> <Plug>(wildfire-fuel)
 
-" scroll down hover doc or scroll in definition preview
-nnoremap <silent> <C-f> <cmd>lua require('lspsaga.action').smart_scroll_with_saga(1)<CR>
-" scroll up hover doc
-nnoremap <silent> <C-b> <cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1)<CR>
-nnoremap <silent> <C-j> :Lspsaga diagnostic_jump_next<CR>
-
-
-" nnoremap <silent> <leader>dt <cmd>lua require'dap'.toggle_breakpoint()<CR>
+" This selects the previous closest text object.
+vmap <C-ENTER> <Plug>(wildfire-water)

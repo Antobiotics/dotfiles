@@ -1,270 +1,343 @@
 local present, packer = pcall(require, "plugins.packerInit")
 
 if not present then
-  return false
+    return false
 end
 
 local use = packer.use
 
 return packer.startup(function()
-  use({
-    "nvim-lua/plenary.nvim",
-  })
+    -- Utils
+    use({
+        "nvim-lua/plenary.nvim",
+    })
 
-  use({
-    "wbthomason/packer.nvim",
-    event = "VimEnter",
-  })
+    use({
+        "wbthomason/packer.nvim",
+        event = "VimEnter",
+    })
 
-  use({
-    "kyazdani42/nvim-web-devicons",
-  })
+    -- Search
+    use({
+        "nvim-telescope/telescope.nvim",
+        tag = "0.1.1",
+        requires = {
+            { "nvim-lua/popup.nvim" },
+            { "nvim-lua/plenary.nvim" },
+        },
+    })
 
-  use({
-    "cfmeyers/dbt.nvim",
-    requires = {
-      "nvim-lua/plenary.nvim",
-      "nvim-telescope/telescope.nvim",
-      "rcarriga/nvim-notify",
-    },
-  })
+    use({
+        "nvim-telescope/telescope-fzf-native.nvim",
+        run = "make",
+    })
 
-  use({
-    "jpalardy/vim-slime",
-  })
+    -- Theme
+    use({
+        "kyazdani42/nvim-web-devicons",
+    })
 
-  use({
-    "urbainvaes/vim-ripple",
-  })
+    use({
+        "overcache/NeoSolarized",
+        config = function()
+            require("plugins.configs.neosolarized")
+        end,
+    })
 
-  use({
-    "kyazdani42/nvim-tree.lua",
-    requires = "kyazdani42/nvim-web-devicons",
-    config = function()
-      require("plugins.configs.nvim_tree")
-    end,
-  })
+    use({
+        "RRethy/nvim-base16",
+    })
 
-  use({
-    "overcache/NeoSolarized",
-    config = function()
-      require("plugins.configs.neosolarized")
-    end,
-  })
+    use({
+        "kyazdani42/nvim-tree.lua",
+        requires = "kyazdani42/nvim-web-devicons",
+        config = function()
+            require("plugins.configs.nvim_tree")
+        end,
+    })
 
-  use({
-    "RRethy/nvim-base16",
-  })
+    use({
+        "lukas-reineke/indent-blankline.nvim",
+        event = "BufRead",
+        config = function()
+            require("plugins.configs.indent_blankline")
+        end,
+    })
 
-  use({
-    "lukas-reineke/indent-blankline.nvim",
-    event = "BufRead",
-    config = function()
-      require("plugins.configs.indent_blankline")
-    end,
-  })
+    use({
+        "norcalli/nvim-colorizer.lua",
+        event = "BufRead",
+        config = function()
+            require("plugins.configs.colorizer")
+        end,
+    })
 
-  use({
-    "norcalli/nvim-colorizer.lua",
-    event = "BufRead",
-    config = function()
-      require("plugins.configs.colorizer")
-    end,
-  })
+    use({
+        "lewis6991/gitsigns.nvim",
+        requires = "nvim-lua/plenary.nvim",
+        config = function()
+            require("plugins.configs.gitsigns")
+        end,
+    })
 
-  use({
-    "nvim-treesitter/nvim-treesitter",
-    -- branch = "0.5-compat",
-    event = "BufRead",
-    config = function()
-      require("plugins.configs.treesitter")
-    end,
-  })
+    use({
+        "nvim-lualine/lualine.nvim",
+        requires = "kyazdani42/nvim-web-devicons",
+        config = function()
+            require("plugins.configs.lualine_conf")
+        end,
+    })
 
-  use({
-    "lewis6991/gitsigns.nvim",
-    requires = "nvim-lua/plenary.nvim",
-    config = function()
-      require("plugins.configs.gitsigns")
-    end,
-  })
+    use({
+        "luochen1990/rainbow",
+    })
 
-  use({
-    "neovim/nvim-lspconfig",
-    config = function()
-      require("plugins.configs.lsp_config")
-    end,
-    -- after = "cmp-nvim-lsp",
-  })
+    use({
+        "myusuf3/numbers.vim",
+    })
 
-  use({
-    "glepnir/lspsaga.nvim",
-    branch = "main",
-    event = "BufRead",
-    config = function()
-      require("plugins.configs.lspsaga_conf")
-      -- require("lspsaga").setup({})
-    end,
-  })
+    -- DBT
+    use({
+        "cfmeyers/dbt.nvim",
+        requires = {
+            "nvim-lua/plenary.nvim",
+            "nvim-telescope/telescope.nvim",
+            "rcarriga/nvim-notify",
+        },
+    })
+    use({
+        "~/dev/forks/dbtpal",
+        config = function()
+            local dbt = require("dbtpal")
+            dbt.setup({
+                -- Path to the dbt executable
+                path_to_dbt = "dbt",
 
-  use({
-    "williamboman/nvim-lsp-installer",
-  })
+                -- Path to the dbt project, if blank, will auto-detect
+                -- using currently open buffer for all sql,yml, and md files
+                path_to_dbt_project = "",
 
-  use({
-    "ray-x/lsp_signature.nvim",
-    after = "nvim-lspconfig",
-    config = function()
-      require("plugins.configs.lsp_signature")
-    end,
-  })
+                -- Path to dbt profiles directory
+                path_to_dbt_profiles_dir = vim.fn.expand("~/.dbt"),
 
-  use({
-    "rafamadriz/friendly-snippets",
-    event = "InsertEnter",
-  })
+                -- Search for ref/source files in macros and models folders
+                extended_path_search = true,
 
-  use({
-    "hrsh7th/nvim-cmp",
-    after = "friendly-snippets",
-    config = function()
-      require("plugins.configs.nvim_cmp")
-    end,
-  })
+                -- Prevent modifying sql files in target/(compiled|run) folders
+                protect_compiled_files = true,
+            })
 
-  use({
-    "L3MON4D3/LuaSnip",
-    wants = "friendly-snippets",
-    after = "nvim-cmp",
-  })
+            -- Setup key mappings
 
-  use({
-    "saadparwaiz1/cmp_luasnip",
-    after = "LuaSnip",
-  })
+            vim.keymap.set("n", "<leader>m", dbt.run)
+            vim.keymap.set("n", "<leader>ma", dbt.run_all)
+            vim.keymap.set("n", "<leader>mt", dbt.test)
+            vim.keymap.set(
+                "n",
+                "<leader>mm",
+                require("dbtpal.telescope").dbt_picker
+            )
 
-  use({
-    "hrsh7th/cmp-nvim-lua",
-    after = "cmp_luasnip",
-  })
+            -- Enable Telescope Extension
+            -- require("telescope").load_extension("dbt_pal")
+        end,
+        requires = {
+            "nvim-lua/plenary.nvim",
+        },
+    })
 
-  use({
-    "hrsh7th/cmp-nvim-lsp",
-    after = "cmp-nvim-lua",
-  })
+    -- Completion
+    use({
+        "hrsh7th/nvim-cmp",
+        config = function()
+            require("plugins.configs.nvim_cmp")
+        end,
+    })
 
-  use({
-    "hrsh7th/cmp-buffer",
-    after = "cmp-nvim-lsp",
-  })
+    use({
+        "hrsh7th/cmp-buffer",
+    })
 
-  use({
-    "hrsh7th/cmp-path",
-    after = "nvim-cmp",
-  })
+    use({
+        "hrsh7th/cmp-path",
+    })
 
-  use({
-    "hrsh7th/cmp-emoji",
-    after = "nvim-cmp",
-  })
+    use({
+        "hrsh7th/cmp-emoji",
+    })
 
-  use({
-    "hrsh7th/cmp-cmdline",
-    after = "nvim-cmp",
-  })
+    use({})
 
-  use({
-    "sbdchd/neoformat",
-    cmd = "Neoformat",
-  })
+    use({
+        "saadparwaiz1/cmp_luasnip",
+    })
 
-  use({
-    "tzachar/cmp-fzy-buffer",
-    requires = { "hrsh7th/nvim-cmp", "tzachar/fuzzy.nvim" },
-    after = "nvim-cmp",
-  })
+    use({
+        "hrsh7th/cmp-nvim-lsp",
+    })
 
-  -- use({
-  -- 'tzachar/cmp-fuzzy-path',
-  -- requires = {'hrsh7th/nvim-cmp', 'tzachar/fuzzy.nvim'},
-  -- after = "nvim-cmp",
-  -- })
+    use({
+        "hrsh7th/cmp-nvim-lua",
+    })
 
-  use({
-    "nvim-telescope/telescope.nvim",
-    requires = {
-      { "nvim-lua/popup.nvim" },
-      { "nvim-lua/plenary.nvim" },
-    },
-  })
+    -- Snippets
+    use({
+        "rafamadriz/friendly-snippets",
+    })
 
-  use({
-    "nvim-telescope/telescope-fzf-native.nvim",
-    run = "make",
-  })
+    use({
+        "L3MON4D3/LuaSnip",
+        wants = "friendly-snippets",
+    })
 
-  use({
-    "tpope/vim-commentary",
-  })
+    -- Linting
+    use({
+        "jose-elias-alvarez/null-ls.nvim",
+        config = function()
+            require("plugins.configs.nvim_null_ls")
+        end,
+    })
 
-  use({
-    "jamessan/vim-gnupg",
-  })
+    use({
+        "jay-babu/mason-null-ls.nvim",
+    })
 
-  use("gcmt/wildfire.vim")
+    -- LSP
 
-  use("sakhnik/nvim-gdb")
+    use({
+        "williamboman/mason.nvim",
+    })
 
-  use({
-    "luochen1990/rainbow",
-  })
+    use({
+        "williamboman/mason-lspconfig.nvim",
+    })
 
-  use("psf/black")
-  -- use("averms/black-nvim")
-  use("myusuf3/numbers.vim")
+    use({
+        "neovim/nvim-lspconfig",
+        config = function()
+            require("plugins.configs.lsp_config")
+        end,
+    })
 
-  use({
-    "pwntester/octo.nvim",
-    config = function()
-      require("plugins.configs.octo_conf")
-    end,
-  })
+    use({
+        "glepnir/lspsaga.nvim",
+        config = function()
+            require("plugins.configs.lspsaga_conf")
+        end,
+    })
 
-  use({
-    "nvim-lualine/lualine.nvim",
-    requires = "kyazdani42/nvim-web-devicons",
-    config = function()
-      require("plugins.configs.lualine_conf")
-    end,
-  })
+    use({
+        "ray-x/lsp_signature.nvim",
+        after = "nvim-lspconfig",
+        config = function()
+            require("plugins.configs.lsp_signature")
+        end,
+    })
 
-  use({ "folke/which-key.nvim" })
+    -- treesitter
+    use({
+        "nvim-treesitter/nvim-treesitter",
+        run = ":TSUpdate",
+        config = function()
+            require("plugins.configs.treesitter")
+        end,
+    })
 
-  use({
-    "mfussenegger/nvim-dap",
-    config = function()
-      require("plugins.configs.dapcore")
-    end,
-  })
+    -- REPL
+    use({
+        "jpalardy/vim-slime",
+    })
 
-  use({
-    "mfussenegger/nvim-dap-python",
-    requires = "mfussenegger/nvim-dap",
-  })
+    use({
+        "urbainvaes/vim-ripple",
+    })
 
-  use({
-    "theHamsta/nvim-dap-virtual-text",
-    requires = "mfussenegger/nvim-dap",
-  })
+    -- use({ "lukas-reineke/lsp-format.nvim" })
 
-  use({
-    "rcarriga/nvim-dap-ui",
-    config = function()
-      require("plugins.configs.dapui_conf")
-    end,
-    requires = {
-      "mfussenegger/nvim-dap",
-      "Pocco81/DAPInstall.nvim",
-    },
-  })
+    use({
+        "sbdchd/neoformat",
+        cmd = "Neoformat",
+    })
+
+    -- use({
+    --     "tzachar/cmp-fzy-buffer",
+    --     requires = { "hrsh7th/nvim-cmp", "tzachar/fuzzy.nvim" },
+    --     -- after = "nvim-cmp",
+    -- })
+
+    -- use({
+    -- 'tzachar/cmp-fuzzy-path',
+    -- requires = {'hrsh7th/nvim-cmp', 'tzachar/fuzzy.nvim'},
+    -- after = "nvim-cmp",
+    -- })
+
+    -- Comments
+    use({
+        "tpope/vim-commentary",
+    })
+
+    -- Selection
+    use("gcmt/wildfire.vim")
+
+    use({
+        "jamessan/vim-gnupg",
+    })
+
+    -- GPT
+    use({
+        "MunifTanjim/nui.nvim",
+    })
+
+    use({
+        "jackMort/ChatGPT.nvim",
+        config = function()
+            require("plugins.configs.chatgpt_conf")
+        end,
+        requires = {
+            "MunifTanjim/nui.nvim",
+            "nvim-lua/plenary.nvim",
+            "nvim-telescope/telescope.nvim",
+        },
+    })
+    -- Black
+    use("psf/black")
+
+    -- Github
+    use({
+        "pwntester/octo.nvim",
+        config = function()
+            require("plugins.configs.octo_conf")
+        end,
+    })
+
+    -- DAP
+    use("sakhnik/nvim-gdb")
+
+    use({
+        "mfussenegger/nvim-dap",
+        config = function()
+            require("plugins.configs.dapcore")
+        end,
+    })
+
+    use({
+        "mfussenegger/nvim-dap-python",
+        requires = "mfussenegger/nvim-dap",
+    })
+
+    use({
+        "theHamsta/nvim-dap-virtual-text",
+        requires = "mfussenegger/nvim-dap",
+    })
+
+    use({
+        "rcarriga/nvim-dap-ui",
+        config = function()
+            require("plugins.configs.dapui_conf")
+        end,
+        requires = {
+            "mfussenegger/nvim-dap",
+            "Pocco81/DAPInstall.nvim",
+        },
+    })
 end)

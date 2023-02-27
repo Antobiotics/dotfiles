@@ -23,6 +23,7 @@ cask 'sublime-text'
 
 brew 'macvim'
 brew 'neovim'
+brew 'mutt'
 
 cask 'xquartz'
 cask 'docker'
@@ -139,10 +140,13 @@ brew 'libpng'
 brew 'libtiff'
 
 brew 'lsd'
+brew 'ranger'
+brew 'ncdu'
 brew 'jq'
 brew 'yq'
 
 brew 'lazygit'
+brew 'gitui'
 brew 'gh'
 brew 'git-lfs'
 
@@ -150,5 +154,7 @@ brew 'reattach-to-user-namespace'
 
 brew 'pyenv'
 brew 'pyenv-virtualenv'
+brew 'ruff'
 
 brew 'rust'
+brew 'lua-language-server'

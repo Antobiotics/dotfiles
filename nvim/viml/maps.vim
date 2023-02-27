@@ -86,6 +86,8 @@ nnoremap <silent><leader>bb :Gitsigns blame_line<CR>
 " Telescope
 " Fuzzy buffer finder
 nnoremap <silent><leader>fb :Telescope buffers<CR>
+nnoremap <silent><leader>fr :Telescope registers<CR>
+
 " Search with ripgrep
 nnoremap <silent><leader>f :Telescope live_grep<CR>
 nnoremap <silent><leader>ff :Telescope find_files hidden=true<CR>
@@ -93,11 +95,6 @@ nnoremap <silent><leader>ff :Telescope find_files hidden=true<CR>
 " Find word under
 nnoremap <silent><leader>l :Telescope grep_string<CR>
 nnoremap <silent><leader>ll :execute 'Telescope find_files default_text=' . expand('<cword>')<CR>
-
-" Black
-" nmap <leader>b :Black<CR>
-" nnoremap <buffer><silent> <leader>b <cmd>call Black()<cr>
-" inoremap <buffer><silent> <leader>b <cmd>call Black()<cr>
 
 nmap <leader>s <Plug>(wildfire-quick-select)
 " This selects the next closest text object.

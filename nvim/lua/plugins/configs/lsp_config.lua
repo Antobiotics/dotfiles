@@ -109,6 +109,7 @@ require("mason-null-ls").setup({
         "black",
         "ruff",
         "rustfmt",
+        "sqlfluff",
     },
     automatic_installation = true,
     automatic_setup = true,

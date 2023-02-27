@@ -303,6 +303,9 @@ return packer.startup(function()
     use("psf/black")
 
     -- Github
+
+    use({ "tpope/vim-fugitive" })
+
     use({
         "pwntester/octo.nvim",
         config = function()

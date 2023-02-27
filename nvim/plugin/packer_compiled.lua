@@ -138,7 +138,7 @@ _G.packer_plugins = {
     url = "https://github.com/cfmeyers/dbt.nvim"
   },
   dbtpal = {
-    config = { "\27LJ\2\n�\3\0\0\b\0\21\0,6\0\0\0'\2\1\0B\0\2\0029\1\2\0005\3\3\0006\4\4\0009\4\5\0049\4\6\4'\6\a\0B\4\2\2=\4\b\3B\1\2\0016\1\4\0009\1\t\0019\1\n\1'\3\v\0'\4\f\0009\5\r\0B\1\4\0016\1\4\0009\1\t\0019\1\n\1'\3\v\0'\4\14\0009\5\15\0B\1\4\0016\1\4\0009\1\t\0019\1\n\1'\3\v\0'\4\16\0009\5\17\0B\1\4\0016\1\4\0009\1\t\0019\1\n\1'\3\v\0'\4\18\0006\5\0\0'\a\19\0B\5\2\0029\5\20\5B\1\4\1K\0\1\0\15dbt_picker\21dbtpal.telescope\15<leader>mm\ttest\15<leader>mt\frun_all\15<leader>ma\brun\14<leader>m\6n\bset\vkeymap\29path_to_dbt_profiles_dir\v~/.dbt\vexpand\afn\bvim\1\0\4\24path_to_dbt_project\5\16path_to_dbt\bdbt\27protect_compiled_files\2\25extended_path_search\2\nsetup\vdbtpal\frequire\0" },
+    config = { "\27LJ\2\n�\3\0\0\b\0\21\0,6\0\0\0'\2\1\0B\0\2\0029\1\2\0005\3\3\0006\4\4\0009\4\5\0049\4\6\4'\6\a\0B\4\2\2=\4\b\3B\1\2\0016\1\4\0009\1\t\0019\1\n\1'\3\v\0'\4\f\0009\5\r\0B\1\4\0016\1\4\0009\1\t\0019\1\n\1'\3\v\0'\4\14\0009\5\15\0B\1\4\0016\1\4\0009\1\t\0019\1\n\1'\3\v\0'\4\16\0009\5\17\0B\1\4\0016\1\4\0009\1\t\0019\1\n\1'\3\v\0'\4\18\0006\5\0\0'\a\19\0B\5\2\0029\5\20\5B\1\4\1K\0\1\0\15dbt_picker\21dbtpal.telescope\15<leader>mm\ttest\15<leader>mt\frun_all\15<leader>ma\brun\14<leader>m\6n\bset\vkeymap\29path_to_dbt_profiles_dir\v~/.dbt\vexpand\afn\bvim\1\0\4\16path_to_dbt\bdbt\27protect_compiled_files\2\25extended_path_search\2\24path_to_dbt_project\5\nsetup\vdbtpal\frequire\0" },
     loaded = true,
     path = "/Users/gregoirelejay/.local/share/nvim/site/pack/packer/start/dbtpal",
     url = "/Users/gregoirelejay/dev/forks/dbtpal"
@@ -363,62 +363,62 @@ _G.packer_plugins = {
 }
 
 time([[Defining packer_plugins]], false)
--- Config for: octo.nvim
-time([[Config for octo.nvim]], true)
-try_loadstring("\27LJ\2\n9\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\30plugins.configs.octo_conf\frequire\0", "config", "octo.nvim")
-time([[Config for octo.nvim]], false)
--- Config for: nvim-cmp
-time([[Config for nvim-cmp]], true)
-try_loadstring("\27LJ\2\n8\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\29plugins.configs.nvim_cmp\frequire\0", "config", "nvim-cmp")
-time([[Config for nvim-cmp]], false)
--- Config for: NeoSolarized
-time([[Config for NeoSolarized]], true)
-try_loadstring("\27LJ\2\n<\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0!plugins.configs.neosolarized\frequire\0", "config", "NeoSolarized")
-time([[Config for NeoSolarized]], false)
 -- Config for: lspsaga.nvim
 time([[Config for lspsaga.nvim]], true)
 try_loadstring("\27LJ\2\n<\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0!plugins.configs.lspsaga_conf\frequire\0", "config", "lspsaga.nvim")
 time([[Config for lspsaga.nvim]], false)
--- Config for: nvim-dap-ui
-time([[Config for nvim-dap-ui]], true)
-try_loadstring("\27LJ\2\n:\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\31plugins.configs.dapui_conf\frequire\0", "config", "nvim-dap-ui")
-time([[Config for nvim-dap-ui]], false)
--- Config for: nvim-tree.lua
-time([[Config for nvim-tree.lua]], true)
-try_loadstring("\27LJ\2\n9\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\30plugins.configs.nvim_tree\frequire\0", "config", "nvim-tree.lua")
-time([[Config for nvim-tree.lua]], false)
--- Config for: nvim-treesitter
-time([[Config for nvim-treesitter]], true)
-try_loadstring("\27LJ\2\n:\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\31plugins.configs.treesitter\frequire\0", "config", "nvim-treesitter")
-time([[Config for nvim-treesitter]], false)
--- Config for: nvim-lspconfig
-time([[Config for nvim-lspconfig]], true)
-try_loadstring("\27LJ\2\n:\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\31plugins.configs.lsp_config\frequire\0", "config", "nvim-lspconfig")
-time([[Config for nvim-lspconfig]], false)
--- Config for: dbtpal
-time([[Config for dbtpal]], true)
-try_loadstring("\27LJ\2\n�\3\0\0\b\0\21\0,6\0\0\0'\2\1\0B\0\2\0029\1\2\0005\3\3\0006\4\4\0009\4\5\0049\4\6\4'\6\a\0B\4\2\2=\4\b\3B\1\2\0016\1\4\0009\1\t\0019\1\n\1'\3\v\0'\4\f\0009\5\r\0B\1\4\0016\1\4\0009\1\t\0019\1\n\1'\3\v\0'\4\14\0009\5\15\0B\1\4\0016\1\4\0009\1\t\0019\1\n\1'\3\v\0'\4\16\0009\5\17\0B\1\4\0016\1\4\0009\1\t\0019\1\n\1'\3\v\0'\4\18\0006\5\0\0'\a\19\0B\5\2\0029\5\20\5B\1\4\1K\0\1\0\15dbt_picker\21dbtpal.telescope\15<leader>mm\ttest\15<leader>mt\frun_all\15<leader>ma\brun\14<leader>m\6n\bset\vkeymap\29path_to_dbt_profiles_dir\v~/.dbt\vexpand\afn\bvim\1\0\4\24path_to_dbt_project\5\16path_to_dbt\bdbt\27protect_compiled_files\2\25extended_path_search\2\nsetup\vdbtpal\frequire\0", "config", "dbtpal")
-time([[Config for dbtpal]], false)
--- Config for: ChatGPT.nvim
-time([[Config for ChatGPT.nvim]], true)
-try_loadstring("\27LJ\2\n<\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0!plugins.configs.chatgpt_conf\frequire\0", "config", "ChatGPT.nvim")
-time([[Config for ChatGPT.nvim]], false)
--- Config for: lualine.nvim
-time([[Config for lualine.nvim]], true)
-try_loadstring("\27LJ\2\n<\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0!plugins.configs.lualine_conf\frequire\0", "config", "lualine.nvim")
-time([[Config for lualine.nvim]], false)
--- Config for: null-ls.nvim
-time([[Config for null-ls.nvim]], true)
-try_loadstring("\27LJ\2\n<\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0!plugins.configs.nvim_null_ls\frequire\0", "config", "null-ls.nvim")
-time([[Config for null-ls.nvim]], false)
 -- Config for: gitsigns.nvim
 time([[Config for gitsigns.nvim]], true)
 try_loadstring("\27LJ\2\n8\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\29plugins.configs.gitsigns\frequire\0", "config", "gitsigns.nvim")
 time([[Config for gitsigns.nvim]], false)
+-- Config for: nvim-cmp
+time([[Config for nvim-cmp]], true)
+try_loadstring("\27LJ\2\n8\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\29plugins.configs.nvim_cmp\frequire\0", "config", "nvim-cmp")
+time([[Config for nvim-cmp]], false)
+-- Config for: nvim-lspconfig
+time([[Config for nvim-lspconfig]], true)
+try_loadstring("\27LJ\2\n:\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\31plugins.configs.lsp_config\frequire\0", "config", "nvim-lspconfig")
+time([[Config for nvim-lspconfig]], false)
+-- Config for: lualine.nvim
+time([[Config for lualine.nvim]], true)
+try_loadstring("\27LJ\2\n<\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0!plugins.configs.lualine_conf\frequire\0", "config", "lualine.nvim")
+time([[Config for lualine.nvim]], false)
+-- Config for: ChatGPT.nvim
+time([[Config for ChatGPT.nvim]], true)
+try_loadstring("\27LJ\2\n<\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0!plugins.configs.chatgpt_conf\frequire\0", "config", "ChatGPT.nvim")
+time([[Config for ChatGPT.nvim]], false)
+-- Config for: nvim-treesitter
+time([[Config for nvim-treesitter]], true)
+try_loadstring("\27LJ\2\n:\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\31plugins.configs.treesitter\frequire\0", "config", "nvim-treesitter")
+time([[Config for nvim-treesitter]], false)
+-- Config for: nvim-dap-ui
+time([[Config for nvim-dap-ui]], true)
+try_loadstring("\27LJ\2\n:\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\31plugins.configs.dapui_conf\frequire\0", "config", "nvim-dap-ui")
+time([[Config for nvim-dap-ui]], false)
+-- Config for: null-ls.nvim
+time([[Config for null-ls.nvim]], true)
+try_loadstring("\27LJ\2\n<\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0!plugins.configs.nvim_null_ls\frequire\0", "config", "null-ls.nvim")
+time([[Config for null-ls.nvim]], false)
+-- Config for: nvim-tree.lua
+time([[Config for nvim-tree.lua]], true)
+try_loadstring("\27LJ\2\n9\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\30plugins.configs.nvim_tree\frequire\0", "config", "nvim-tree.lua")
+time([[Config for nvim-tree.lua]], false)
 -- Config for: nvim-dap
 time([[Config for nvim-dap]], true)
 try_loadstring("\27LJ\2\n7\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\28plugins.configs.dapcore\frequire\0", "config", "nvim-dap")
 time([[Config for nvim-dap]], false)
+-- Config for: dbtpal
+time([[Config for dbtpal]], true)
+try_loadstring("\27LJ\2\n�\3\0\0\b\0\21\0,6\0\0\0'\2\1\0B\0\2\0029\1\2\0005\3\3\0006\4\4\0009\4\5\0049\4\6\4'\6\a\0B\4\2\2=\4\b\3B\1\2\0016\1\4\0009\1\t\0019\1\n\1'\3\v\0'\4\f\0009\5\r\0B\1\4\0016\1\4\0009\1\t\0019\1\n\1'\3\v\0'\4\14\0009\5\15\0B\1\4\0016\1\4\0009\1\t\0019\1\n\1'\3\v\0'\4\16\0009\5\17\0B\1\4\0016\1\4\0009\1\t\0019\1\n\1'\3\v\0'\4\18\0006\5\0\0'\a\19\0B\5\2\0029\5\20\5B\1\4\1K\0\1\0\15dbt_picker\21dbtpal.telescope\15<leader>mm\ttest\15<leader>mt\frun_all\15<leader>ma\brun\14<leader>m\6n\bset\vkeymap\29path_to_dbt_profiles_dir\v~/.dbt\vexpand\afn\bvim\1\0\4\16path_to_dbt\bdbt\27protect_compiled_files\2\25extended_path_search\2\24path_to_dbt_project\5\nsetup\vdbtpal\frequire\0", "config", "dbtpal")
+time([[Config for dbtpal]], false)
+-- Config for: NeoSolarized
+time([[Config for NeoSolarized]], true)
+try_loadstring("\27LJ\2\n<\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0!plugins.configs.neosolarized\frequire\0", "config", "NeoSolarized")
+time([[Config for NeoSolarized]], false)
+-- Config for: octo.nvim
+time([[Config for octo.nvim]], true)
+try_loadstring("\27LJ\2\n9\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\30plugins.configs.octo_conf\frequire\0", "config", "octo.nvim")
+time([[Config for octo.nvim]], false)
 -- Load plugins in order defined by `after`
 time([[Sequenced loading]], true)
 vim.cmd [[ packadd lsp_signature.nvim ]]

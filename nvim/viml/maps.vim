@@ -21,6 +21,7 @@ nmap :W  :w
 
 nmap :te :tabe
 nmap :Te :tabe
+nmap :E :e
 
 nmap :tc :tabclose
 nmap :Tc :tabclose
@@ -68,6 +69,7 @@ nnoremap <silent> <C-C> :if (&hlsearch == 1) \| set nohlsearch \| else \| set hl
 " Do not make Q go to ex-mode
 nnoremap Q <Nop>
 
+xnoremap("<leader>p", "\"_dP")
 
 " NvimTree
 function! ToggleNvimTree()
@@ -90,13 +92,13 @@ nnoremap <silent><leader>fr :Telescope registers<CR>
 
 " Search with ripgrep
 nnoremap <silent><leader>f :Telescope live_grep<CR>
-nnoremap <silent><leader>ff :Telescope find_files hidden=true<CR>
+nnoremap <silent><leader>ff :Telescope grep_string<CR>
 
 " Find word under
-nnoremap <silent><leader>l :Telescope grep_string<CR>
+nnoremap <silent><leader>l :Telescope find_files hidden=true<CR>
 nnoremap <silent><leader>ll :execute 'Telescope find_files default_text=' . expand('<cword>')<CR>
 
-nmap <leader>s <Plug>(wildfire-quick-select)
+nmap <leader>z <Plug>(wildfire-quick-select)
 " This selects the next closest text object.
 map <ENTER> <Plug>(wildfire-fuel)
 

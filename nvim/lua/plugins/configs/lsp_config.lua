@@ -76,12 +76,12 @@ require("mason-lspconfig").setup()
 local language_servers = {
     "lua_ls",
     "rust_analyzer",
-    "ruff_lsp",
+    -- "ruff_lsp",
     "sqlls",
     "bashls",
     "r_language_server",
     "neocmake",
-    "pyright",
+    -- "pyright",
 }
 require("mason-lspconfig").setup({
     ensure_installed = language_servers,
@@ -104,10 +104,10 @@ require("mason-null-ls").setup({
         "stylua",
         "jq",
         "eslint",
-        "mypy",
-        "pylint",
-        "black",
-        "ruff",
+        -- "mypy",
+        -- "pylint",
+        -- "black",
+        -- "ruff",
         "rustfmt",
         "sqlfluff",
     },
@@ -150,24 +150,32 @@ local function get_python_path(workspace)
     return vim.fn.exepath("python3") or vim.fn.exepath("python") or "python"
 end
 
-require("lspconfig").pyright.setup({
-    on_attach = custom_attach,
-    on_init = function(client)
-        client.config.settings.python.pythonPath =
-            get_python_path(client.config.root_dir)
-    end,
-    -- Turn off diagnostics from pyright
-    -- handlers = {
-    --     ["textDocument/publishDiagnostics"] = function() end,
-    -- },
-})
+-- require("lspconfig").pyright.setup({
+--     on_attach = custom_attach,
+--     on_init = function(client)
+--         client.config.settings.python.pythonPath =
+--             get_python_path(client.config.root_dir)
+--     end,
+--     settings = {
+--         pyright = { autoImportCompletion = true },
+--         python = {
+--             analysis = {
+--                 autoSearchPaths = true,
+--                 diagnosticMode = "off",
+--                 -- diagnosticMode = "openFilesOnly",
+--                 useLibraryCodeForTypes = true,
+--                 typeCheckingMode = "off",
+--             },
+--         },
+--     },
+-- })
 
-require("lspconfig").ruff_lsp.setup({
-    on_attach = custom_attach,
-    on_init = function(client)
-        client.config.settings.python.pythonPath =
-            get_python_path(client.config.root_dir)
-    end,
-})
+-- require("lspconfig").ruff_lsp.setup({
+--     on_attach = custom_attach,
+--     on_init = function(client)
+--         client.config.settings.python.pythonPath =
+--             get_python_path(client.config.root_dir)
+--     end,
+-- })
 
 require("lspconfig").lua_ls.setup({ on_attach = custom_attach })

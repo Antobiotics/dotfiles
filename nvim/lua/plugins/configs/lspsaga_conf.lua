@@ -4,10 +4,6 @@ local keymap = vim.keymap.set
 local saga = require("lspsaga")
 
 saga.setup({
-    -- error_sign = "",
-    -- warn_sign = "",
-    -- hint_sign = "",
-    -- infor_sign = "",
     -- Options with default value
     -- when cursor in saga window you config these to move
     move_in_saga = { prev = "<C-p>", next = "<C-n>" },
@@ -123,56 +119,6 @@ saga.setup({
     server_filetype_map = {},
 })
 
--- Winbar config
-local function get_file_name(include_path)
-    local file_name = require("lspsaga.symbolwinbar").get_file_name()
-    if vim.fn.bufname("%") == "" then
-        return ""
-    end
-    if include_path == false then
-        return file_name
-    end
-    -- Else if include path: ./lsp/saga.lua -> lsp > saga.lua
-    local sep = vim.loop.os_uname().sysname == "Windows" and "\\" or "/"
-    local path_list =
-        vim.split(string.gsub(vim.fn.expand("%:~:.:h"), "%%", ""), sep)
-    local file_path = ""
-    for _, cur in ipairs(path_list) do
-        file_path = (cur == "." or cur == "~") and ""
-            or file_path .. cur .. " " .. "%#LspSagaWinbarSep#>%*" .. " %*"
-    end
-    return file_path .. file_name
-end
-
-local function config_winbar_or_statusline()
-    local exclude = {
-        ["terminal"] = true,
-        ["toggleterm"] = true,
-        ["prompt"] = true,
-        ["NvimTree"] = true,
-        ["help"] = true,
-    } -- Ignore float windows and exclude filetype
-    if vim.api.nvim_win_get_config(0).zindex or exclude[vim.bo.filetype] then
-        vim.wo.winbar = ""
-    else
-        local ok, lspsaga = pcall(require, "lspsaga.symbolwinbar")
-        local sym
-        if ok then
-            sym = lspsaga.get_symbol_node()
-        end
-        local win_val = ""
-        win_val = get_file_name(true) -- set to true to include path
-        if sym ~= nil then
-            win_val = win_val .. sym
-        end
-        vim.wo.winbar = win_val
-        -- if work in statusline
-        -- vim.wo.stl = win_val
-    end
-end
-
-local events = { "BufEnter", "BufWinEnter", "CursorMoved" }
-
 keymap("n", "gf", "<cmd>Lspsaga lsp_finder<CR>", { silent = true })
 
 -- Code action
@@ -217,9 +163,6 @@ keymap("n", "]E", function()
         severity = vim.diagnostic.severity.ERROR,
     })
 end, { silent = true })
-
--- Outline
-keymap("n", "<leader>o", "<cmd>LSoutlineToggle<CR>", { silent = true })
 
 -- Hover Doc
 keymap("n", "K", "<cmd>Lspsaga hover_doc<CR>", { silent = true })

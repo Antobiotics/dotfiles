@@ -1,25 +1,20 @@
 local vim = vim
-local cmd = vim.cmd
 
-require("plugins")
-cmd(
-  "silent! command PackerClean lua require 'plugins' require('packer').clean()"
-)
-cmd(
-  "silent! command PackerCompile lua require 'plugins' require('packer').compile()"
-)
-cmd(
-  "silent! command PackerInstall lua require 'plugins' require('packer').install()"
-)
-cmd(
-  "silent! command PackerStatus lua require 'plugins' require('packer').status()"
-)
-cmd("silent! command PackerSync lua require 'plugins' require('packer').sync()")
-cmd(
-  "silent! command PackerUpdate lua require 'plugins' require('packer').update()"
-)
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+    vim.fn.system({
+        "git",
+        "clone",
+        "--filter=blob:none",
+        "https://github.com/folke/lazy.nvim.git",
+        "--branch=stable", -- latest stable release
+        lazypath,
+    })
+end
+vim.opt.rtp:prepend(lazypath)
 
 require("options")
+require("plugins")
 
 -- source our mappings last(may change)
 vim.cmd("source ~/.config/nvim/viml/maps.vim")
@@ -32,3 +27,6 @@ vim.cmd("source ~/.config/nvim/viml/legacy.vim")
 
 -- plugins
 vim.cmd("source ~/.config/nvim/viml/plugins.vim")
+
+-- set theme
+vim.cmd("colorscheme base16-gruvbox-light-soft")

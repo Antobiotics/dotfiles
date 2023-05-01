@@ -45,6 +45,7 @@ gaps outer 3
 # Set screen resolution
 exec xrandr --output eDP-1 --mode "1920x1200"
 
+exec --no-startup-id "redshift -P -O 4000"
 exec --no-startup-id feh --bg-scale /home/glbob/Pictures/jupiter-anneaux-05.jpg
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left

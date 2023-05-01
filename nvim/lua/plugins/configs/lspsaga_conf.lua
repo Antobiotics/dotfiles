@@ -13,7 +13,7 @@ saga.setup({
   border_style = "single",
   --the range of 0 for fully opaque window (disabled) to 100 for fully
   --transparent background. Values between 0-30 are typically most useful.
-  saga_winblend = 0,
+  winblend = 25,
   -- when cursor in saga window you config these to move
   move_in_saga = { prev = "<C-p>", next = "<C-n>" },
   -- Error, Warn, Info, Hint
@@ -82,7 +82,7 @@ saga.setup({
   symbol_in_winbar = {
     in_custom = true,
     enable = true,
-    separator = "| ",
+    separator = "|",
     show_file = true,
     folder_level = 3,
     color_mode = true,
@@ -240,7 +240,7 @@ keymap("n", "]E", function()
 end, { silent = true })
 
 -- Outline
-keymap("n", "<leader>o", "<cmd>LSoutlineToggle<CR>", { silent = true })
+keymap("n", "<leader>o", "<cmd>Lspsaga outline<CR>", { silent = true })
 
 -- Hover Doc
 keymap("n", "K", "<cmd>Lspsaga hover_doc<CR>", { silent = true })

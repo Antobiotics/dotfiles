@@ -1,5 +1,4 @@
 local null_ls = require("null-ls")
-local utils = require("null-ls.utils")
 local util = require("null-ls.utils")
 
 null_ls.setup({
@@ -18,25 +17,27 @@ null_ls.setup({
         --         return util.root_pattern(".git")(vim.fn.expand("%:p"))
         --     end,
         -- }),
+        null_ls.builtins.diagnostics.djlint,
+        null_ls.builtins.formatting.djlint,
         null_ls.builtins.formatting.black,
         -- null_ls.builtins.diagnostics.ruff,
         -- null_ls.builtins.formatting.ruff,
         null_ls.builtins.formatting.rustfmt,
-        null_ls.builtins.diagnostics.sqlfluff.with({
-            extra_args = {
-                "--dialect",
-                "redshift",
-                "--config",
-                util.root_pattern(".git")(vim.fn.expand("%:p")),
-            },
-        }),
-        null_ls.builtins.formatting.sqlfluff.with({
-            extra_args = {
-                "--dialect",
-                "redshift",
-                "--config",
-                util.root_pattern(".git")(vim.fn.expand("%:p")),
-            },
-        }),
+        -- null_ls.builtins.diagnostics.sqlfluff.with({
+        --     extra_args = {
+        --         "--dialect",
+        --         "redshift",
+        --         "--config",
+        --         util.root_pattern(".git")(vim.fn.expand("%:p")) .. "/.sqlfluff",
+        --     },
+        -- }),
+        -- null_ls.builtins.formatting.sqlfluff.with({
+        --     extra_args = {
+        --         "--dialect",
+        --         "redshift",
+        --         "--config",
+        --         util.root_pattern(".git")(vim.fn.expand("%:p")) .. "/.sqlfluff",
+        --     },
+        -- }),
     },
 })

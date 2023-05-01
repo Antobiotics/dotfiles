@@ -292,7 +292,7 @@ set -g mode-keys vi
 # set -g prefix C-a
 # bind C-a send-prefix
 
-bind l send-keys -R; display "Cleared"
+bind o send-keys -R; display "Cleared"
 
 bind -n S-Left  previous-window
 bind -n S-Right next-window

@@ -147,6 +147,7 @@ require("lazy").setup({
 
     {
         "L3MON4D3/LuaSnip",
+        build = "make install_jsregexp",
         -- wants = "friendly-snippets",
     },
 
@@ -240,6 +241,7 @@ require("lazy").setup({
 
     {
         "jackMort/ChatGPT.nvim",
+        event = "VeryLazy",
         config = function()
             require("plugins.configs.chatgpt_conf")
         end,

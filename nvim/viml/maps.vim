@@ -21,6 +21,7 @@ nmap :W  :w
 
 nmap :te :tabe
 nmap :Te :tabe
+nmap :E :e
 
 nmap :tc :tabclose
 nmap :Tc :tabclose
@@ -68,6 +69,7 @@ nnoremap <silent> <C-C> :if (&hlsearch == 1) \| set nohlsearch \| else \| set hl
 " Do not make Q go to ex-mode
 nnoremap Q <Nop>
 
+xnoremap("<leader>p", "\"_dP")
 
 " NvimTree
 function! ToggleNvimTree()
@@ -86,31 +88,19 @@ nnoremap <silent><leader>bb :Gitsigns blame_line<CR>
 " Telescope
 " Fuzzy buffer finder
 nnoremap <silent><leader>fb :Telescope buffers<CR>
+nnoremap <silent><leader>fr :Telescope registers<CR>
+
 " Search with ripgrep
 nnoremap <silent><leader>f :Telescope live_grep<CR>
-nnoremap <silent><leader>ff :Telescope find_files hidden=true<CR>
+nnoremap <silent><leader>ff :Telescope grep_string<CR>
 
 " Find word under
-nnoremap <silent><leader>l :Telescope grep_string<CR>
+nnoremap <silent><leader>l :Telescope find_files hidden=true<CR>
 nnoremap <silent><leader>ll :execute 'Telescope find_files default_text=' . expand('<cword>')<CR>
 
-" Black
-" nmap <leader>b :Black<CR>
-" nnoremap <buffer><silent> <leader>b <cmd>call Black()<cr>
-" inoremap <buffer><silent> <leader>b <cmd>call Black()<cr>
+nmap <leader>z <Plug>(wildfire-quick-select)
+" This selects the next closest text object.
+map <ENTER> <Plug>(wildfire-fuel)
 
-" LSPsaga
-nnoremap <silent><leader>gh :Lspsaga lsp_finder<CR>
-nnoremap <silent><leader>ga :Lspsaga code_action<CR>
-nnoremap <silent><leader>gs :Lspsaga signature_help<CR>
-nnoremap <silent><leader>k :Lspsaga hover_doc<CR>
-nnoremap <silent><leader>gd :Lspsaga preview_definition<CR>
-
-" scroll down hover doc or scroll in definition preview
-nnoremap <silent> <C-f> <cmd>lua require('lspsaga.action').smart_scroll_with_saga(1)<CR>
-" scroll up hover doc
-nnoremap <silent> <C-b> <cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1)<CR>
-nnoremap <silent> <C-j> :Lspsaga diagnostic_jump_next<CR>
-
-
-" nnoremap <silent> <leader>dt <cmd>lua require'dap'.toggle_breakpoint()<CR>
+" This selects the previous closest text object.
+vmap <C-ENTER> <Plug>(wildfire-water)

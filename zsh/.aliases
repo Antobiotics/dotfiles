@@ -19,7 +19,6 @@ alias tree="tree -C"
 
 alias ptpython="python -m ptpython"
 
-alias cdr="cd $(git rev-parse --show-toplevel)"
 
 # Find
 alias fr='find . -name'
@@ -121,6 +120,10 @@ function source_zshrc {
 # wget Shortcut
 function getsrc {
     wget $1 -O `echo "$1" | sed 's/\/$//' | awk -F/ '{print $NF }'`
+}
+
+function cdgr {
+    cd $(git rev-parse --show-toplevel)
 }
 
 function define() {

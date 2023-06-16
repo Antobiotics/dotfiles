@@ -98,13 +98,27 @@ cmp.setup({
         end, { "i", "s" }),
     },
     sources = {
+        { name = "otter" },
         { name = "nvim_lsp" },
         { name = "luasnip" },
         {
             name = "buffer",
             option = {
                 get_bufnrs = function()
-                    return vim.api.nvim_list_bufs()
+                    local LIMIT = 1024 * 512 -- 512 kb max
+                    local bufs = {}
+
+                    for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+                        local line_count = vim.api.nvim_buf_line_count(buf)
+                        local byte_size =
+                            vim.api.nvim_buf_get_offset(buf, line_count)
+
+                        if byte_size < LIMIT then
+                            bufs[buf] = true
+                        end
+                    end
+
+                    return vim.tbl_keys(bufs)
                 end,
             },
         },
@@ -115,7 +129,7 @@ cmp.setup({
                 trailing_slash = true,
             },
         },
-        { name = "fzy_buffer" },
+        -- { name = "fzy_buffer" },
         -- { name = 'fuzzy_path' },
         { name = "emoji" },
     },
@@ -129,8 +143,8 @@ for _, cmd_type in ipairs({ ":", "/", "?", "@", "=" }) do
     cmp.setup.cmdline(cmd_type, {
         sources = {
             { name = "cmdline" },
-            { name = "fzy_buffer" },
             { name = "path" },
+            -- { name = "fzy_buffer" },
             -- { name = 'fuzzy_path' },
             { name = "cmdline_history" },
         },

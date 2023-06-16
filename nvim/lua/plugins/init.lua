@@ -141,6 +141,7 @@ require("lazy").setup({
     "saadparwaiz1/cmp_luasnip",
     "hrsh7th/cmp-nvim-lsp",
     "hrsh7th/cmp-nvim-lua",
+    "jalvesaq/cmp-nvim-r",
 
     -- Snippets
     "rafamadriz/friendly-snippets",
@@ -208,8 +209,36 @@ require("lazy").setup({
         end,
     },
 
+    {
+        "nvim-treesitter/nvim-treesitter-textobjects",
+        dependencies = {
+            "nvim-treesitter/nvim-treesitter",
+        },
+    },
+
     -- REPL
-    "jpalardy/vim-slime",
+    {
+        "jpalardy/vim-slime",
+        init = function()
+            Quarto_is_in_python_chunk = function()
+                require("otter.tools.functions").is_otter_language_context(
+                    "python"
+                )
+            end
+
+            vim.cmd([[
+        function SlimeOverride_EscapeText_quarto(text)
+        call v:lua.Quarto_is_in_python_chunk()
+        if exists('g:slime_python_ipython') && len(split(a:text,"\n")) > 1 && b:quarto_is_python_chunk
+        return ["%cpaste -q", "\n", g:slime_dispatch_ipython_pause, a:text, "--", "\n"]
+        else
+        return a:text
+        end
+        endfunction
+        ]])
+        end,
+    },
+
     "urbainvaes/vim-ripple",
 
     {
@@ -293,6 +322,26 @@ require("lazy").setup({
         dependencies = {
             "mfussenegger/nvim-dap",
             "Pocco81/DAPInstall.nvim",
+        },
+    },
+
+    {
+        "quarto-dev/quarto-nvim",
+        config = function()
+            require("plugins.configs.quarto_conf")
+        end,
+        dependencies = {
+            "jmbuhr/otter.nvim",
+            "hrsh7th/nvim-cmp",
+            "neovim/nvim-lspconfig",
+            "nvim-treesitter/nvim-treesitter",
+        },
+    },
+
+    {
+        "jalvesaq/Nvim-R",
+        dependencies = {
+            "jalvesaq/cmp-nvim-r",
         },
     },
 })

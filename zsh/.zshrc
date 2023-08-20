@@ -41,10 +41,10 @@ export ZPLUG_HOME=$(brew --prefix)/opt/zplug
 source_if_exists $ZSH/oh-my-zsh.sh
 source_if_exists $HOME/.bashrc
 source_if_exists $ZPLUG_HOME/init.zsh
-source_if_exists $HOME/.init_dice.sh
 source_if_exists $HOME/.env
 source_if_exists $HOME/.aliases
 source_if_exists $HOME/.kube_comp.sh
+source_if_exists $HOME/.init_dice.sh
 
 fpath=(/usr/local/share/zsh-completions $fpath)
 fpath=($ZSH/completions $fpath)
@@ -118,3 +118,4 @@ export TERM=xterm-256color
 
 # opam configuration
 [[ ! -r $HOME/.opam/opam-init/init.zsh ]] || source $HOME/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
+eval "$(/opt/homebrew/bin/brew shellenv)"

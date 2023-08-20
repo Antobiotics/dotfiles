@@ -150,3 +150,5 @@ for _, cmd_type in ipairs({ ":", "/", "?", "@", "=" }) do
         },
     })
 end
+
+-- require("luasnip.loaders.from_vscode").lazy_load()

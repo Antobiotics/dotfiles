@@ -79,7 +79,7 @@ function! ToggleNvimTree()
    endif
 
    NvimTreeToggle
- endfunction
+endfunction
 
 nnoremap <silent> <C-n> :call ToggleNvimTree()<CR>
 
@@ -89,6 +89,7 @@ nnoremap <silent><leader>bb :Gitsigns blame_line<CR>
 " Fuzzy buffer finder
 nnoremap <silent><leader>fb :Telescope buffers<CR>
 nnoremap <silent><leader>fr :Telescope registers<CR>
+nnoremap <silent><leader>fm :Telescope marks<CR>
 
 " Search with ripgrep
 nnoremap <silent><leader>f :Telescope live_grep<CR>
@@ -104,3 +105,27 @@ map <ENTER> <Plug>(wildfire-fuel)
 
 " This selects the previous closest text object.
 vmap <C-ENTER> <Plug>(wildfire-water)
+
+let g:wildfire_objects = {
+    \ "*" : ["i'", 'i"', "i)", "i]", "i}"]
+\ }
+
+" R pipe >> maps to |>
+autocmd FileType r inoremap <buffer> >> <Esc>:normal! a \|><CR>a
+autocmd FileType rnoweb inoremap <buffer> >> <Esc>:normal! a \|><CR>a
+autocmd FileType rmd inoremap <buffer> >> <Esc>:normal! a \|><CR>a
+autocmd FileType quarto inoremap <buffer> >> <Esc>:normal! a \|><CR>a
+
+" R pip %>% (magrittr pie) maps to |>
+autocmd FileType r inoremap <buffer> %>% <Esc>:normal! a \|><CR>a
+autocmd FileType rnoweb inoremap <buffer> %>% <Esc>:normal! a \|><CR>a
+autocmd FileType rmd inoremap <buffer> %>% <Esc>:normal! a \|><CR>a
+autocmd FileType quarto inoremap <buffer> %>% <Esc>:normal! a \|><CR>a
+
+" Folding
+set foldmethod=expr
+set foldexpr=nvim_treesitter#foldexpr()
+set nofoldenable
+
+" Makes sure all folds are open with a file is opened
+autocmd BufRead,BufReadPost,FileReadPost * normal zR

@@ -37,4 +37,4 @@ let R_bracketed_paste = 1
 let R_listmethods = 1
 let R_csv_app = ':tabnew term://vd'
 " let R_csv_app = ':vsplit'
-" let R_external_term = 1
+" let R_external_term = 0

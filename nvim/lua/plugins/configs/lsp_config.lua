@@ -50,7 +50,7 @@ local custom_attach = function(client, bufnr)
         "<cmd>lua vim.lsp.buf.type_definition()<CR>",
         opts
     )
-    buf_set_keymap("n", "gr", "<cmd>Lspsaga lsp_finder<CR>", opts)
+    buf_set_keymap("n", "gr", "<cmd>Lspsaga finder def+ref<CR>", opts)
 
     buf_set_keymap(
         "n",

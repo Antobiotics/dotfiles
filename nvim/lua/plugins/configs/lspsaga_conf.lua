@@ -30,6 +30,7 @@ saga.setup({
         virtual_text = false,
     },
     finder = {
+        default = "def+ref+imp",
         max_height = 0.5,
         keys = {
             open = { "o", "<CR>" },
@@ -119,7 +120,7 @@ saga.setup({
     server_filetype_map = {},
 })
 
-keymap("n", "gf", "<cmd>Lspsaga lsp_finder<CR>", { silent = true })
+keymap("n", "gf", "<cmd>Lspsaga finder<CR>", { silent = true })
 
 -- Code action
 keymap(

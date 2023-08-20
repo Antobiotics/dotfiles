@@ -185,7 +185,7 @@ require("lazy").setup({
     },
 
     {
-        "glepnir/lspsaga.nvim",
+        "nvimdev/lspsaga.nvim",
         config = function()
             require("plugins.configs.lspsaga_conf")
         end,
@@ -236,6 +236,12 @@ require("lazy").setup({
         end
         endfunction
         ]])
+
+            vim.b.slime_cell_delimiter = "# %%"
+
+            -- slime, neovvim terminal
+            vim.g.slime_target = "neovim"
+            vim.g.slime_python_ipython = 1
         end,
     },
 
@@ -257,6 +263,56 @@ require("lazy").setup({
     -- dependencies = {'hrsh7th/nvim-cmp', 'tzachar/fuzzy.nvim'},
     -- after = "nvim-cmp",
     -- },
+
+    -- Movements
+    {
+        "folke/flash.nvim",
+        event = "VeryLazy",
+        ---@type Flash.Config
+        opts = {},
+        keys = {
+            {
+                "s",
+                mode = { "n", "x", "o" },
+                function()
+                    require("flash").jump()
+                end,
+                desc = "Flash",
+            },
+            {
+                "S",
+                mode = { "n", "o", "x" },
+                function()
+                    require("flash").treesitter()
+                end,
+                desc = "Flash Treesitter",
+            },
+            {
+                "r",
+                mode = "o",
+                function()
+                    require("flash").remote()
+                end,
+                desc = "Remote Flash",
+            },
+            {
+                "R",
+                mode = { "o", "x" },
+                function()
+                    require("flash").treesitter_search()
+                end,
+                desc = "Treesitter Search",
+            },
+            {
+                "<c-s>",
+                mode = { "c" },
+                function()
+                    require("flash").toggle()
+                end,
+                desc = "Toggle Flash Search",
+            },
+        },
+    },
 
     -- Comments
     "tpope/vim-commentary",

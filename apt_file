@@ -1,4 +1,3 @@
-apt-file
 curl
 make
 gzip
@@ -19,20 +18,14 @@ fzf
 
 macchanger
 
-zplug
 zsh-syntax-highlighting
-zsh-completions
 
-python3-gi
 python-gobject
 meson
-libinput-tools
 gettext
 xdotool
 wmctrl
-appstream-util
 
-acpilight
 brightnessctl
 dconf-editor
 
@@ -41,11 +34,9 @@ xbindkeys
 
 rofi
 i3-gaps
-fluxgui
 feh
 redshift
 thunar
 
-secure-delete
 ufw
 nmap

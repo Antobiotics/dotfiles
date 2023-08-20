@@ -61,11 +61,6 @@ if [[ "$platform" != "Linux" ]]; then
 fi
 
 
-zplug "stedolan/jq", \
-    from:gh-r, \
-    as:command, \
-    rename-to:jq
-
 zplug "pschmitt/emoji-fzf.zsh"
 EMOJI_FZF_BINDKEY="^s"
 
@@ -85,6 +80,8 @@ fi
 
 zplug load
 
+export PYENV_ROOT="$HOME/.pyenv"
+command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 if which pyenv > /dev/null; then
     eval "$(pyenv init --path)"
     eval "$(pyenv init -)"

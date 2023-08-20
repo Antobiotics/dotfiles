@@ -107,5 +107,4 @@ opt.hlsearch = true
 opt.virtualedit = "block"
 
 -- Theme
-vim.cmd("colorscheme base16-gruvbox-material-light-soft")
 opt.background = "light"

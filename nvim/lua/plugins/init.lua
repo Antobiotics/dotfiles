@@ -9,15 +9,18 @@ require("lazy").setup({
         dependencies = {
             { "nvim-lua/popup.nvim" },
             { "nvim-lua/plenary.nvim" },
+            {
+                "nvim-telescope/telescope-fzf-native.nvim",
+                build = "make",
+                cond = function()
+                    return vim.fn.executable("make") == 1
+                end,
+            },
         },
-    },
-    {
-        "nvim-telescope/telescope-fzf-native.nvim",
-        build = "make",
     },
 
     -- Theme
-    "kyazdani42/nvim-web-devicons",
+    "nvim-tree/nvim-web-devicons",
     "RRethy/nvim-base16",
     "luochen1990/rainbow",
     "myusuf3/numbers.vim",
@@ -28,19 +31,39 @@ require("lazy").setup({
         end,
     },
 
+    -- {
+    --     "kyazdani42/nvim-tree.lua",
+    --     dependencies = "kyazdani42/nvim-web-devicons",
+    --     config = function()
+    --         require("plugins.configs.nvim_tree")
+    --     end,
+    -- },
+    --
     {
-        "kyazdani42/nvim-tree.lua",
-        dependencies = "kyazdani42/nvim-web-devicons",
-        config = function()
-            require("plugins.configs.nvim_tree")
-        end,
+        "stevearc/oil.nvim",
+        opts = {},
+        -- Optional dependencies
+        dependencies = { "nvim-tree/nvim-web-devicons" },
     },
 
     {
         "lukas-reineke/indent-blankline.nvim",
-        event = "BufRead",
+        main = "ibl",
         config = function()
-            require("plugins.configs.indent_blankline")
+            local highlight = {
+                "CursorColumn",
+                "Whitespace",
+            }
+            require("ibl").setup({
+                indent = { highlight = highlight, char = "" },
+                whitespace = {
+                    highlight = highlight,
+                    remove_blankline_trail = false,
+                },
+                scope = {
+                    enabled = false,
+                },
+            })
         end,
     },
 
@@ -62,7 +85,7 @@ require("lazy").setup({
 
     {
         "nvim-lualine/lualine.nvim",
-        dependencies = "kyazdani42/nvim-web-devicons",
+        dependencies = "nvim-tree/nvim-web-devicons",
         config = function()
             require("plugins.configs.lualine_conf")
         end,
@@ -127,29 +150,21 @@ require("lazy").setup({
         end,
         -- event = { "InsertEnter", "CmdlineEnter" },
         dependencies = {
-            "cmp-nvim-lsp",
-            "cmp_luasnip",
-            "cmp-buffer",
-            "cmp-path",
-            "cmp-emoji",
+            -- Snippet Engine & its associated nvim-cmp source
+            "L3MON4D3/LuaSnip",
+            "saadparwaiz1/cmp_luasnip",
+
+            -- Adds LSP completion capabilities
+            "hrsh7th/cmp-nvim-lsp",
+
+            -- Adds a number of user-friendly snippets
+            "rafamadriz/friendly-snippets",
+            "hrsh7th/cmp-buffer",
+            "hrsh7th/cmp-path",
+            "hrsh7th/cmp-emoji",
+            "hrsh7th/cmp-nvim-lua",
+            "jalvesaq/cmp-nvim-r",
         },
-    },
-
-    "hrsh7th/cmp-buffer",
-    "hrsh7th/cmp-path",
-    "hrsh7th/cmp-emoji",
-    "saadparwaiz1/cmp_luasnip",
-    "hrsh7th/cmp-nvim-lsp",
-    "hrsh7th/cmp-nvim-lua",
-    "jalvesaq/cmp-nvim-r",
-
-    -- Snippets
-    "rafamadriz/friendly-snippets",
-
-    {
-        "L3MON4D3/LuaSnip",
-        build = "make install_jsregexp",
-        -- wants = "friendly-snippets",
     },
 
     -- Linting
@@ -163,23 +178,18 @@ require("lazy").setup({
     "jay-babu/mason-null-ls.nvim",
 
     -- LSP
-
-    "williamboman/mason.nvim",
-
-    {
-        "williamboman/mason-lspconfig.nvim",
-        dependencies = { "mason.nvim" },
-    },
-
     {
         "neovim/nvim-lspconfig",
         config = function()
             require("plugins.configs.lsp_config")
         end,
         dependencies = {
+            { "williamboman/mason.nvim", config = true },
+            "williamboman/mason-lspconfig.nvim",
             "mason-lspconfig.nvim",
             "lspsaga.nvim",
             "lsp_signature.nvim",
+            "folke/neodev.nvim",
         },
         lazy = false,
     },
@@ -207,13 +217,10 @@ require("lazy").setup({
         config = function()
             require("plugins.configs.treesitter_conf")
         end,
-    },
-
-    {
-        "nvim-treesitter/nvim-treesitter-textobjects",
         dependencies = {
-            "nvim-treesitter/nvim-treesitter",
+            "nvim-treesitter/nvim-treesitter-textobjects",
         },
+        build = ":TSUpdate",
     },
 
     -- REPL
@@ -268,7 +275,6 @@ require("lazy").setup({
     {
         "folke/flash.nvim",
         event = "VeryLazy",
-        ---@type Flash.Config
         opts = {},
         keys = {
             {
@@ -314,16 +320,22 @@ require("lazy").setup({
         },
     },
 
+    {
+        "chentoast/marks.nvim",
+        event = "BufReadPre",
+        config = function()
+            require("marks").setup({})
+        end,
+    },
+
     -- Comments
     "tpope/vim-commentary",
 
     -- Selection
-    "gcmt/wildfire.vim",
+    -- "gcmt/wildfire.vim",
     "jamessan/vim-gnupg",
 
     -- GPT
-    "MunifTanjim/nui.nvim",
-
     {
         "jackMort/ChatGPT.nvim",
         event = "VeryLazy",
@@ -336,6 +348,68 @@ require("lazy").setup({
             "nvim-telescope/telescope.nvim",
         },
     },
+
+    -- copilot
+    {
+        "zbirenbaum/copilot.lua",
+        cmd = "Copilot",
+        build = ":Copilot auth",
+        dependencies = "copilot.lua",
+        event = "InsertEnter",
+        config = function()
+            require("copilot").setup({
+                panel = {
+                    enabled = false,
+                    -- auto_refresh = false,
+                    keymap = {
+                        jump_prev = "[[",
+                        jump_next = "]]",
+                        accept = "<CR>",
+                        refresh = "gr",
+                        open = "<M-CR>",
+                    },
+                    layout = {
+                        position = "bottom", -- | top | left | right
+                        ratio = 0.4,
+                    },
+                },
+                suggestion = {
+                    enabled = false,
+                    -- auto_trigger = true,
+                    debounce = 75,
+                    keymap = {
+                        accept = "<M-l>",
+                        accept_word = false,
+                        accept_line = false,
+                        next = "<M-]>",
+                        prev = "<M-[>",
+                        dismiss = "<C-]>",
+                    },
+                },
+                filetypes = {
+                    yaml = false,
+                    markdown = false,
+                    help = false,
+                    gitcommit = false,
+                    gitrebase = false,
+                    hgcommit = false,
+                    svn = false,
+                    cvs = false,
+                    ["."] = false,
+                },
+                copilot_node_command = "node", -- Node.js version must be > 16.x
+                server_opts_overrides = {},
+            })
+        end,
+    },
+
+    {
+        "zbirenbaum/copilot-cmp",
+        config = function()
+            require("copilot_cmp").setup()
+        end,
+    },
+
     -- Black
     "psf/black",
 

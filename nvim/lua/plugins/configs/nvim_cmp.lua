@@ -30,6 +30,7 @@ cmp.setup({
             )
 
             vim_item.menu = ({
+                otter = "[🦦]",
                 nvim_lsp = "[LSP]",
                 nvim_lua = "[Lua]",
                 buffer = "[BUF]",
@@ -74,30 +75,38 @@ cmp.setup({
             behavior = cmp.ConfirmBehavior.Replace,
             select = true,
         }),
-        ["<Tab>"] = cmp.mapping(function(fallback)
-            local luasnip = require("luasnip")
-            if cmp.visible() then
-                cmp.select_next_item()
-            elseif luasnip.expand_or_jumpable() then
-                luasnip.expand_or_jump()
-            elseif has_words_before() then
-                cmp.complete()
+        ["<Tab>"] = vim.schedule_wrap(function(fallback)
+            if cmp.visible() and has_words_before() then
+                cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
             else
                 fallback()
             end
-        end, { "i", "s" }),
-        ["<S-Tab>"] = cmp.mapping(function(fallback)
-            local luasnip = require("luasnip")
-            if cmp.visible() then
-                cmp.select_prev_item()
-            elseif luasnip.jumpable(-1) then
-                luasnip.jump(-1)
-            else
-                fallback()
-            end
-        end, { "i", "s" }),
+        end),
+        -- ["<Tab>"] = cmp.mapping(function(fallback)
+        --     local luasnip = require("luasnip")
+        --     if cmp.visible() then
+        --         cmp.select_next_item()
+        --     elseif luasnip.expand_or_jumpable() then
+        --         luasnip.expand_or_jump()
+        --     elseif has_words_before() then
+        --         cmp.complete()
+        --     else
+        --         fallback()
+        --     end
+        -- end, { "i", "s" }),
+        -- ["<S-Tab>"] = cmp.mapping(function(fallback)
+        --     local luasnip = require("luasnip")
+        --     if cmp.visible() then
+        --         cmp.select_prev_item()
+        --     elseif luasnip.jumpable(-1) then
+        --         luasnip.jump(-1)
+        --     else
+        --         fallback()
+        --     end
+        -- end, { "i", "s" }),
     },
     sources = {
+        { name = "copilot" },
         { name = "otter" },
         { name = "nvim_lsp" },
         { name = "luasnip" },
@@ -151,4 +160,11 @@ for _, cmd_type in ipairs({ ":", "/", "?", "@", "=" }) do
     })
 end
 
+cmp.event:on("menu_opened", function()
+    vim.b.copilot_suggestion_hidden = true
+end)
+
+cmp.event:on("menu_closed", function()
+    vim.b.copilot_suggestion_hidden = false
+end)
 -- require("luasnip.loaders.from_vscode").lazy_load()

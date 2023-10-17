@@ -18,11 +18,7 @@ fi
 alias tree="tree -C"
 
 alias ptpython="python -m ptpython"
-
-
-# Find
-alias fr='find . -name'
-alias fh='find $HOME -name'
+alias rg="rg --hidden --glob '!.git'"
 
 # Grep
 alias grep='grep --color=auto'
@@ -70,17 +66,7 @@ alias moon='curl wttr.in/Moon'
 alias timeout='gtimeout'
 alias myip='dig +short myip.opendns.com @resolver1.opendns.com'
 
-# alias yarn='yarnpkg'
-
-# Data utils
-alias pp='python -m json.tool'
-
-
 alias audio_restart='launchctl stop com.apple.audio.coreaudiod && sudo launchctl start com.apple.audio.coreaudio'
-
-function show_pass {
-    keepassxc-cli show ~/Passwords.kdbx ${1} -s | grep "Password" | awk -F 'Password: ' '{print $2}'
-}
 
 function ssh_tmux {
     ssh -t "$@" tmux new -A ssh_tmux
@@ -94,22 +80,8 @@ function tracecmd {
     while true; do eval ${1}; sleep 1; done
 }
 
-
 function sserver {
     python -m SimpleHTTPServer $1
-}
-
-function frall {
-    find * -type f | xargs perl -pi -e 's/$1/$2/g'
-}
-
-# Search in bash_history
-function hsearch {
-    history | grep -i $1
-}
-
-function psg {
-    ps -e | grep -in $1
 }
 
 # Profile Shortcuts

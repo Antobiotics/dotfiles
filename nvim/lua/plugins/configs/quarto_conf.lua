@@ -19,6 +19,7 @@ quarto.setup({
     keymap = {
         hover = "K",
         definition = "gd",
+        references = "gr",
     },
 })
 

@@ -3,6 +3,10 @@ require("nvim-treesitter.configs").setup({
     sync_install = true,
     auto_install = false,
 
+    indent = {
+        enable = true,
+    },
+
     highlight = {
         enable = true, -- false will disable the whole extension
         use_languagetree = true,
@@ -14,40 +18,26 @@ require("nvim-treesitter.configs").setup({
         extended_mode = true, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
         max_file_lines = nil, -- Do not enable for files with more than n lines, int
     },
-
-    keymaps = {
+    textobjects = {
         select = {
             enable = true,
-            lookahead = true,
-            ["af"] = "@function.outer",
-            ["if"] = "@function.inner",
-            ["ic"] = "@class.inner",
-            ["ac"] = "@class.outer",
+            lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
+            keymaps = {
+                -- You can use the capture groups defined in textobjects.scm
+                ["aa"] = "@parameter.outer",
+                ["ia"] = "@parameter.inner",
+                ["af"] = "@function.outer",
+                ["if"] = "@function.inner",
+                ["ac"] = "@class.outer",
+                ["ic"] = "@class.inner",
+            },
         },
-
         move = {
             enable = true,
             set_jumps = true, -- whether to set jumps in the jumplist
             goto_next_start = {
                 ["]m"] = "@function.outer",
-                ["]]"] = { query = "@class.outer", desc = "Next class start" },
-                --
-                -- You can use regex matching (i.e. lua pattern) and/or pass a list in a "query" key to group multiple queires.
-                ["]o"] = "@loop.*",
-                -- ["]o"] = { query = { "@loop.inner", "@loop.outer" } }
-                --
-                -- You can pass a query group to use query from `queries/<lang>/<query_group>.scm file in your runtime path.
-                -- Below example nvim-treesitter's `locals.scm` and `folds.scm`. They also provide highlights.scm and indent.scm.
-                ["]s"] = {
-                    query = "@scope",
-                    query_group = "locals",
-                    desc = "Next scope",
-                },
-                ["]z"] = {
-                    query = "@fold",
-                    query_group = "folds",
-                    desc = "Next fold",
-                },
+                ["]]"] = "@class.outer",
             },
             goto_next_end = {
                 ["]M"] = "@function.outer",
@@ -61,14 +51,14 @@ require("nvim-treesitter.configs").setup({
                 ["[M"] = "@function.outer",
                 ["[]"] = "@class.outer",
             },
-            -- Below will go to either the start or the end, whichever is closer.
-            -- Use if you want more granular movements
-            -- Make it even more gradual by adding multiple queries and regex.
-            goto_next = {
-                ["]d"] = "@conditional.outer",
+        },
+        swap = {
+            enable = true,
+            swap_next = {
+                ["<leader>sa"] = "@parameter.inner",
             },
-            goto_previous = {
-                ["[d"] = "@conditional.outer",
+            swap_previous = {
+                ["<leader>sA"] = "@parameter.inner",
             },
         },
     },

@@ -4,7 +4,6 @@
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
-
 ZSH=$HOME/.oh-my-zsh
 ZSH_THEME="robbyrussell"
 
@@ -21,6 +20,9 @@ plugins=(git
     zsh-completions
 )
 
+export ZPLUG_HOME=$(brew --prefix)/opt/zplug
+source $ZPLUG_HOME/init.zsh
+
 setopt CORRECT
 setopt RM_STAR_SILENT
 unsetopt AUTO_CD
@@ -36,8 +38,8 @@ ZSH_AUTOSUGGEST_MANUAL_REBIND=1
 COMPLETION_WAITING_DOTS=true
 DISABLE_UNTRACKED_FILES_DIRTY=true
 
-export ZPLUG_HOME=$(brew --prefix)/opt/zplug
 
+export ZPLUG_HOME=$(brew --prefix)/opt/zplug
 source_if_exists $ZSH/oh-my-zsh.sh
 source_if_exists $HOME/.bashrc
 source_if_exists $ZPLUG_HOME/init.zsh
@@ -46,7 +48,7 @@ source_if_exists $HOME/.aliases
 source_if_exists $HOME/.kube_comp.sh
 source_if_exists $HOME/.init_dice.sh
 
-fpath=(/usr/local/share/zsh-completions $fpath)
+fpath=($(brew --prefix)/share/zsh-completions $fpath)
 fpath=($ZSH/completions $fpath)
 
 if type brew &>/dev/null; then
@@ -56,11 +58,6 @@ if type brew &>/dev/null; then
     compinit
 fi
 
-
-zplug "stedolan/jq", \
-    from:gh-r, \
-    as:command, \
-    rename-to:jq
 
 zplug "pschmitt/emoji-fzf.zsh"
 EMOJI_FZF_BINDKEY="^s"
@@ -88,13 +85,13 @@ if which direnv > /dev/null; then
 fi
 
 source_if_exists $HOME/.dbt-completion.bash
-source_if_exists $HOME/.fzf.zsh
 source_if_exists $HOME/.autosuggestions
+source_if_exists "$HOME/.cargo/env"
 
-PATH="/usr/local/opt/findutils/libexec/gnubin:$PATH"
-PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
-PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
-PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+PATH="$(brew --prefix)/opt/findutils/libexec/gnubin:$PATH"
+PATH="$(brew --prefix)/opt/make/libexec/gnubin:$PATH"
+PATH="$(brew --prefix)/opt/gnu-sed/libexec/gnubin:$PATH"
+PATH="$(brew --prefix)/opt/coreutils/libexec/gnubin:$PATH"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_COMPLETION_TRIGGER='~~'
@@ -111,7 +108,6 @@ export GPG_TTY=$(tty)
 if [ -e /Users/gregoirelejay/.nix-profile/etc/profile.d/nix.sh ]; then . /Users/gregoirelejay/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
 
 export PATH="$HOME/.poetry/bin:$PATH"
-
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 
 export TERM=xterm-256color
@@ -119,3 +115,5 @@ export TERM=xterm-256color
 # opam configuration
 [[ ! -r $HOME/.opam/opam-init/init.zsh ]] || source $HOME/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
 eval "$(/opt/homebrew/bin/brew shellenv)"
+
+export PATH="/opt/homebrew/bin:$PATH"

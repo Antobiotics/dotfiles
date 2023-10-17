@@ -8,7 +8,6 @@ null_ls.setup({
         null_ls.builtins.completion.luasnip,
         null_ls.builtins.formatting.stylua,
         null_ls.builtins.diagnostics.eslint,
-        -- null_ls.builtins.completion.spell,
         -- null_ls.builtins.diagnostics.mypy.with({
         --     runtime_condition = function(params)
         --         return utils.path.exists(params.bufname)

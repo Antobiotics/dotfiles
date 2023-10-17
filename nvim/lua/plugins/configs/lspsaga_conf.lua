@@ -151,6 +151,20 @@ keymap(
 keymap("n", "[e", "<cmd>Lspsaga diagnostic_jump_prev<CR>", { silent = true })
 keymap("n", "]e", "<cmd>Lspsaga diagnostic_jump_next<CR>", { silent = true })
 
+vim.keymap.set(
+    "n",
+    "<leader>e",
+    vim.diagnostic.open_float,
+    { desc = "Open floating diagnostic message" }
+)
+
+vim.keymap.set(
+    "n",
+    "<leader>q",
+    vim.diagnostic.setloclist,
+    { desc = "Open diagnostics list" }
+)
+
 -- Only jump to error
 keymap("n", "[E", function()
     require("lspsaga.diagnostic").goto_prev({

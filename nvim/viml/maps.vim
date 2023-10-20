@@ -71,6 +71,7 @@ nnoremap Q <Nop>
 
 xnoremap("<leader>p", "\"_dP")
 
+
 " NvimTree
 function! ToggleNvimTree()
    if exists(":NvimTreeToggle") == 0
@@ -82,6 +83,7 @@ function! ToggleNvimTree()
 endfunction
 
 nnoremap <silent> <C-n> :call ToggleNvimTree()<CR>
+nnoremap <silent> <leader>n :Oil --float<CR>
 
 nnoremap <silent><leader>bb :Gitsigns blame_line<CR>
 
@@ -123,8 +125,8 @@ autocmd FileType rmd inoremap <buffer> %>% <Esc>:normal! a \|><CR>a
 autocmd FileType quarto inoremap <buffer> %>% <Esc>:normal! a \|><CR>a
 
 " Folding
-set foldmethod=expr
-set foldexpr=nvim_treesitter#foldexpr()
+" set foldmethod=expr
+" set foldexpr=nvim_treesitter#foldexpr()
 set nofoldenable
 
 " Makes sure all folds are open with a file is opened

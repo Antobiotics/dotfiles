@@ -5,7 +5,7 @@ require("lazy").setup({
     -- Search
     {
         "nvim-telescope/telescope.nvim",
-        tag = "0.1.1",
+        tag = "0.1.4",
         dependencies = {
             { "nvim-lua/popup.nvim" },
             { "nvim-lua/plenary.nvim" },
@@ -31,17 +31,20 @@ require("lazy").setup({
         end,
     },
 
-    -- {
-    --     "kyazdani42/nvim-tree.lua",
-    --     dependencies = "kyazdani42/nvim-web-devicons",
-    --     config = function()
-    --         require("plugins.configs.nvim_tree")
-    --     end,
-    -- },
-    --
+    {
+        "kyazdani42/nvim-tree.lua",
+        dependencies = "kyazdani42/nvim-web-devicons",
+        config = function()
+            require("plugins.configs.nvim_tree")
+        end,
+    },
+
     {
         "stevearc/oil.nvim",
         opts = {},
+        config = function()
+            require("plugins.configs.oil")
+        end,
         -- Optional dependencies
         dependencies = { "nvim-tree/nvim-web-devicons" },
     },
@@ -212,6 +215,7 @@ require("lazy").setup({
 
     -- treesitter
     "mrjones2014/nvim-ts-rainbow",
+
     {
         "nvim-treesitter/nvim-treesitter",
         config = function()
@@ -275,49 +279,9 @@ require("lazy").setup({
     {
         "folke/flash.nvim",
         event = "VeryLazy",
-        opts = {},
-        keys = {
-            {
-                "s",
-                mode = { "n", "x", "o" },
-                function()
-                    require("flash").jump()
-                end,
-                desc = "Flash",
-            },
-            {
-                "S",
-                mode = { "n", "o", "x" },
-                function()
-                    require("flash").treesitter()
-                end,
-                desc = "Flash Treesitter",
-            },
-            {
-                "r",
-                mode = "o",
-                function()
-                    require("flash").remote()
-                end,
-                desc = "Remote Flash",
-            },
-            {
-                "R",
-                mode = { "o", "x" },
-                function()
-                    require("flash").treesitter_search()
-                end,
-                desc = "Treesitter Search",
-            },
-            {
-                "<c-s>",
-                mode = { "c" },
-                function()
-                    require("flash").toggle()
-                end,
-                desc = "Toggle Flash Search",
-            },
-        },
+        config = function()
+            require("plugins.configs.flash_conf")
+        end,
     },
 
     {

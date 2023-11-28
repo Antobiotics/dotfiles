@@ -160,7 +160,53 @@ require("lazy").setup({
     },
 
     "jay-babu/mason-null-ls.nvim",
-
+    {
+        "folke/flash.nvim",
+        event = "VeryLazy",
+        opts = {},
+        keys = {
+            {
+                "s",
+                mode = { "n", "x", "o" },
+                function()
+                    require("flash").jump()
+                end,
+                desc = "Flash",
+            },
+            {
+                "S",
+                mode = { "n", "x", "o" },
+                function()
+                    require("flash").treesitter()
+                end,
+                desc = "Flash Treesitter",
+            },
+            {
+                "r",
+                mode = "o",
+                function()
+                    require("flash").remote()
+                end,
+                desc = "Remote Flash",
+            },
+            {
+                "R",
+                mode = { "o", "x" },
+                function()
+                    require("flash").treesitter_search()
+                end,
+                desc = "Treesitter Search",
+            },
+            {
+                "<c-s>",
+                mode = { "c" },
+                function()
+                    require("flash").toggle()
+                end,
+                desc = "Toggle Flash Search",
+            },
+        },
+    },
     -- LSP
 
     "williamboman/mason.nvim",
@@ -178,7 +224,6 @@ require("lazy").setup({
         dependencies = {
             "mason-lspconfig.nvim",
             "lspsaga.nvim",
-            "lsp_signature.nvim",
         },
         lazy = false,
     },
@@ -193,10 +238,10 @@ require("lazy").setup({
 
     {
         "ray-x/lsp_signature.nvim",
-        lazy = false,
-        config = function()
-            require("plugins.configs.lsp_signature_conf")
-        end,
+        event = "VeryLazy",
+        -- config = function()
+        -- require("plugins.configs.lsp_signature_conf")
+        -- end,
     },
 
     -- treesitter
@@ -294,5 +339,48 @@ require("lazy").setup({
             "mfussenegger/nvim-dap",
             "Pocco81/DAPInstall.nvim",
         },
+    },
+
+    {
+        "quarto-dev/quarto-nvim",
+        dev = false,
+        dependencies = {
+            {
+                "jmbuhr/otter.nvim",
+                dev = false,
+                dependencies = {
+                    { "neovim/nvim-lspconfig" },
+                },
+                opts = {
+                    lsp = {
+                        -- hover = {
+                        --     border = require("misc.style").border,
+                        -- },
+                    },
+                    buffers = {
+                        -- if set to true, the filetype of the otterbuffers will be set.
+                        -- otherwise only the autocommand of lspconfig that attaches
+                        -- the language server will be executed without setting the filetype
+                        set_filetype = true,
+                    },
+                },
+            },
+        },
+        opts = {
+            lspFeatures = {
+                languages = { "r", "python", "julia", "bash", "lua", "html" },
+            },
+        },
+    },
+
+    {
+        "benlubas/molten-nvim",
+        version = "^1.0.0", -- use version <2.0.0 to avoid breaking changes
+        build = ":UpdateRemotePlugins",
+        init = function()
+            -- these are examples, not defaults. Please see the readme
+            vim.g.molten_output_win_max_height = 20
+            vim.g.molten_auto_open_output = false
+        end,
     },
 })

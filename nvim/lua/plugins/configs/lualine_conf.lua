@@ -1,5 +1,5 @@
 require("lualine").setup({
-  options = {
-    theme = "solarized_light",
-  },
+    options = {
+        theme = "solarized_light",
+    },
 })

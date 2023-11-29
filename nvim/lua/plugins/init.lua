@@ -344,6 +344,9 @@ require("lazy").setup({
     {
         "quarto-dev/quarto-nvim",
         dev = false,
+        config = function()
+            require("plugins.configs.quarto_conf")
+        end,
         dependencies = {
             {
                 "jmbuhr/otter.nvim",
@@ -364,11 +367,6 @@ require("lazy").setup({
                         set_filetype = true,
                     },
                 },
-            },
-        },
-        opts = {
-            lspFeatures = {
-                languages = { "r", "python", "julia", "bash", "lua", "html" },
             },
         },
     },

@@ -104,3 +104,5 @@ map <ENTER> <Plug>(wildfire-fuel)
 
 " This selects the previous closest text object.
 vmap <C-ENTER> <Plug>(wildfire-water)
+
+let maplocalleader=" "

@@ -100,6 +100,7 @@ cmp.setup({
     },
     sources = {
         { name = "nvim_lsp" },
+        { name = "otter" },
         { name = "luasnip" },
         {
             name = "buffer",

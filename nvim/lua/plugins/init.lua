@@ -127,20 +127,14 @@ require("lazy").setup({
         end,
         -- event = { "InsertEnter", "CmdlineEnter" },
         dependencies = {
-            "cmp-nvim-lsp",
-            "cmp_luasnip",
-            "cmp-buffer",
-            "cmp-path",
-            "cmp-emoji",
+            "hrsh7th/cmp-nvim-lsp",
+            "hrsh7th/cmp-nvim-lua",
+            "saadparwaiz1/cmp_luasnip",
+            "hrsh7th/cmp-buffer",
+            "hrsh7th/cmp-path",
+            "hrsh7th/cmp-emoji",
         },
     },
-
-    "hrsh7th/cmp-buffer",
-    "hrsh7th/cmp-path",
-    "hrsh7th/cmp-emoji",
-    "saadparwaiz1/cmp_luasnip",
-    "hrsh7th/cmp-nvim-lsp",
-    "hrsh7th/cmp-nvim-lua",
 
     -- Snippets
     "rafamadriz/friendly-snippets",
@@ -239,9 +233,6 @@ require("lazy").setup({
     {
         "ray-x/lsp_signature.nvim",
         event = "VeryLazy",
-        -- config = function()
-        -- require("plugins.configs.lsp_signature_conf")
-        -- end,
     },
 
     -- treesitter
@@ -253,36 +244,18 @@ require("lazy").setup({
         end,
     },
 
-    -- REPL
-    "jpalardy/vim-slime",
-    "urbainvaes/vim-ripple",
-
     {
         "sbdchd/neoformat",
         cmd = "Neoformat",
     },
 
-    -- {
-    --     "tzachar/cmp-fzy-buffer",
-    --     dependencies = { "hrsh7th/nvim-cmp", "tzachar/fuzzy.nvim" },
-    --     -- after = "nvim-cmp",
-    -- },
-
-    -- {
-    -- 'tzachar/cmp-fuzzy-path',
-    -- dependencies = {'hrsh7th/nvim-cmp', 'tzachar/fuzzy.nvim'},
-    -- after = "nvim-cmp",
-    -- },
-
     -- Comments
     "tpope/vim-commentary",
 
     -- Selection
-    "gcmt/wildfire.vim",
     "jamessan/vim-gnupg",
 
     -- GPT
-    "MunifTanjim/nui.nvim",
 
     -- {
     --     "jackMort/ChatGPT.nvim",
@@ -341,6 +314,9 @@ require("lazy").setup({
         },
     },
 
+    -- REPL
+    "jpalardy/vim-slime",
+
     {
         "quarto-dev/quarto-nvim",
         dev = false,
@@ -354,31 +330,143 @@ require("lazy").setup({
                 dependencies = {
                     { "neovim/nvim-lspconfig" },
                 },
-                opts = {
-                    lsp = {
-                        -- hover = {
-                        --     border = require("misc.style").border,
-                        -- },
-                    },
-                    buffers = {
-                        -- if set to true, the filetype of the otterbuffers will be set.
-                        -- otherwise only the autocommand of lspconfig that attaches
-                        -- the language server will be executed without setting the filetype
-                        set_filetype = true,
-                    },
-                },
             },
         },
     },
 
     {
         "benlubas/molten-nvim",
-        version = "^1.0.0", -- use version <2.0.0 to avoid breaking changes
+        dependencies = { "3rd/image.nvim" },
+        -- dependencies = { "benlubas/image.nvim", dev = true },
+        dev = false,
         build = ":UpdateRemotePlugins",
         init = function()
-            -- these are examples, not defaults. Please see the readme
-            vim.g.molten_output_win_max_height = 20
+            -- vim.g.molten_show_mimetype_debug = true
             vim.g.molten_auto_open_output = false
+            -- vim.g.molten_image_provider = "image.nvim"
+            vim.g.molten_output_crop_border = true
+            -- vim.g.molten_output_show_more = true
+            vim.g.molten_output_win_border = { "", "━", "", "" }
+            vim.g.molten_output_win_max_height = 12
+            -- vim.g.molten_output_virt_lines = true
+            vim.g.molten_virt_text_output = true
+            vim.g.molten_use_border_highlights = true
+            vim.g.molten_virt_lines_off_by_1 = true
+            vim.g.molten_wrap_output = true
+
+            vim.keymap.set(
+                "n",
+                "<localleader>mi",
+                ":MoltenInit<CR>",
+                { desc = "Initialize Molten", silent = true }
+            )
+            vim.keymap.set("n", "<localleader>ir", function()
+                vim.cmd("MoltenInit rust")
+            end, {
+                desc = "Initialize Molten for Rust",
+                silent = true,
+            })
+            vim.keymap.set("n", "<localleader>ip", function()
+                local venv = os.getenv("VIRTUAL_ENV")
+                if venv ~= nil then
+                    -- in the form of /home/benlubas/.virtualenvs/VENV_NAME
+                    venv = string.match(venv, "/.+/(.+)")
+                    vim.cmd(("MoltenInit %s"):format(venv))
+                else
+                    vim.cmd("MoltenInit python3")
+                end
+            end, {
+                desc = "Initialize Molten for python3",
+                silent = true,
+                noremap = true,
+            })
+
+            vim.api.nvim_create_autocmd("User", {
+                pattern = "MoltenInitPost",
+                callback = function()
+                    -- quarto code runner mappings
+                    local r = require("quarto.runner")
+                    vim.keymap.set(
+                        "n",
+                        "<localleader>rc",
+                        r.run_cell,
+                        { desc = "run cell", silent = true }
+                    )
+                    vim.keymap.set(
+                        "n",
+                        "<localleader>ra",
+                        r.run_above,
+                        { desc = "run cell and above", silent = true }
+                    )
+                    vim.keymap.set(
+                        "n",
+                        "<localleader>rb",
+                        r.run_below,
+                        { desc = "run cell and below", silent = true }
+                    )
+                    vim.keymap.set(
+                        "n",
+                        "<localleader>rl",
+                        r.run_line,
+                        { desc = "run line", silent = true }
+                    )
+                    vim.keymap.set(
+                        "n",
+                        "<localleader>rA",
+                        r.run_all,
+                        { desc = "run all cells", silent = true }
+                    )
+                    vim.keymap.set("n", "<localleader>RA", function()
+                        r.run_all(true)
+                    end, {
+                        desc = "run all cells of all languages",
+                        silent = true,
+                    })
+
+                    -- setup some molten specific keybindings
+                    vim.keymap.set(
+                        "n",
+                        "<localleader>e",
+                        ":MoltenEvaluateOperator<CR>",
+                        { desc = "evaluate operator", silent = true }
+                    )
+                    vim.keymap.set(
+                        "n",
+                        "<localleader>rr",
+                        ":MoltenReevaluateCell<CR>",
+                        { desc = "re-eval cell", silent = true }
+                    )
+                    vim.keymap.set(
+                        "v",
+                        "<localleader>r",
+                        ":<C-u>MoltenEvaluateVisual<CR>gv",
+                        { desc = "execute visual selection", silent = true }
+                    )
+                    vim.keymap.set(
+                        "n",
+                        "<localleader>os",
+                        ":noautocmd MoltenEnterOutput<CR>",
+                        { desc = "open output window", silent = true }
+                    )
+                    vim.keymap.set(
+                        "n",
+                        "<localleader>oh",
+                        ":MoltenHideOutput<CR>",
+                        { desc = "close output window", silent = true }
+                    )
+                    local open = false
+                    vim.keymap.set("n", "<localleader>ot", function()
+                        open = not open
+                        vim.fn.MoltenUpdateOption("auto_open_output", open)
+                    end)
+                end,
+            })
+        end,
+    },
+    {
+        "jpalardy/vim-slime",
+        init = function()
+            vim.g.slime_target = "neovim"
         end,
     },
 })

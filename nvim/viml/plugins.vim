@@ -26,7 +26,7 @@ let maplocalleader="\<space>"
 let R_assign = 2 " double _ for <-
 let R_rmdchunk = 0
 let R_objbr_auto_start = 0
-
+let R_nvim_wd = 1
 
 " for radian
 let R_app = 'radian'

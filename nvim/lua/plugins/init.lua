@@ -6,6 +6,9 @@ require("lazy").setup({
     {
         "nvim-telescope/telescope.nvim",
         tag = "0.1.4",
+        config = function()
+            require("plugins.configs.telescope_conf")
+        end,
         dependencies = {
             { "nvim-lua/popup.nvim" },
             { "nvim-lua/plenary.nvim" },
@@ -33,22 +36,22 @@ require("lazy").setup({
 
     {
         "kyazdani42/nvim-tree.lua",
-        dependencies = "kyazdani42/nvim-web-devicons",
+        dependencies = "nvim-tree/nvim-web-devicons",
         config = function()
             require("plugins.configs.nvim_tree")
         end,
     },
 
     {
-        "stevearc/oil.nvim",
-        opts = {},
-        config = function()
-            require("plugins.configs.oil")
-        end,
-        -- Optional dependencies
-        dependencies = { "nvim-tree/nvim-web-devicons" },
+        "szw/vim-maximizer",
+        keys = {
+            {
+                "<leader>sm",
+                "<cmd>MaximizerToggle<CR>",
+                desc = "Maximize/minimize a split",
+            },
+        },
     },
-
     {
         "lukas-reineke/indent-blankline.nvim",
         main = "ibl",
@@ -128,12 +131,12 @@ require("lazy").setup({
 
             -- Setup key mappings
 
-            vim.keymap.set("n", "<leader>m", dbt.run)
-            vim.keymap.set("n", "<leader>ma", dbt.run_all)
-            vim.keymap.set("n", "<leader>mt", dbt.test)
+            vim.keymap.set("n", "<leader>dr", dbt.run)
+            vim.keymap.set("n", "<leader>dra", dbt.run_all)
+            vim.keymap.set("n", "<leader>dt", dbt.test)
             vim.keymap.set(
                 "n",
-                "<leader>mm",
+                "<leader>fd",
                 require("dbtpal.telescope").dbt_picker
             )
 
@@ -172,15 +175,49 @@ require("lazy").setup({
 
     -- Linting
     {
+        "sbdchd/neoformat",
+        cmd = "Neoformat",
+    },
+
+    {
         "jose-elias-alvarez/null-ls.nvim",
         config = function()
             require("plugins.configs.nvim_null_ls")
         end,
     },
+    {
+        "folke/trouble.nvim",
+        dependencies = { "nvim-tree/nvim-web-devicons" },
+        config = function()
+            vim.keymap.set("n", "<leader>xx", function()
+                require("trouble").toggle()
+            end)
+            vim.keymap.set("n", "<leader>xw", function()
+                require("trouble").toggle("workspace_diagnostics")
+            end)
+            vim.keymap.set("n", "<leader>xd", function()
+                require("trouble").toggle("document_diagnostics")
+            end)
+            vim.keymap.set("n", "<leader>xq", function()
+                require("trouble").toggle("quickfix")
+            end)
+            vim.keymap.set("n", "<leader>xl", function()
+                require("trouble").toggle("loclist")
+            end)
+            vim.keymap.set("n", "gr", function()
+                require("trouble").toggle("lsp_references")
+            end)
+        end,
+        opts = {},
+    },
 
     "jay-babu/mason-null-ls.nvim",
 
     -- LSP
+    {
+        "towolf/vim-helm",
+    },
+
     {
         "neovim/nvim-lspconfig",
         config = function()
@@ -259,21 +296,24 @@ require("lazy").setup({
     "urbainvaes/vim-ripple",
 
     {
-        "sbdchd/neoformat",
-        cmd = "Neoformat",
+        "quarto-dev/quarto-nvim",
+        config = function()
+            require("plugins.configs.quarto_conf")
+        end,
+        dependencies = {
+            "jmbuhr/otter.nvim",
+            "hrsh7th/nvim-cmp",
+            "neovim/nvim-lspconfig",
+            "nvim-treesitter/nvim-treesitter",
+        },
     },
 
-    -- {
-    --     "tzachar/cmp-fzy-buffer",
-    --     dependencies = { "hrsh7th/nvim-cmp", "tzachar/fuzzy.nvim" },
-    --     -- after = "nvim-cmp",
-    -- },
-
-    -- {
-    -- 'tzachar/cmp-fuzzy-path',
-    -- dependencies = {'hrsh7th/nvim-cmp', 'tzachar/fuzzy.nvim'},
-    -- after = "nvim-cmp",
-    -- },
+    {
+        "jalvesaq/Nvim-R",
+        dependencies = {
+            "jalvesaq/cmp-nvim-r",
+        },
+    },
 
     -- Movements
     {
@@ -281,6 +321,26 @@ require("lazy").setup({
         event = "VeryLazy",
         config = function()
             require("plugins.configs.flash_conf")
+        end,
+        keys = {
+            {
+                "gt",
+                mode = { "n", "x", "o" },
+                function()
+                    require("flash").treesitter()
+                end,
+                desc = "Flash Treesitter",
+            },
+        },
+    },
+
+    {
+        "ThePrimeagen/harpoon",
+        requires = {
+            "nvim-lua/plenary.nvim",
+        },
+        config = function()
+            require("plugins.configs.harpoon_conf")
         end,
     },
 
@@ -296,7 +356,6 @@ require("lazy").setup({
     "tpope/vim-commentary",
 
     -- Selection
-    -- "gcmt/wildfire.vim",
     "jamessan/vim-gnupg",
 
     -- GPT
@@ -416,26 +475,6 @@ require("lazy").setup({
         dependencies = {
             "mfussenegger/nvim-dap",
             "Pocco81/DAPInstall.nvim",
-        },
-    },
-
-    {
-        "quarto-dev/quarto-nvim",
-        config = function()
-            require("plugins.configs.quarto_conf")
-        end,
-        dependencies = {
-            "jmbuhr/otter.nvim",
-            "hrsh7th/nvim-cmp",
-            "neovim/nvim-lspconfig",
-            "nvim-treesitter/nvim-treesitter",
-        },
-    },
-
-    {
-        "jalvesaq/Nvim-R",
-        dependencies = {
-            "jalvesaq/cmp-nvim-r",
         },
     },
 })

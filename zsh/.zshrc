@@ -117,3 +117,7 @@ export TERM=xterm-256color
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
 export PATH="/opt/homebrew/bin:$PATH"
+export PATH="/usr/local/opt/libpq/bin:$PATH"
+
+# krew path
+export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"

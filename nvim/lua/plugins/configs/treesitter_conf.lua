@@ -1,7 +1,7 @@
 require("nvim-treesitter.configs").setup({
     ensure_installed = "all", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
-    sync_install = true,
-    auto_install = false,
+    sync_install = false,
+    auto_install = true,
 
     indent = {
         enable = true,

@@ -1,6 +1,6 @@
-autocmd BufWrite * :Neoformat
+"ThePrimeagen/harpoon autocmd BufWrite * :Neoformat
 " autocmd BufWritePost *.py Neoformat black
-" autocmd BufWritePre * lua vim.lsp.buf.format {async = true}
+autocmd BufWritePre * lua vim.lsp.buf.format {async = true}
 
 autocmd BufRead,BufNewFile *.md setlocal spell
 autocmd BufRead,BufNewFile *.txt setlocal spell

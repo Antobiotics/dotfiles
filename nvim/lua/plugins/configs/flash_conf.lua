@@ -168,7 +168,7 @@ require("flash").setup({
                 -- opts.jump_labels = vim.v.count == 0 and vim.fn.mode(true):find("o")
             end,
             -- hide after jump when not using jump labels
-            autohide = false,
+            autohide = true,
             -- show jump labels
             jump_labels = true,
             -- set to `false` to use the current line only
@@ -232,8 +232,8 @@ require("flash").setup({
             relative = "editor",
             width = 1, -- when <=1 it's a percentage of the editor width
             height = 1,
-            row = -1, -- when negative it's an offset from the bottom
-            col = 0, -- when negative it's an offset from the right
+            row = -1,  -- when negative it's an offset from the bottom
+            col = 0,   -- when negative it's an offset from the right
             zindex = 1000,
         },
     },

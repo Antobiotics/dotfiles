@@ -109,3 +109,4 @@ opt.virtualedit = "block"
 
 -- Theme
 opt.background = "light"
+

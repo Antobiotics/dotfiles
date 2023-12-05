@@ -82,28 +82,6 @@ cmp.setup({
                 fallback()
             end
         end),
-        -- ["<Tab>"] = cmp.mapping(function(fallback)
-        --     local luasnip = require("luasnip")
-        --     if cmp.visible() then
-        --         cmp.select_next_item()
-        --     elseif luasnip.expand_or_jumpable() then
-        --         luasnip.expand_or_jump()
-        --     elseif has_words_before() then
-        --         cmp.complete()
-        --     else
-        --         fallback()
-        --     end
-        -- end, { "i", "s" }),
-        -- ["<S-Tab>"] = cmp.mapping(function(fallback)
-        --     local luasnip = require("luasnip")
-        --     if cmp.visible() then
-        --         cmp.select_prev_item()
-        --     elseif luasnip.jumpable(-1) then
-        --         luasnip.jump(-1)
-        --     else
-        --         fallback()
-        --     end
-        -- end, { "i", "s" }),
     },
     sources = {
         { name = "copilot" },
@@ -138,8 +116,6 @@ cmp.setup({
                 trailing_slash = true,
             },
         },
-        -- { name = "fzy_buffer" },
-        -- { name = 'fuzzy_path' },
         { name = "emoji" },
     },
     experimental = {
@@ -153,8 +129,6 @@ for _, cmd_type in ipairs({ ":", "/", "?", "@", "=" }) do
         sources = {
             { name = "cmdline" },
             { name = "path" },
-            -- { name = "fzy_buffer" },
-            -- { name = 'fuzzy_path' },
             { name = "cmdline_history" },
         },
     })
@@ -167,4 +141,3 @@ end)
 cmp.event:on("menu_closed", function()
     vim.b.copilot_suggestion_hidden = false
 end)
--- require("luasnip.loaders.from_vscode").lazy_load()

@@ -34,9 +34,9 @@ saga.setup({
         max_height = 0.5,
         keys = {
             open = { "o", "<CR>" },
-            vsplit = "v",
-            split = "x",
-            tabe = "t",
+            vsplit = "<c-v>",
+            split = "<c-x>",
+            tabe = "<c-t>",
             quit = { "q", "<ESC>" },
         },
     },
@@ -51,7 +51,7 @@ saga.setup({
     definition = {
         edit = "<C-c>o",
         vsplit = "<C-c>v",
-        split = "<C-c>i",
+        split = "<C-c>x",
         tabe = "<C-c>t",
         quit = "q",
     },
@@ -121,7 +121,6 @@ saga.setup({
 })
 
 keymap("n", "gf", "<cmd>Lspsaga finder<CR>", { silent = true })
-
 -- Code action
 keymap(
     { "n", "v" },
@@ -151,48 +150,10 @@ keymap(
 keymap("n", "[e", "<cmd>Lspsaga diagnostic_jump_prev<CR>", { silent = true })
 keymap("n", "]e", "<cmd>Lspsaga diagnostic_jump_next<CR>", { silent = true })
 
-vim.keymap.set(
-    "n",
-    "<leader>e",
-    vim.diagnostic.open_float,
-    { desc = "Open floating diagnostic message" }
-)
-
-vim.keymap.set(
-    "n",
-    "<leader>q",
-    vim.diagnostic.setloclist,
-    { desc = "Open diagnostics list" }
-)
-
--- Only jump to error
-keymap("n", "[E", function()
-    require("lspsaga.diagnostic").goto_prev({
-        ---@diagnostic disable-next-line: undefined-global
-        severity = vim.diagnostic.severity.ERROR,
-    })
-end, { silent = true })
-keymap("n", "]E", function()
-    require("lspsaga.diagnostic").goto_next({
-        ---@diagnostic disable-next-line: undefined-global
-        severity = vim.diagnostic.severity.ERROR,
-    })
-end, { silent = true })
-
 -- Hover Doc
-keymap("n", "K", "<cmd>Lspsaga hover_doc<CR>", { silent = true })
-
--- Float terminal
-keymap("n", "<F2>", "<cmd>Lspsaga open_floaterm<CR>", { silent = true })
--- if you want pass somc cli command into terminal you can do like this
--- open lazygit in lspsaga float terminal
-keymap("n", "<F1>", "<cmd>Lspsaga open_floaterm lazygit<CR>", {
-    silent = true,
-})
--- close floaterm
 keymap(
-    "t",
-    "<F2>",
-    [[<C-\><C-n><cmd>Lspsaga close_floaterm<CR>]],
-    { silent = true }
+    "n",
+    "K",
+    "<cmd>Lspsaga hover_doc<CR>",
+    { silent = true, desc = "Hover Documentation" }
 )

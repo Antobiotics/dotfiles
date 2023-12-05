@@ -122,20 +122,45 @@ else
 endif
 " }}}
 
+let s:darkyellow  = ["#B68200", 136]
+let s:darkgreen   = ["#427B00", 28]
+let s:darkcyan    = ["#119c97", 36]
+let s:darkblue    = ["#006fd1", 26]
+let s:darkmagenta = ["#a53bce", 128]
+let s:darkred     = ["#D12D00", 160]
+let s:lightyellow  = ["#ffc233", 214]
+let s:lightgreen   = ["#7dc030", 106]
+let s:lightcyan    = ["#15c1bb", 37]
+let s:lightblue    = ["#5aa2e0", 74]
+let s:lightmagenta = ["#b968d9", 134]
+let s:lightred     = ["#E74D23", 166]
+
 if &background == "light"
-  let s:yellow  = ["#B68200", 136]
-  let s:green   = ["#427B00", 28]
-  let s:cyan    = ["#119c97", 36]
-  let s:blue    = ["#006fd1", 26]
-  let s:magenta = ["#a53bce", 128]
-  let s:red     = ["#D12D00", 160]
+  let s:yellow  = s:darkyellow 
+  let s:green   = s:darkgreen  
+  let s:cyan    = s:darkcyan   
+  let s:blue    = s:darkblue   
+  let s:magenta = s:darkmagenta
+  let s:red     = s:darkred    
+  let s:altyellow  = s:lightyellow  
+  let s:altgreen   = s:lightgreen   
+  let s:altcyan    = s:lightcyan    
+  let s:altblue    = s:lightblue    
+  let s:altmagenta = s:lightmagenta 
+  let s:altred     = s:lightred     
 else " &background == 'dark'
-  let s:yellow  = ["#ffc233", 214]
-  let s:green   = ["#7dc030", 106]
-  let s:cyan    = ["#15c1bb", 37]
-  let s:blue    = ["#5aa2e0", 74]
-  let s:magenta = ["#b968d9", 134]
-  let s:red     = ["#E74D23", 166]
+  let s:yellow  = s:lightyellow 
+  let s:green   = s:lightgreen  
+  let s:cyan    = s:lightcyan   
+  let s:blue    = s:lightblue   
+  let s:magenta = s:lightmagenta
+  let s:red     = s:lightred    
+  let s:altyellow  = s:darkyellow  
+  let s:altgreen   = s:darkgreen   
+  let s:altcyan    = s:darkcyan    
+  let s:altblue    = s:darkblue    
+  let s:altmagenta = s:darkmagenta 
+  let s:altred     = s:darkred     
 endif
 
 " }}}
@@ -144,7 +169,7 @@ endif
 
 let s:truered     = s:red
 let s:truegreen   = s:green
-let s:trueyellow  = s:yellow
+let s:trueyellow  = ["#ffc233", 214]
 let s:trueblue    = s:blue
 let s:truemagenta = s:magenta
 let s:truecyan    = s:cyan
@@ -213,9 +238,9 @@ call s:hl("Cursor", s:none, s:none, "reverse")
 call s:hl("CursorIM", [], [], "")
 call s:hl("CursorLineNr", s:graymid, s:grayone, "NONE")
 call s:hl("Directory", s:blue)
-call s:hl("DiffAdd", s:truegreen, s:white, "reverse")
-call s:hl("DiffDelete", s:truered, s:white, "reverse")
-call s:hl("DiffChange", s:cyan, s:white, "reverse")
+call s:hl("DiffAdd", s:green, s:white, "reverse")
+call s:hl("DiffDelete", s:red, s:white, "reverse")
+call s:hl("DiffChange", s:altmagenta, s:white, "reverse")
 call s:hl("DiffText", s:magenta, s:white, "reverse")
 exec "hi link EndOfBuffer NonText"
 call s:hl("ErrorMsg", s:white, s:truered)
@@ -223,7 +248,7 @@ call s:hl("VertSplit", s:bg, s:graytwo, "reverse")
 call s:hl("Folded", s:none, s:grayone)
 call s:hl("FoldColumn", s:yellow, s:bg)
 call s:hl("SignColumn", s:none, s:bg)
-call s:hl("IncSearch", s:trueyellow, s:black, "reverse")
+call s:hl("IncSearch", s:trueyellow, '', "reverse")
 call s:hl("LineNr", s:graymid)
 call s:hl("MatchParen", s:cyan, s:bg)
 call s:hl("ModeMsg", s:green)

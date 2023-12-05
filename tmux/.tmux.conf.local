@@ -180,7 +180,7 @@ tmux_conf_theme_right_separator_sub='|'
 #     - #{username}
 #     - #{username_ssh}
 tmux_conf_theme_status_left=' ❐ #S '
-tmux_conf_theme_status_right='#{prefix}#{pairing}#{synchronized} , %R , %d %b | #{username}#{root} '
+tmux_conf_theme_status_right='#{prefix}#{pairing}#{synchronized} , %R , %d %b '
 
 # status left style
 tmux_conf_theme_status_left_fg='#000000,#e4e4e4,#e4e4e4'  # black, white , white
@@ -270,7 +270,6 @@ tmux_conf_theme_clock_style='24'
 # on Linux, this requires xsel or xclip
 tmux_conf_copy_to_os_clipboard=false
 
-
 # -- user customizations -------------------------------------------------------
 # this is the place to override or undo settings
 
@@ -292,18 +291,13 @@ set -g mode-keys vi
 # set -g prefix C-a
 # bind C-a send-prefix
 
-
-bind l send-keys -R; display "Cleared"
-
-
-bind N previous-window
-bind n next-window
+bind o send-keys -R; display "Cleared"
 
 bind -n S-Left  previous-window
 bind -n S-Right next-window
 
-bind-key -n C-S-Left swap-window -t -1
-bind-key -n C-S-Right swap-window -t +1
+bind-key -n C-S-Left swap-window -d -t -1
+bind-key -n C-S-Right swap-window -d -t +1
 
 #open window with currrent path
 bind c new-window -c '#{pane_current_path}'
@@ -316,4 +310,6 @@ bind + run 'cut -c3- ~/.tmux.conf | sh -s _maximize_pane "* #{session_name}" #D'
 bind -n S-Up run 'cut -c3- ~/.tmux.conf | sh -s _maximize_pane "#{session_name}" #D'
 
 # -- plugins -------------------------------------------------------------------
-# set -g @plugin 'tmux-plugins/tmux-resurrect'
+set -g @plugin 'tmux-plugins/tmux-resurrect'
+
+set -ga terminal-overrides ",xterm-256color:Tc"

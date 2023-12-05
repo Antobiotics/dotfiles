@@ -6,6 +6,7 @@ tap 'homebrew/dupes'
 brew 'git'
 brew 'npm'
 
+cask '1password/tap/1password-cli'
 cask 'iterm2'
 cask 'flux'
 cask 'spectacle'
@@ -22,38 +23,28 @@ cask 'sublime-text'
 
 brew 'macvim'
 brew 'neovim'
+brew 'mutt'
 
-cask 'java'
 cask 'xquartz'
-cask 'chefdk'
 cask 'docker'
 cask 'docker-toolbox'
 
 brew 'the_silver_searcher'
-brew 'jq'
 brew 'jsonnet'
 
 brew 'kafka'
 brew 'hadoop'
-brew 'python'
-brew 's3cmd'
 brew 'cairo'
 brew 'curl'
 brew 'wget'
-brew 'boost'
 brew 'terraform'
 brew 'tmux'
 brew 'shellcheck'
 brew 'p7zip'
 brew 'bundle'
 brew 'go'
-brew 'sshuttle'
 brew 'awscli'
 brew 'leveldb'
-
-#brew 'git-flow'
-
-#cask 'mactex'
 
 brew 'coreutils'
 brew 'binutils'
@@ -96,9 +87,6 @@ brew 'pkg-config'
 
 brew 'zstd'
 
-# WinRAR provides compression/decompression for RAR and ZIP files.
-brew 'unrar'
-
 # unzip is the classic command.
 brew 'homebrew/dupes/unzip'
 
@@ -127,25 +115,20 @@ brew 'ctags'
 
 brew 'htop'
 brew 'ack'
-cask 'shuttle'
 
 cask 'vagrant'
 cask 'virtualbox'
-cask 'kube-solo'
 
-brew 'cassandra'
-brew 'mongodb'
 brew 'postgres'
 brew 'postgresql'
 brew 'redis'
 brew 'sqlite'
+
 brew 'pandoc'
 
-brew 'libcurl'
 brew 'libffi'
 brew 'libiconv'
 brew 'libmagic'
-brew 'libreadline'
 brew 'libtool'
 brew 'libxml2'
 brew 'libxslt'
@@ -155,9 +138,23 @@ brew 'libzip'
 brew 'libjpg'
 brew 'libpng'
 brew 'libtiff'
-brew 'libwebp'
 
 brew 'lsd'
+brew 'ranger'
+brew 'ncdu'
+brew 'jq'
+brew 'yq'
+
 brew 'lazygit'
+brew 'gitui'
+brew 'gh'
+brew 'git-lfs'
 
 brew 'reattach-to-user-namespace'
+
+brew 'pyenv'
+brew 'pyenv-virtualenv'
+brew 'ruff'
+
+brew 'rust'
+brew 'lua-language-server'

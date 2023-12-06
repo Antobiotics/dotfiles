@@ -37,7 +37,7 @@ opt.number = true
 opt.termguicolors = true
 vim.o.termguicolors = true
 opt.relativenumber = true
-opt.colorcolumn = "79"
+opt.colorcolumn = "100"
 
 -- Wildmode
 opt.wildmode = "list:longest,full"
@@ -109,4 +109,3 @@ opt.virtualedit = "block"
 
 -- Theme
 opt.background = "light"
-

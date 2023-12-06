@@ -56,16 +56,7 @@ require("lazy").setup({
         "lukas-reineke/indent-blankline.nvim",
         main = "ibl",
         config = function()
-            local highlight = {
-                "CursorColumn",
-                "Whitespace",
-            }
             require("ibl").setup({
-                indent = { highlight = highlight, char = "" },
-                whitespace = {
-                    highlight = highlight,
-                    remove_blankline_trail = false,
-                },
                 scope = {
                     enabled = false,
                 },
@@ -134,11 +125,7 @@ require("lazy").setup({
             vim.keymap.set("n", "<leader>dr", dbt.run)
             vim.keymap.set("n", "<leader>dra", dbt.run_all)
             vim.keymap.set("n", "<leader>dt", dbt.test)
-            vim.keymap.set(
-                "n",
-                "<leader>fd",
-                require("dbtpal.telescope").dbt_picker
-            )
+            vim.keymap.set("n", "<leader>fd", require("dbtpal.telescope").dbt_picker)
 
             -- Enable Telescope Extension
             -- require("telescope").load_extension("dbt_pal")
@@ -154,16 +141,10 @@ require("lazy").setup({
         config = function()
             require("plugins.configs.nvim_cmp")
         end,
-        -- event = { "InsertEnter", "CmdlineEnter" },
         dependencies = {
-            -- Snippet Engine & its associated nvim-cmp source
             "L3MON4D3/LuaSnip",
             "saadparwaiz1/cmp_luasnip",
-
-            -- Adds LSP completion capabilities
             "hrsh7th/cmp-nvim-lsp",
-
-            -- Adds a number of user-friendly snippets
             "rafamadriz/friendly-snippets",
             "hrsh7th/cmp-buffer",
             "hrsh7th/cmp-path",
@@ -269,9 +250,7 @@ require("lazy").setup({
         "jpalardy/vim-slime",
         init = function()
             Quarto_is_in_python_chunk = function()
-                require("otter.tools.functions").is_otter_language_context(
-                    "python"
-                )
+                require("otter.tools.functions").is_otter_language_context("python")
             end
 
             vim.cmd([[
@@ -398,7 +377,6 @@ require("lazy").setup({
                 },
                 suggestion = {
                     enabled = false,
-                    -- auto_trigger = true,
                     debounce = 75,
                     keymap = {
                         accept = "<M-l>",

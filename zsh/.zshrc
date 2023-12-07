@@ -18,8 +18,6 @@ plugins=(git
     fzf
 )
 
-export ZPLUG_HOME=$(brew --prefix)/opt/zplug
-source $ZPLUG_HOME/init.zsh
 
 setopt CORRECT
 setopt RM_STAR_SILENT
@@ -42,11 +40,12 @@ if [[ "$platform" != "Linux" ]]; then
     export ZPLUG_HOME=$(brew --prefix)/opt/zplug
 fi
 
+source $ZPLUG_HOME/init.zsh
+
 source_if_exists $ZSH/oh-my-zsh.sh
 source_if_exists $ZPLUG_HOME/init.zsh
 source_if_exists $HOME/.init_dice.sh
 
-export ZPLUG_HOME=$(brew --prefix)/opt/zplug
 source_if_exists $ZSH/oh-my-zsh.sh
 source_if_exists $HOME/.env
 source_if_exists $HOME/.aliases

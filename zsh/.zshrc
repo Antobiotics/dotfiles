@@ -4,7 +4,6 @@
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
-
 ZSH=$HOME/.oh-my-zsh
 ZSH_THEME="robbyrussell"
 
@@ -18,6 +17,9 @@ plugins=(git
     golang
     fzf
 )
+
+export ZPLUG_HOME=$(brew --prefix)/opt/zplug
+source $ZPLUG_HOME/init.zsh
 
 setopt CORRECT
 setopt RM_STAR_SILENT
@@ -35,25 +37,28 @@ COMPLETION_WAITING_DOTS=true
 DISABLE_UNTRACKED_FILES_DIRTY=true
 
 platform=$(uname)
-
 export ZPLUG_HOME=$HOME/.zplug
 if [[ "$platform" != "Linux" ]]; then
     export ZPLUG_HOME=$(brew --prefix)/opt/zplug
 fi
 
 source_if_exists $ZSH/oh-my-zsh.sh
-# source_if_exists $HOME/.bashrc
 source_if_exists $ZPLUG_HOME/init.zsh
 source_if_exists $HOME/.init_dice.sh
+
+export ZPLUG_HOME=$(brew --prefix)/opt/zplug
+source_if_exists $ZSH/oh-my-zsh.sh
 source_if_exists $HOME/.env
 source_if_exists $HOME/.aliases
 source_if_exists $HOME/.kube_comp.sh
 
-fpath=(/usr/local/share/zsh-completions $fpath)
+
 fpath=($ZSH/completions $fpath)
+
 
 if [[ "$platform" != "Linux" ]]; then
     if type brew &>/dev/null; then
+        fpath=($(brew --prefix)/share/zsh-completions $fpath)
         FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
         autoload -Uz compinit
         compinit
@@ -65,9 +70,7 @@ zplug "pschmitt/emoji-fzf.zsh"
 EMOJI_FZF_BINDKEY="^s"
 
 zplug romkatv/powerlevel10k, as:theme, depth:1
-
 zplug "zsh-users/zsh-completions",              defer:0
-# zplug "zsh-users/zsh-autosuggestions",          defer:2, on:"zsh-users/zsh-completions"
 zplug "zsh-users/zsh-syntax-highlighting",      defer:2, on:"zsh-users/zsh-completions"
 zplug "zsh-users/zsh-history-substring-search", defer:3, on:"zsh-users/zsh-syntax-highlighting"
 
@@ -94,13 +97,8 @@ if which direnv > /dev/null; then
 fi
 
 source_if_exists $HOME/.dbt-completion.bash
-source_if_exists $HOME/.fzf.zsh
 source_if_exists $HOME/.autosuggestions
-
-PATH="/usr/local/opt/findutils/libexec/gnubin:$PATH"
-PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
-PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
-PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+source_if_exists "$HOME/.cargo/env"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_COMPLETION_TRIGGER='~~'
@@ -113,14 +111,24 @@ PERL5LIB="$HOME/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
 PERL_LOCAL_LIB_ROOT="$HOME/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
 PERL_MB_OPT="--install_base \"$HOME/perl5\""; export PERL_MB_OPT;
 PERL_MM_OPT="INSTALL_BASE=$HOME/perl5"; export PERL_MM_OPT;
-export GPG_TTY=$(tty)
-if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then . $HOME/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
 
 export PATH="$HOME/.poetry/bin:$PATH"
-
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 
-if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then . $HOME/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
+export GPG_TTY=$(tty)
+export TERM=xterm-256color
 
-# opam configuration
+if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then . $HOME/.nix-profile/etc/profile.d/nix.sh; fi
 [[ ! -r $HOME/.opam/opam-init/init.zsh ]] || source $HOME/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
+
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+    PATH="$(brew --prefix)/opt/findutils/libexec/gnubin:$PATH"
+    PATH="$(brew --prefix)/opt/make/libexec/gnubin:$PATH"
+    PATH="$(brew --prefix)/opt/gnu-sed/libexec/gnubin:$PATH"
+    PATH="$(brew --prefix)/opt/coreutils/libexec/gnubin:$PATH"
+    PATH="/opt/homebrew/bin:$PATH"
+fi
+
+export PATH="/usr/local/opt/libpq/bin:$PATH"
+export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"

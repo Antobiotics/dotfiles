@@ -1,4 +1,8 @@
 " nnoremap <Space> <PageDown>
+" noremap <Up> <Nop>
+" noremap <Down> <Nop>
+" noremap <Left> <Nop>
+" noremap <Right> <Nop>
 
 " Windows
 nmap <silent> <Leader>w :wincmd k<CR>
@@ -79,30 +83,35 @@ function! ToggleNvimTree()
    endif
 
    NvimTreeToggle
- endfunction
+endfunction
 
 nnoremap <silent> <C-n> :call ToggleNvimTree()<CR>
-
 nnoremap <silent><leader>bb :Gitsigns blame_line<CR>
 
 " Telescope
-" Fuzzy buffer finder
-nnoremap <silent><leader>fb :Telescope buffers<CR>
-nnoremap <silent><leader>fr :Telescope registers<CR>
-
-" Search with ripgrep
-nnoremap <silent><leader>f :Telescope live_grep<CR>
-nnoremap <silent><leader>ff :Telescope grep_string<CR>
-
-" Find word under
-nnoremap <silent><leader>l :Telescope find_files hidden=true<CR>
 nnoremap <silent><leader>ll :execute 'Telescope find_files default_text=' . expand('<cword>')<CR>
 
-nmap <leader>z <Plug>(wildfire-quick-select)
-" This selects the next closest text object.
-map <ENTER> <Plug>(wildfire-fuel)
+" R pipe >> maps to |>
+autocmd FileType r inoremap <buffer> >> <Esc>:normal! a \|><CR>a
+autocmd FileType rnoweb inoremap <buffer> >> <Esc>:normal! a \|><CR>a
+autocmd FileType rmd inoremap <buffer> >> <Esc>:normal! a \|><CR>a
+autocmd FileType quarto inoremap <buffer> >> <Esc>:normal! a \|><CR>a
 
-" This selects the previous closest text object.
-vmap <C-ENTER> <Plug>(wildfire-water)
+" R pip %>% (magrittr pie) maps to |>
+autocmd FileType r inoremap <buffer> %>% <Esc>:normal! a \|><CR>a
+autocmd FileType rnoweb inoremap <buffer> %>% <Esc>:normal! a \|><CR>a
+autocmd FileType rmd inoremap <buffer> %>% <Esc>:normal! a \|><CR>a
+autocmd FileType quarto inoremap <buffer> %>% <Esc>:normal! a \|><CR>a
 
-let maplocalleader=" "
+autocmd Filetype r setlocal ts=2 sw=2 expandtab
+autocmd Filetype rnoweb setlocal ts=2 sw=2 expandtab
+autocmd Filetype rmd setlocal ts=2 sw=2 expandtab
+autocmd Filetype quarto setlocal ts=2 sw=2 expandtab
+
+" Folding
+" set foldmethod=expr
+" set foldexpr=nvim_treesitter#foldexpr()
+set nofoldenable
+
+" Makes sure all folds are open with a file is opened
+autocmd BufRead,BufReadPost,FileReadPost * normal zR

@@ -5,19 +5,25 @@ require("lazy").setup({
     -- Search
     {
         "nvim-telescope/telescope.nvim",
-        tag = "0.1.1",
+        tag = "0.1.4",
+        config = function()
+            require("plugins.configs.telescope_conf")
+        end,
         dependencies = {
             { "nvim-lua/popup.nvim" },
             { "nvim-lua/plenary.nvim" },
+            {
+                "nvim-telescope/telescope-fzf-native.nvim",
+                build = "make",
+                cond = function()
+                    return vim.fn.executable("make") == 1
+                end,
+            },
         },
-    },
-    {
-        "nvim-telescope/telescope-fzf-native.nvim",
-        build = "make",
     },
 
     -- Theme
-    "kyazdani42/nvim-web-devicons",
+    "nvim-tree/nvim-web-devicons",
     "RRethy/nvim-base16",
     "luochen1990/rainbow",
     "myusuf3/numbers.vim",
@@ -30,7 +36,7 @@ require("lazy").setup({
 
     {
         "kyazdani42/nvim-tree.lua",
-        dependencies = "kyazdani42/nvim-web-devicons",
+        dependencies = "nvim-tree/nvim-web-devicons",
         config = function()
             require("plugins.configs.nvim_tree")
         end,
@@ -42,6 +48,17 @@ require("lazy").setup({
         config = function()
             require("plugins.configs.indent_blankline")
         end,
+    },
+
+    {
+        "szw/vim-maximizer",
+        keys = {
+            {
+                "<leader>sm",
+                "<cmd>MaximizerToggle<CR>",
+                desc = "Maximize/minimize a split",
+            },
+        },
     },
 
     {
@@ -62,7 +79,7 @@ require("lazy").setup({
 
     {
         "nvim-lualine/lualine.nvim",
-        dependencies = "kyazdani42/nvim-web-devicons",
+        dependencies = "nvim-tree/nvim-web-devicons",
         config = function()
             require("plugins.configs.lualine_conf")
         end,
@@ -101,13 +118,12 @@ require("lazy").setup({
             })
 
             -- Setup key mappings
-
-            vim.keymap.set("n", "<leader>m", dbt.run)
-            vim.keymap.set("n", "<leader>ma", dbt.run_all)
-            vim.keymap.set("n", "<leader>mt", dbt.test)
+            vim.keymap.set("n", "<leader>dr", dbt.run)
+            vim.keymap.set("n", "<leader>dra", dbt.run_all)
+            vim.keymap.set("n", "<leader>dt", dbt.test)
             vim.keymap.set(
                 "n",
-                "<leader>mm",
+                "<leader>fd",
                 require("dbtpal.telescope").dbt_picker
             )
 
@@ -125,7 +141,6 @@ require("lazy").setup({
         config = function()
             require("plugins.configs.nvim_cmp")
         end,
-        -- event = { "InsertEnter", "CmdlineEnter" },
         dependencies = {
             "hrsh7th/cmp-nvim-lsp",
             "hrsh7th/cmp-nvim-lua",
@@ -133,6 +148,7 @@ require("lazy").setup({
             "hrsh7th/cmp-buffer",
             "hrsh7th/cmp-path",
             "hrsh7th/cmp-emoji",
+            "jalvesaq/cmp-nvim-r",
         },
     },
 
@@ -142,10 +158,14 @@ require("lazy").setup({
     {
         "L3MON4D3/LuaSnip",
         build = "make install_jsregexp",
-        -- wants = "friendly-snippets",
     },
 
     -- Linting
+    {
+        "sbdchd/neoformat",
+        cmd = "Neoformat",
+    },
+
     {
         "jose-elias-alvarez/null-ls.nvim",
         config = function()
@@ -202,13 +222,36 @@ require("lazy").setup({
         },
     },
     -- LSP
-
-    "williamboman/mason.nvim",
-
     {
-        "williamboman/mason-lspconfig.nvim",
-        dependencies = { "mason.nvim" },
+        "folke/trouble.nvim",
+        dependencies = { "nvim-tree/nvim-web-devicons" },
+        config = function()
+            vim.keymap.set("n", "<leader>xx", function()
+                require("trouble").toggle()
+            end)
+            vim.keymap.set("n", "<leader>xw", function()
+                require("trouble").toggle("workspace_diagnostics")
+            end)
+            vim.keymap.set("n", "<leader>xd", function()
+                require("trouble").toggle("document_diagnostics")
+            end)
+            vim.keymap.set("n", "<leader>xq", function()
+                require("trouble").toggle("quickfix")
+            end)
+            vim.keymap.set("n", "<leader>xl", function()
+                require("trouble").toggle("loclist")
+            end)
+            vim.keymap.set("n", "gr", function()
+                require("trouble").toggle("lsp_references")
+            end)
+        end,
+        opts = {},
     },
+
+    "jay-babu/mason-null-ls.nvim",
+
+    -- LSP
+    "towolf/vim-helm",
 
     {
         "neovim/nvim-lspconfig",
@@ -216,14 +259,18 @@ require("lazy").setup({
             require("plugins.configs.lsp_config")
         end,
         dependencies = {
+            { "williamboman/mason.nvim", config = true },
+            "williamboman/mason-lspconfig.nvim",
             "mason-lspconfig.nvim",
             "lspsaga.nvim",
+            "lsp_signature.nvim",
+            "folke/neodev.nvim",
         },
         lazy = false,
     },
 
     {
-        "glepnir/lspsaga.nvim",
+        "nvimdev/lspsaga.nvim",
         config = function()
             require("plugins.configs.lspsaga_conf")
         end,
@@ -233,20 +280,60 @@ require("lazy").setup({
     {
         "ray-x/lsp_signature.nvim",
         event = "VeryLazy",
+        config = function()
+            require("plugins.configs.lsp_signature_conf")
+        end,
     },
 
     -- treesitter
     "mrjones2014/nvim-ts-rainbow",
+
     {
         "nvim-treesitter/nvim-treesitter",
         config = function()
             require("plugins.configs.treesitter_conf")
         end,
+        dependencies = {
+            "nvim-treesitter/nvim-treesitter-textobjects",
+        },
+        build = ":TSUpdate",
+    },
+
+    -- Movements
+    {
+        "folke/flash.nvim",
+        event = "VeryLazy",
+        config = function()
+            require("plugins.configs.flash_conf")
+        end,
+        keys = {
+            {
+                "gt",
+                mode = { "n", "x", "o" },
+                function()
+                    require("flash").treesitter()
+                end,
+                desc = "Flash Treesitter",
+            },
+        },
     },
 
     {
-        "sbdchd/neoformat",
-        cmd = "Neoformat",
+        "ThePrimeagen/harpoon",
+        requires = {
+            "nvim-lua/plenary.nvim",
+        },
+        config = function()
+            require("plugins.configs.harpoon_conf")
+        end,
+    },
+
+    {
+        "chentoast/marks.nvim",
+        event = "BufReadPre",
+        config = function()
+            require("marks").setup({})
+        end,
     },
 
     -- Comments
@@ -256,7 +343,6 @@ require("lazy").setup({
     "jamessan/vim-gnupg",
 
     -- GPT
-
     -- {
     --     "jackMort/ChatGPT.nvim",
     --     event = "VeryLazy",
@@ -269,6 +355,68 @@ require("lazy").setup({
     --         "nvim-telescope/telescope.nvim",
     --     },
     -- },
+
+    -- -- copilot
+    -- {
+    --     "zbirenbaum/copilot.lua",
+    --     cmd = "Copilot",
+    --     build = ":Copilot auth",
+    --     dependencies = "copilot.lua",
+    --     event = "InsertEnter",
+    --     config = function()
+    --         require("copilot").setup({
+    --             panel = {
+    --                 enabled = false,
+    --                 -- auto_refresh = false,
+    --                 keymap = {
+    --                     jump_prev = "[[",
+    --                     jump_next = "]]",
+    --                     accept = "<CR>",
+    --                     refresh = "gr",
+    --                     open = "<M-CR>",
+    --                 },
+    --                 layout = {
+    --                     position = "bottom", -- | top | left | right
+    --                     ratio = 0.4,
+    --                 },
+    --             },
+    --             suggestion = {
+    --                 enabled = false,
+    --                 -- auto_trigger = true,
+    --                 debounce = 75,
+    --                 keymap = {
+    --                     accept = "<M-l>",
+    --                     accept_word = false,
+    --                     accept_line = false,
+    --                     next = "<M-]>",
+    --                     prev = "<M-[>",
+    --                     dismiss = "<C-]>",
+    --                 },
+    --             },
+    --             filetypes = {
+    --                 yaml = false,
+    --                 markdown = false,
+    --                 help = false,
+    --                 gitcommit = false,
+    --                 gitrebase = false,
+    --                 hgcommit = false,
+    --                 svn = false,
+    --                 cvs = false,
+    --                 ["."] = false,
+    --             },
+    --             copilot_node_command = "node", -- Node.js version must be > 16.x
+    --             server_opts_overrides = {},
+    --         })
+    --     end,
+    -- },
+
+    -- {
+    --     "zbirenbaum/copilot-cmp",
+    --     config = function()
+    --         require("copilot_cmp").setup()
+    --     end,
+    -- },
+
     -- Black
     "psf/black",
 
@@ -283,54 +431,27 @@ require("lazy").setup({
         end,
     },
 
-    -- DAP
-    "sakhnik/nvim-gdb",
-
-    {
-        "mfussenegger/nvim-dap",
-        config = function()
-            require("plugins.configs.dapcore")
-        end,
-    },
-
-    {
-        "mfussenegger/nvim-dap-python",
-        dependencies = "mfussenegger/nvim-dap",
-    },
-
-    {
-        "theHamsta/nvim-dap-virtual-text",
-        dependencies = "mfussenegger/nvim-dap",
-    },
-
-    {
-        "rcarriga/nvim-dap-ui",
-        config = function()
-            require("plugins.configs.dapui_conf")
-        end,
-        dependencies = {
-            "mfussenegger/nvim-dap",
-            "Pocco81/DAPInstall.nvim",
-        },
-    },
-
     -- REPL
     "jpalardy/vim-slime",
+    "urbainvaes/vim-ripple",
 
     {
         "quarto-dev/quarto-nvim",
-        dev = false,
         config = function()
             require("plugins.configs.quarto_conf")
         end,
         dependencies = {
-            {
-                "jmbuhr/otter.nvim",
-                dev = false,
-                dependencies = {
-                    { "neovim/nvim-lspconfig" },
-                },
-            },
+            "jmbuhr/otter.nvim",
+            "hrsh7th/nvim-cmp",
+            "neovim/nvim-lspconfig",
+            "nvim-treesitter/nvim-treesitter",
+        },
+    },
+
+    {
+        "jalvesaq/Nvim-R",
+        dependencies = {
+            "jalvesaq/cmp-nvim-r",
         },
     },
 
@@ -461,12 +582,6 @@ require("lazy").setup({
                     end)
                 end,
             })
-        end,
-    },
-    {
-        "jpalardy/vim-slime",
-        init = function()
-            vim.g.slime_target = "neovim"
         end,
     },
 })

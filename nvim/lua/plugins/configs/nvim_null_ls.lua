@@ -8,12 +8,9 @@ null_ls.setup({
         null_ls.builtins.completion.luasnip,
         null_ls.builtins.formatting.stylua,
         null_ls.builtins.diagnostics.eslint,
-        null_ls.builtins.completion.spell,
         null_ls.builtins.diagnostics.djlint,
         null_ls.builtins.formatting.djlint,
         null_ls.builtins.formatting.black,
-        -- null_ls.builtins.diagnostics.ruff,
-        -- null_ls.builtins.formatting.ruff,
         null_ls.builtins.formatting.rustfmt,
     },
 })

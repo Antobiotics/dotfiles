@@ -35,6 +35,7 @@ opt.showcmd = true
 opt.cursorline = true
 opt.number = true
 opt.termguicolors = true
+vim.o.termguicolors = true
 opt.relativenumber = true
 opt.colorcolumn = "79"
 

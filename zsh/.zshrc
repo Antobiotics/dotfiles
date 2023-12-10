@@ -18,7 +18,6 @@ plugins=(git
     fzf
 )
 
-
 setopt CORRECT
 setopt RM_STAR_SILENT
 unsetopt AUTO_CD
@@ -65,13 +64,13 @@ if [[ "$platform" != "Linux" ]]; then
 fi
 
 
-zplug "pschmitt/emoji-fzf.zsh"
-EMOJI_FZF_BINDKEY="^s"
 
-zplug romkatv/powerlevel10k, as:theme, depth:1
+zplug "pschmitt/emoji-fzf.zsh"
+zplug "romkatv/powerlevel10k", as:theme, depth:1
 zplug "zsh-users/zsh-completions",              defer:0
 zplug "zsh-users/zsh-syntax-highlighting",      defer:2, on:"zsh-users/zsh-completions"
 zplug "zsh-users/zsh-history-substring-search", defer:3, on:"zsh-users/zsh-syntax-highlighting"
+export EMOJI_FZF_BINDKEY="^s"
 
 if ! zplug check --verbose; then
     printf "Install? [y/N]: "

@@ -175,53 +175,6 @@ require("lazy").setup({
 
     "jay-babu/mason-null-ls.nvim",
     { "tpope/vim-surround" },
-    {
-        "folke/flash.nvim",
-        event = "VeryLazy",
-        opts = {},
-        keys = {
-            {
-                "s",
-                mode = { "n", "x", "o" },
-                function()
-                    require("flash").jump()
-                end,
-                desc = "Flash",
-            },
-            {
-                "S",
-                mode = { "n", "x", "o" },
-                function()
-                    require("flash").treesitter()
-                end,
-                desc = "Flash Treesitter",
-            },
-            {
-                "r",
-                mode = "o",
-                function()
-                    require("flash").remote()
-                end,
-                desc = "Remote Flash",
-            },
-            {
-                "R",
-                mode = { "o", "x" },
-                function()
-                    require("flash").treesitter_search()
-                end,
-                desc = "Treesitter Search",
-            },
-            {
-                "<c-s>",
-                mode = { "c" },
-                function()
-                    require("flash").toggle()
-                end,
-                desc = "Toggle Flash Search",
-            },
-        },
-    },
     -- LSP
     {
         "folke/trouble.nvim",
@@ -440,7 +393,7 @@ require("lazy").setup({
             vim.g.slime_target = "tmux"
             vim.g.slime_bracketed_paste = 1
             vim.g.slime_default_config =
-            { socket_name = "default", target_pane = "{last}" }
+                { socket_name = "default", target_pane = "{last}" }
         end,
     },
 

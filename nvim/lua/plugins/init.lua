@@ -156,16 +156,38 @@ require("lazy").setup({
 
     -- Linting
     {
-        "sbdchd/neoformat",
-        cmd = "Neoformat",
-    },
-
-    {
-        "jose-elias-alvarez/null-ls.nvim",
-        config = function()
-            require("plugins.configs.nvim_null_ls")
+        "stevearc/conform.nvim",
+        opts = {
+            notify_on_error = true,
+            formatters_by_ft = {
+                json = { "jq" },
+                yaml = { "yamllint" },
+                go = { "goimports", "gofmt" },
+                lua = { "stylua" },
+                markdown = { "prettier" },
+                python = { "ruff_fix", "ruff_format" },
+                rust = { "rustfmt" },
+                bash = { "shfmt", "shellcheck" },
+                sh = { "shfmt", "shellcheck" },
+                cmake = { "cmake_format" },
+                css = { "prettier" },
+                html = { "prettier" },
+                javascript = { "prettier" },
+                typescript = { "prettier" },
+                ["*"] = { "trim_whitespace", "codespell" },
+            },
+            -- This can also be a function that returns the table.
+            format_on_save = {
+                -- I recommend these options. See :help conform.format for details.
+                lsp_fallback = true,
+                timeout_ms = 500,
+            },
+        },
+        init = function()
+            vim.keymap.set("n", "<leader>lf", ":lua require('conform').format()<CR>")
         end,
     },
+
     {
         "folke/trouble.nvim",
         dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -192,7 +214,7 @@ require("lazy").setup({
         opts = {},
     },
 
-    "jay-babu/mason-null-ls.nvim",
+    -- "jay-babu/mason-null-ls.nvim",
 
     -- LSP
     {

@@ -121,11 +121,7 @@ require("lazy").setup({
             vim.keymap.set("n", "<leader>dr", dbt.run)
             vim.keymap.set("n", "<leader>dra", dbt.run_all)
             vim.keymap.set("n", "<leader>dt", dbt.test)
-            vim.keymap.set(
-                "n",
-                "<leader>fd",
-                require("dbtpal.telescope").dbt_picker
-            )
+            vim.keymap.set("n", "<leader>fd", require("dbtpal.telescope").dbt_picker)
 
             -- Enable Telescope Extension
             -- require("telescope").load_extension("dbt_pal")
@@ -143,8 +139,9 @@ require("lazy").setup({
         end,
         dependencies = {
             "hrsh7th/cmp-nvim-lsp",
-            "hrsh7th/cmp-nvim-lua",
             "saadparwaiz1/cmp_luasnip",
+            "L3MON4D3/LuaSnip",
+            "rafamadriz/friendly-snippets",
             "hrsh7th/cmp-buffer",
             "hrsh7th/cmp-path",
             "hrsh7th/cmp-emoji",
@@ -162,18 +159,38 @@ require("lazy").setup({
 
     -- Linting
     {
-        "sbdchd/neoformat",
-        cmd = "Neoformat",
-    },
-
-    {
-        "jose-elias-alvarez/null-ls.nvim",
-        config = function()
-            require("plugins.configs.nvim_null_ls")
+        "stevearc/conform.nvim",
+        opts = {
+            notify_on_error = true,
+            formatters_by_ft = {
+                json = { "jq" },
+                yaml = { "yamllint" },
+                go = { "goimports", "gofmt" },
+                lua = { "stylua" },
+                markdown = { "prettier" },
+                python = { "ruff_fix", "ruff_format" },
+                rust = { "rustfmt" },
+                bash = { "shfmt", "shellcheck" },
+                sh = { "shfmt", "shellcheck" },
+                cmake = { "cmake_format" },
+                css = { "prettier" },
+                html = { "prettier" },
+                javascript = { "prettier" },
+                typescript = { "prettier" },
+                ["*"] = { "trim_whitespace", "codespell" },
+            },
+            -- This can also be a function that returns the table.
+            format_on_save = {
+                -- I recommend these options. See :help conform.format for details.
+                lsp_fallback = true,
+                timeout_ms = 500,
+            },
+        },
+        init = function()
+            vim.keymap.set("n", "<leader>lf", ":lua require('conform').format()<CR>")
         end,
     },
 
-    "jay-babu/mason-null-ls.nvim",
     { "tpope/vim-surround" },
     -- LSP
     {
@@ -202,7 +219,7 @@ require("lazy").setup({
         opts = {},
     },
 
-    "jay-babu/mason-null-ls.nvim",
+    -- "jay-babu/mason-null-ls.nvim",
 
     -- LSP
     "towolf/vim-helm",

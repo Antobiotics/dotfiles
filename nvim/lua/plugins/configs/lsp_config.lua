@@ -2,6 +2,36 @@ local vim = vim
 local lspconfig = require("lspconfig")
 local cmp_nvim_lsp = require("cmp_nvim_lsp")
 local util = require("lspconfig.util")
+local path = util.path
+
+local pyenv_path = function(workspace)
+    -- Use activated virtualenv.
+    if vim.env.VIRTUAL_ENV then
+        return path.join(vim.env.VIRTUAL_ENV, "bin", "python"), "virtual env"
+    end
+
+    -- Find and use virtualenv in workspace directory.
+    for _, pattern in ipairs({ "*", ".*" }) do
+        local match = vim.fn.glob(path.join(workspace, pattern, "pyvenv.cfg"))
+        local sep = "/"
+        local py = "bin" .. sep .. "python"
+        if match ~= "" then
+            print("found", match)
+            print(vim.fn.glob(path.join(workspace, pattern)))
+            match = string.gsub(match, "pyvenv.cfg", py)
+            return match, string.format("venv base folder: %s", match)
+        end
+        match = vim.fn.glob(path.join(workspace, pattern, "poetry.lock"))
+        if match ~= "" then
+            local venv_base_folder = vim.fn.trim(vim.fn.system("poetry env info -p"))
+            return path.join(venv_base_folder, "bin", "python"),
+                string.format("venv base folder: %s", venv_base_folder)
+        end
+    end
+
+    -- Fallback to system Python.
+    return exepath("python3") or exepath("python") or "python", "fallback to system python path"
+end
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
@@ -20,19 +50,9 @@ local custom_attach = function(client, bufnr)
     local opts = { noremap = true, silent = false }
 
     -- See `:help vim.lsp.*` for documentation on any of the below functions
-    buf_set_keymap(
-        "n",
-        "<leader><C-k>",
-        "<cmd>lua vim.lsp.buf.signature_help()<CR>",
-        opts
-    )
+    buf_set_keymap("n", "<leader><C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
 
-    buf_set_keymap(
-        "n",
-        "<leader>lf",
-        "<cmd>lua vim.lsp.buf.format({async=true})<CR>",
-        opts
-    )
+    buf_set_keymap("n", "<leader>lf", "<cmd>lua vim.lsp.buf.format({async=true})<CR>", opts)
 
     require("lsp_signature").on_attach({
         bind = true,
@@ -49,12 +69,12 @@ require("mason-lspconfig").setup({
 local language_servers = {
     "lua_ls",
     "rust_analyzer",
-    -- "ruff_lsp",
+    "ruff_lsp",
     "sqlls",
     "bashls",
     "r_language_server",
     "neocmake",
-    -- "pyright",
+    "pyright",
 }
 require("mason-lspconfig").setup({
     ensure_installed = language_servers,
@@ -64,26 +84,13 @@ require("mason-lspconfig").setup_handlers({
     function(server)
         local capabilities = vim.lsp.protocol.make_client_capabilities()
         capabilities = cmp_nvim_lsp.default_capabilities(capabilities)
-        capabilities.textDocument.completion.completionItem.snippetSupport =
-            true
+        capabilities.textDocument.completion.completionItem.snippetSupport = true
         local opt = {
             capabilities = capabilities,
             on_attach = custom_attach,
         }
         require("lspconfig")[server].setup(opt)
     end,
-})
-
-require("mason-null-ls").setup({
-    ensure_installed = {
-        "stylua",
-        "jq",
-        "eslint",
-        "rustfmt",
-        "sqlfluff",
-    },
-    automatic_installation = true,
-    automatic_setup = true,
 })
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -106,6 +113,40 @@ lspconfig.r_language_server.setup({
             },
         },
     },
+})
+
+lspconfig.pyright.setup({
+    capabilities = capabilities,
+    on_attach = custom_attach,
+    before_init = function(new_config, new_root_dir)
+        local python_path = pyenv_path(new_root_dir)
+        new_config.settings.python.pythonPath = python_path
+    end,
+    root_dir = util.root_pattern(
+        ".git",
+        "setup.py",
+        "setup.cfg",
+        "pyproject.toml",
+        "requirements.txt"
+    ),
+    flags = {
+        debounce_text_changes = 1,
+    },
+    settings = {
+        python = {
+            analysis = {
+                autoSearchPaths = true,
+                useLibraryCodeForTypes = true,
+                diagnosticMode = "openFilesOnly",
+            },
+        },
+    },
+})
+
+lspconfig.ruff_lsp.setup({
+    on_attach = custom_attach,
+    capabilities = capabilities,
+    flags = lsp_flags,
 })
 
 local configs = require("lspconfig.configs")

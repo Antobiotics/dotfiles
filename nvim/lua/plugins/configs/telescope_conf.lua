@@ -14,6 +14,8 @@ telescope.setup({
                 "!.git/*",
                 "--glob",
                 "!*/_freeze/*",
+                "--glob",
+                "!*.lock",
                 "--sort",
                 "path",
             },
@@ -65,9 +67,4 @@ vim.keymap.set(
     { silent = true, noremap = true, desc = "Keymaps" }
 )
 
-vim.keymap.set(
-    "n",
-    "<leader>fm",
-    builtins.marks,
-    { silent = true, noremap = true, desc = "marks" }
-)
+vim.keymap.set("n", "<leader>fm", builtins.marks, { silent = true, noremap = true, desc = "marks" })

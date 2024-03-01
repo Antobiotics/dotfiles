@@ -1,6 +1,5 @@
 local vim = vim
 local g = vim.g
-local api = require("nvim-tree.api")
 
 require("nvim-tree").setup({
     -- on_attach = on_attach,

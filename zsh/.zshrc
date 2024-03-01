@@ -46,7 +46,7 @@ source_if_exists $ZPLUG_HOME/init.zsh
 source_if_exists $HOME/.env
 source_if_exists $HOME/.aliases
 source_if_exists $HOME/.kube_comp.sh
-source_if_exists $HOME/.init_dice.sh
+source_if_exists $HOME/.dice.sh
 
 fpath=($(brew --prefix)/share/zsh-completions $fpath)
 fpath=($ZSH/completions $fpath)

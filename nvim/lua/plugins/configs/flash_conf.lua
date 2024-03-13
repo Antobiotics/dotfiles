@@ -1,4 +1,6 @@
 require("flash").setup({
+
+    continue = true,
     label = {
         -- allow uppercase labels
         uppercase = true,

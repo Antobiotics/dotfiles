@@ -4,7 +4,7 @@ if not ok then
 end
 telescope.setup({
     defaults = {
-        file_ignore_patterns = { "node%_modules/.*", ".*/_freeze/.*" },
+        file_ignore_patterns = { "node%_modules/.*", ".*/_freeze/.*", ".*/poetry.lock" },
         find_files = {
             find_command = {
                 "rg",

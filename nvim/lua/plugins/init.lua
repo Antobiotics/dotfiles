@@ -200,6 +200,14 @@ require("lazy").setup({
             vim.keymap.set("n", "<leader>xx", function()
                 require("trouble").toggle()
             end)
+            vim.keymap.set("n", "<leader>xn", function()
+                -- jump to the next item, skipping the groups
+                require("trouble").next({ skip_groups = true, jump = true })
+            end)
+            vim.keymap.set("n", "<leader>xp", function()
+                -- jump to the previous item, skipping the groups
+                require("trouble").previous({ skip_groups = true, jump = true })
+            end)
             vim.keymap.set("n", "<leader>xw", function()
                 require("trouble").toggle("workspace_diagnostics")
             end)

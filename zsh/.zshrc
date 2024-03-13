@@ -49,6 +49,7 @@ source_if_exists $ZSH/oh-my-zsh.sh
 source_if_exists $HOME/.env
 source_if_exists $HOME/.aliases
 source_if_exists $HOME/.kube_comp.sh
+source_if_exists $HOME/.dice.sh
 
 
 fpath=($ZSH/completions $fpath)

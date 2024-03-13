@@ -5,7 +5,7 @@ require("lazy").setup({
     -- Search
     {
         "nvim-telescope/telescope.nvim",
-        tag = "0.1.4",
+        tag = "0.1.5",
         config = function()
             require("plugins.configs.telescope_conf")
         end,
@@ -43,6 +43,14 @@ require("lazy").setup({
     },
 
     {
+        "lukas-reineke/indent-blankline.nvim",
+        event = "BufRead",
+        config = function()
+            require("plugins.configs.indent_blankline")
+        end,
+    },
+
+    {
         "szw/vim-maximizer",
         keys = {
             {
@@ -51,17 +59,6 @@ require("lazy").setup({
                 desc = "Maximize/minimize a split",
             },
         },
-    },
-    {
-        "lukas-reineke/indent-blankline.nvim",
-        main = "ibl",
-        config = function()
-            require("ibl").setup({
-                scope = {
-                    enabled = false,
-                },
-            })
-        end,
     },
 
     {
@@ -121,7 +118,6 @@ require("lazy").setup({
             })
 
             -- Setup key mappings
-
             vim.keymap.set("n", "<leader>dr", dbt.run)
             vim.keymap.set("n", "<leader>dra", dbt.run_all)
             vim.keymap.set("n", "<leader>dt", dbt.test)
@@ -142,16 +138,23 @@ require("lazy").setup({
             require("plugins.configs.nvim_cmp")
         end,
         dependencies = {
-            "L3MON4D3/LuaSnip",
-            "saadparwaiz1/cmp_luasnip",
             "hrsh7th/cmp-nvim-lsp",
+            "saadparwaiz1/cmp_luasnip",
+            "L3MON4D3/LuaSnip",
             "rafamadriz/friendly-snippets",
             "hrsh7th/cmp-buffer",
             "hrsh7th/cmp-path",
             "hrsh7th/cmp-emoji",
-            "hrsh7th/cmp-nvim-lua",
             "jalvesaq/cmp-nvim-r",
         },
+    },
+
+    -- Snippets
+    "rafamadriz/friendly-snippets",
+
+    {
+        "L3MON4D3/LuaSnip",
+        build = "make install_jsregexp",
     },
 
     -- Linting
@@ -188,6 +191,8 @@ require("lazy").setup({
         end,
     },
 
+    "tpope/vim-surround",
+    -- LSP
     {
         "folke/trouble.nvim",
         dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -225,9 +230,7 @@ require("lazy").setup({
     -- "jay-babu/mason-null-ls.nvim",
 
     -- LSP
-    {
-        "towolf/vim-helm",
-    },
+    "towolf/vim-helm",
 
     {
         "neovim/nvim-lspconfig",
@@ -255,7 +258,7 @@ require("lazy").setup({
 
     {
         "ray-x/lsp_signature.nvim",
-        lazy = false,
+        event = "VeryLazy",
         config = function()
             require("plugins.configs.lsp_signature_conf")
         end,
@@ -273,55 +276,6 @@ require("lazy").setup({
             "nvim-treesitter/nvim-treesitter-textobjects",
         },
         build = ":TSUpdate",
-    },
-
-    -- REPL
-    {
-        "jpalardy/vim-slime",
-        init = function()
-            Quarto_is_in_python_chunk = function()
-                require("otter.tools.functions").is_otter_language_context("python")
-            end
-
-            vim.cmd([[
-        function SlimeOverride_EscapeText_quarto(text)
-        call v:lua.Quarto_is_in_python_chunk()
-        if exists('g:slime_python_ipython') && len(split(a:text,"\n")) > 1 && b:quarto_is_python_chunk
-        return ["%cpaste -q", "\n", g:slime_dispatch_ipython_pause, a:text, "--", "\n"]
-        else
-        return a:text
-        end
-        endfunction
-        ]])
-
-            vim.b.slime_cell_delimiter = "# %%"
-
-            -- slime, neovvim terminal
-            vim.g.slime_target = "neovim"
-            vim.g.slime_python_ipython = 1
-        end,
-    },
-
-    "urbainvaes/vim-ripple",
-
-    {
-        "quarto-dev/quarto-nvim",
-        config = function()
-            require("plugins.configs.quarto_conf")
-        end,
-        dependencies = {
-            "jmbuhr/otter.nvim",
-            "hrsh7th/nvim-cmp",
-            "neovim/nvim-lspconfig",
-            "nvim-treesitter/nvim-treesitter",
-        },
-    },
-
-    {
-        "jalvesaq/Nvim-R",
-        dependencies = {
-            "jalvesaq/cmp-nvim-r",
-        },
     },
 
     -- Movements
@@ -368,78 +322,79 @@ require("lazy").setup({
     "jamessan/vim-gnupg",
 
     -- GPT
-    {
-        "jackMort/ChatGPT.nvim",
-        event = "VeryLazy",
-        config = function()
-            require("plugins.configs.chatgpt_conf")
-        end,
-        dependencies = {
-            "MunifTanjim/nui.nvim",
-            "nvim-lua/plenary.nvim",
-            "nvim-telescope/telescope.nvim",
-        },
-    },
+    -- {
+    --     "jackMort/ChatGPT.nvim",
+    --     event = "VeryLazy",
+    --     config = function()
+    --         require("plugins.configs.chatgpt_conf")
+    --     end,
+    --     dependencies = {
+    --         "MunifTanjim/nui.nvim",
+    --         "nvim-lua/plenary.nvim",
+    --         "nvim-telescope/telescope.nvim",
+    --     },
+    -- },
 
-    -- copilot
-    {
-        "zbirenbaum/copilot.lua",
-        cmd = "Copilot",
-        build = ":Copilot auth",
-        dependencies = "copilot.lua",
-        event = "InsertEnter",
-        config = function()
-            require("copilot").setup({
-                panel = {
-                    enabled = false,
-                    -- auto_refresh = false,
-                    keymap = {
-                        jump_prev = "[[",
-                        jump_next = "]]",
-                        accept = "<CR>",
-                        refresh = "gr",
-                        open = "<M-CR>",
-                    },
-                    layout = {
-                        position = "bottom", -- | top | left | right
-                        ratio = 0.4,
-                    },
-                },
-                suggestion = {
-                    enabled = false,
-                    debounce = 75,
-                    keymap = {
-                        accept = "<M-l>",
-                        accept_word = false,
-                        accept_line = false,
-                        next = "<M-]>",
-                        prev = "<M-[>",
-                        dismiss = "<C-]>",
-                    },
-                },
-                filetypes = {
-                    yaml = false,
-                    markdown = false,
-                    help = false,
-                    gitcommit = false,
-                    gitrebase = false,
-                    hgcommit = false,
-                    svn = false,
-                    cvs = false,
-                    ["."] = false,
-                },
-                copilot_node_command = "node", -- Node.js version must be > 16.x
-                server_opts_overrides = {},
-            })
-        end,
-    },
+    -- -- copilot
+    -- {
+    --     "zbirenbaum/copilot.lua",
+    --     cmd = "Copilot",
+    --     build = ":Copilot auth",
+    --     dependencies = "copilot.lua",
+    --     event = "InsertEnter",
+    --     config = function()
+    --         require("copilot").setup({
+    --             panel = {
+    --                 enabled = false,
+    --                 -- auto_refresh = false,
+    --                 keymap = {
+    --                     jump_prev = "[[",
+    --                     jump_next = "]]",
+    --                     accept = "<CR>",
+    --                     refresh = "gr",
+    --                     open = "<M-CR>",
+    --                 },
+    --                 layout = {
+    --                     position = "bottom", -- | top | left | right
+    --                     ratio = 0.4,
+    --                 },
+    --             },
+    --             suggestion = {
+    --                 enabled = false,
+    --                 -- auto_trigger = true,
+    --                 debounce = 75,
+    --                 keymap = {
+    --                     accept = "<M-l>",
+    --                     accept_word = false,
+    --                     accept_line = false,
+    --                     next = "<M-]>",
+    --                     prev = "<M-[>",
+    --                     dismiss = "<C-]>",
+    --                 },
+    --             },
+    --             filetypes = {
+    --                 yaml = false,
+    --                 markdown = false,
+    --                 help = false,
+    --                 gitcommit = false,
+    --                 gitrebase = false,
+    --                 hgcommit = false,
+    --                 svn = false,
+    --                 cvs = false,
+    --                 ["."] = false,
+    --             },
+    --             copilot_node_command = "node", -- Node.js version must be > 16.x
+    --             server_opts_overrides = {},
+    --         })
+    --     end,
+    -- },
 
-    {
-        "zbirenbaum/copilot-cmp",
-        config = function()
-            require("copilot_cmp").setup()
-        end,
-    },
+    -- {
+    --     "zbirenbaum/copilot-cmp",
+    --     config = function()
+    --         require("copilot_cmp").setup()
+    --     end,
+    -- },
 
     -- Black
     "psf/black",
@@ -455,34 +410,50 @@ require("lazy").setup({
         end,
     },
 
-    -- DAP
-    "sakhnik/nvim-gdb",
-
+    -- REPL
     {
-        "mfussenegger/nvim-dap",
-        config = function()
-            require("plugins.configs.dapcore")
+        "jpalardy/vim-slime",
+        init = function()
+            vim.b.slime_cell_delimiter = "# %%"
+            vim.g.slime_target = "tmux"
+            vim.g.slime_bracketed_paste = 1
+            vim.g.slime_default_config = { socket_name = "default", target_pane = "{last}" }
         end,
     },
 
     {
-        "mfussenegger/nvim-dap-python",
-        dependencies = "mfussenegger/nvim-dap",
-    },
-
-    {
-        "theHamsta/nvim-dap-virtual-text",
-        dependencies = "mfussenegger/nvim-dap",
-    },
-
-    {
-        "rcarriga/nvim-dap-ui",
+        "quarto-dev/quarto-nvim",
         config = function()
-            require("plugins.configs.dapui_conf")
+            require("plugins.configs.quarto_conf")
         end,
         dependencies = {
-            "mfussenegger/nvim-dap",
-            "Pocco81/DAPInstall.nvim",
+            {
+                "jmbuhr/otter.nvim",
+                dev = false,
+                dependencies = {
+                    { "neovim/nvim-lspconfig" },
+                },
+                opts = {
+                    buffers = {
+                        set_filetype = true,
+                    },
+                },
+            },
+            opts = {
+                lspFeatures = {
+                    languages = {
+                        "r",
+                        "python",
+                        "julia",
+                        "bash",
+                        "lua",
+                        "html",
+                    },
+                },
+            },
+            "hrsh7th/nvim-cmp",
+            "neovim/nvim-lspconfig",
+            "nvim-treesitter/nvim-treesitter",
         },
     },
 })

@@ -58,7 +58,6 @@ local custom_attach = function(client, bufnr)
         bind = true,
         hint_enable = false,
     }, bufnr)
-
     client.server_capabilities.document_formatting = true
 end
 

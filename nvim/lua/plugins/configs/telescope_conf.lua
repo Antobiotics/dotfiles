@@ -4,21 +4,22 @@ if not ok then
 end
 telescope.setup({
     defaults = {
-        file_ignore_patterns = { "node%_modules/.*", ".*/_freeze/.*", ".*/poetry.lock" },
-        find_files = {
-            find_command = {
-                "rg",
-                "--files",
-                "--hidden",
-                "--glob",
-                "!.git/*",
-                "--glob",
-                "!*/_freeze/*",
-                "--glob",
-                "!*.lock",
-                "--sort",
-                "path",
-            },
+        file_ignore_patterns = {
+            "node%_modules/.*",
+            ".*/_freeze/.*",
+            "poetry.lock",
+            ".git/.*",
+        },
+        vimgrep_arguments = {
+            "rg",
+            "--color=never",
+            "--no-heading",
+            "--hidden",
+            "--with-filename",
+            "--line-number",
+            "--column",
+            "--smart-case",
+            "--trim",
         },
     },
 })

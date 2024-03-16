@@ -118,14 +118,18 @@ require("lazy").setup({
             })
 
             -- Setup key mappings
-            vim.keymap.set("n", "<leader>dr", dbt.run)
+            vim.keymap.set("n", "<leader>drm", dbt.run)
+            vim.keymap.set("n", "<leader>drc", dbt.run_children)
+            vim.keymap.set("n", "<leader>drp", dbt.run_parents)
+            vim.keymap.set("n", "<leader>drf", dbt.run_family)
             vim.keymap.set("n", "<leader>dra", dbt.run_all)
-            vim.keymap.set("n", "<leader>dt", dbt.test)
-            vim.keymap.set("n", "<leader>fd", require("dbtpal.telescope").dbt_picker)
+            vim.keymap.set("n", "<leader>drt", dbt.test)
+            vim.keymap.set("n", "<leader>dm", require("dbtpal.telescope").dbt_picker)
 
             -- Enable Telescope Extension
             -- require("telescope").load_extension("dbt_pal")
         end,
+        requires = { { "nvim-lua/plenary.nvim" }, { "nvim-telescope/telescope.nvim" } },
         dependencies = {
             "nvim-lua/plenary.nvim",
         },
@@ -191,7 +195,6 @@ require("lazy").setup({
         end,
     },
 
-    "tpope/vim-surround",
     -- LSP
     {
         "folke/trouble.nvim",
@@ -226,8 +229,6 @@ require("lazy").setup({
         end,
         opts = {},
     },
-
-    -- "jay-babu/mason-null-ls.nvim",
 
     -- LSP
     "towolf/vim-helm",
@@ -315,11 +316,10 @@ require("lazy").setup({
         end,
     },
 
-    -- Comments
-    "tpope/vim-commentary",
-
-    -- Selection
-    "jamessan/vim-gnupg",
+    -- mini
+    { "tpope/vim-commentary" },
+    { "tpope/vim-surround" },
+    { "jamessan/vim-gnupg" },
 
     -- GPT
     {
@@ -402,13 +402,6 @@ require("lazy").setup({
     -- Github
 
     "tpope/vim-fugitive",
-
-    {
-        "pwntester/octo.nvim",
-        config = function()
-            require("plugins.configs.octo_conf")
-        end,
-    },
 
     -- REPL
     {

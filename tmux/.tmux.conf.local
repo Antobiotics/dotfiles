@@ -316,3 +316,4 @@ set -g default-terminal "xterm-256color"
 # set -g default-terminal "xterm-kitty"
 set-option -ga terminal-overrides ",xterm-256color:Tc"
 set-option -g default-shell /bin/zsh
+# set -g set -g allow-passthrough on

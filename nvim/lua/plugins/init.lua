@@ -5,7 +5,7 @@ require("lazy").setup({
     -- Search
     {
         "nvim-telescope/telescope.nvim",
-        tag = "0.1.4",
+        tag = "0.1.5",
         config = function()
             require("plugins.configs.telescope_conf")
         end,
@@ -43,6 +43,14 @@ require("lazy").setup({
     },
 
     {
+        "lukas-reineke/indent-blankline.nvim",
+        event = "BufRead",
+        config = function()
+            require("plugins.configs.indent_blankline")
+        end,
+    },
+
+    {
         "szw/vim-maximizer",
         keys = {
             {
@@ -51,17 +59,6 @@ require("lazy").setup({
                 desc = "Maximize/minimize a split",
             },
         },
-    },
-    {
-        "lukas-reineke/indent-blankline.nvim",
-        main = "ibl",
-        config = function()
-            require("ibl").setup({
-                scope = {
-                    enabled = false,
-                },
-            })
-        end,
     },
 
     {
@@ -121,15 +118,18 @@ require("lazy").setup({
             })
 
             -- Setup key mappings
-
-            vim.keymap.set("n", "<leader>dr", dbt.run)
+            vim.keymap.set("n", "<leader>drm", dbt.run)
+            vim.keymap.set("n", "<leader>drc", dbt.run_children)
+            vim.keymap.set("n", "<leader>drp", dbt.run_parents)
+            vim.keymap.set("n", "<leader>drf", dbt.run_family)
             vim.keymap.set("n", "<leader>dra", dbt.run_all)
-            vim.keymap.set("n", "<leader>dt", dbt.test)
-            vim.keymap.set("n", "<leader>fd", require("dbtpal.telescope").dbt_picker)
+            vim.keymap.set("n", "<leader>drt", dbt.test)
+            vim.keymap.set("n", "<leader>dm", require("dbtpal.telescope").dbt_picker)
 
             -- Enable Telescope Extension
             -- require("telescope").load_extension("dbt_pal")
         end,
+        requires = { { "nvim-lua/plenary.nvim" }, { "nvim-telescope/telescope.nvim" } },
         dependencies = {
             "nvim-lua/plenary.nvim",
         },
@@ -142,36 +142,74 @@ require("lazy").setup({
             require("plugins.configs.nvim_cmp")
         end,
         dependencies = {
-            "L3MON4D3/LuaSnip",
-            "saadparwaiz1/cmp_luasnip",
             "hrsh7th/cmp-nvim-lsp",
+            "saadparwaiz1/cmp_luasnip",
+            "L3MON4D3/LuaSnip",
             "rafamadriz/friendly-snippets",
             "hrsh7th/cmp-buffer",
             "hrsh7th/cmp-path",
             "hrsh7th/cmp-emoji",
-            "hrsh7th/cmp-nvim-lua",
             "jalvesaq/cmp-nvim-r",
         },
     },
 
-    -- Linting
-    {
-        "sbdchd/neoformat",
-        cmd = "Neoformat",
-    },
+    -- Snippets
+    "rafamadriz/friendly-snippets",
 
     {
-        "jose-elias-alvarez/null-ls.nvim",
-        config = function()
-            require("plugins.configs.nvim_null_ls")
+        "L3MON4D3/LuaSnip",
+        build = "make install_jsregexp",
+    },
+
+    -- Linting
+    {
+        "stevearc/conform.nvim",
+        opts = {
+            notify_on_error = true,
+            formatters_by_ft = {
+                json = { "jq" },
+                yaml = { "yamllint" },
+                go = { "goimports", "gofmt" },
+                lua = { "stylua" },
+                markdown = { "prettier" },
+                python = { "ruff_fix", "ruff_format" },
+                rust = { "rustfmt" },
+                bash = { "shfmt", "shellcheck" },
+                sh = { "shfmt", "shellcheck" },
+                cmake = { "cmake_format" },
+                css = { "prettier" },
+                html = { "prettier" },
+                javascript = { "prettier" },
+                typescript = { "prettier" },
+                ["*"] = { "trim_whitespace", "codespell" },
+            },
+            -- This can also be a function that returns the table.
+            format_on_save = {
+                -- I recommend these options. See :help conform.format for details.
+                lsp_fallback = true,
+                timeout_ms = 500,
+            },
+        },
+        init = function()
+            vim.keymap.set("n", "<leader>lf", ":lua require('conform').format()<CR>")
         end,
     },
+
+    -- LSP
     {
         "folke/trouble.nvim",
         dependencies = { "nvim-tree/nvim-web-devicons" },
         config = function()
             vim.keymap.set("n", "<leader>xx", function()
                 require("trouble").toggle()
+            end)
+            vim.keymap.set("n", "<leader>xn", function()
+                -- jump to the next item, skipping the groups
+                require("trouble").next({ skip_groups = true, jump = true })
+            end)
+            vim.keymap.set("n", "<leader>xp", function()
+                -- jump to the previous item, skipping the groups
+                require("trouble").previous({ skip_groups = true, jump = true })
             end)
             vim.keymap.set("n", "<leader>xw", function()
                 require("trouble").toggle("workspace_diagnostics")
@@ -192,12 +230,8 @@ require("lazy").setup({
         opts = {},
     },
 
-    "jay-babu/mason-null-ls.nvim",
-
     -- LSP
-    {
-        "towolf/vim-helm",
-    },
+    "towolf/vim-helm",
 
     {
         "neovim/nvim-lspconfig",
@@ -225,7 +259,7 @@ require("lazy").setup({
 
     {
         "ray-x/lsp_signature.nvim",
-        lazy = false,
+        event = "VeryLazy",
         config = function()
             require("plugins.configs.lsp_signature_conf")
         end,
@@ -243,55 +277,6 @@ require("lazy").setup({
             "nvim-treesitter/nvim-treesitter-textobjects",
         },
         build = ":TSUpdate",
-    },
-
-    -- REPL
-    {
-        "jpalardy/vim-slime",
-        init = function()
-            Quarto_is_in_python_chunk = function()
-                require("otter.tools.functions").is_otter_language_context("python")
-            end
-
-            vim.cmd([[
-        function SlimeOverride_EscapeText_quarto(text)
-        call v:lua.Quarto_is_in_python_chunk()
-        if exists('g:slime_python_ipython') && len(split(a:text,"\n")) > 1 && b:quarto_is_python_chunk
-        return ["%cpaste -q", "\n", g:slime_dispatch_ipython_pause, a:text, "--", "\n"]
-        else
-        return a:text
-        end
-        endfunction
-        ]])
-
-            vim.b.slime_cell_delimiter = "# %%"
-
-            -- slime, neovvim terminal
-            vim.g.slime_target = "neovim"
-            vim.g.slime_python_ipython = 1
-        end,
-    },
-
-    "urbainvaes/vim-ripple",
-
-    {
-        "quarto-dev/quarto-nvim",
-        config = function()
-            require("plugins.configs.quarto_conf")
-        end,
-        dependencies = {
-            "jmbuhr/otter.nvim",
-            "hrsh7th/nvim-cmp",
-            "neovim/nvim-lspconfig",
-            "nvim-treesitter/nvim-treesitter",
-        },
-    },
-
-    {
-        "jalvesaq/Nvim-R",
-        dependencies = {
-            "jalvesaq/cmp-nvim-r",
-        },
     },
 
     -- Movements
@@ -331,11 +316,10 @@ require("lazy").setup({
         end,
     },
 
-    -- Comments
-    "tpope/vim-commentary",
-
-    -- Selection
-    "jamessan/vim-gnupg",
+    -- mini
+    { "tpope/vim-commentary" },
+    { "tpope/vim-surround" },
+    { "jamessan/vim-gnupg" },
 
     -- GPT
     {
@@ -351,7 +335,7 @@ require("lazy").setup({
         },
     },
 
-    -- copilot
+    -- -- copilot
     {
         "zbirenbaum/copilot.lua",
         cmd = "Copilot",
@@ -377,6 +361,7 @@ require("lazy").setup({
                 },
                 suggestion = {
                     enabled = false,
+                    -- auto_trigger = true,
                     debounce = 75,
                     keymap = {
                         accept = "<M-l>",
@@ -418,41 +403,96 @@ require("lazy").setup({
 
     "tpope/vim-fugitive",
 
+    -- REPL
     {
-        "pwntester/octo.nvim",
-        config = function()
-            require("plugins.configs.octo_conf")
+        "jpalardy/vim-slime",
+        init = function()
+            -- vim.b.slime_cell_delimiter = "# %%"
+            -- vim.g.slime_target = "tmux"
+            -- vim.g.slime_bracketed_paste = 1
+            -- vim.g.slime_default_config = { socket_name = "default", target_pane = "{last}" }
+            vim.b["quarto_is_python_chunk"] = false
+            Quarto_is_in_python_chunk = function()
+                require("otter.tools.functions").is_otter_language_context("python")
+            end
+
+            vim.cmd([[
+            let g:slime_dispatch_ipython_pause = 100
+            function SlimeOverride_EscapeText_quarto(text)
+            call v:lua.Quarto_is_in_python_chunk()
+            if exists('g:slime_python_ipython') && len(split(a:text,"\n")) > 1 && b:quarto_is_python_chunk && !(exists('b:quarto_is_r_mode') && b:quarto_is_r_mode)
+            return ["%cpaste -q\n", g:slime_dispatch_ipython_pause, a:text, "--", "\n"]
+            else
+            if exists('b:quarto_is_r_mode') && b:quarto_is_r_mode && b:quarto_is_python_chunk
+            return [a:text, "\n"]
+            else
+            return [a:text]
+            end
+            end
+            endfunction
+            ]])
+
+            local function mark_terminal()
+                vim.g.slime_last_channel = vim.b.terminal_job_id
+                vim.print(vim.g.slime_last_channel)
+            end
+
+            local function set_terminal()
+                vim.b.slime_config = { jobid = vim.g.slime_last_channel }
+            end
+
+            vim.g.slime_target = "neovim"
+            vim.g.slime_python_ipython = 1
+
+            vim.keymap.set(
+                "n",
+                "<leader>cm",
+                mark_terminal,
+                { desc = "mark terminal", silent = false }
+            )
+
+            vim.keymap.set(
+                "n",
+                "<leader>cs",
+                set_terminal,
+                { desc = "set terminal", silent = false }
+            )
         end,
     },
 
-    -- DAP
-    "sakhnik/nvim-gdb",
-
     {
-        "mfussenegger/nvim-dap",
+        "quarto-dev/quarto-nvim",
         config = function()
-            require("plugins.configs.dapcore")
-        end,
-    },
-
-    {
-        "mfussenegger/nvim-dap-python",
-        dependencies = "mfussenegger/nvim-dap",
-    },
-
-    {
-        "theHamsta/nvim-dap-virtual-text",
-        dependencies = "mfussenegger/nvim-dap",
-    },
-
-    {
-        "rcarriga/nvim-dap-ui",
-        config = function()
-            require("plugins.configs.dapui_conf")
+            require("plugins.configs.quarto_conf")
         end,
         dependencies = {
-            "mfussenegger/nvim-dap",
-            "Pocco81/DAPInstall.nvim",
+            {
+                "jmbuhr/otter.nvim",
+                dev = false,
+                dependencies = {
+                    { "neovim/nvim-lspconfig" },
+                },
+                opts = {
+                    buffers = {
+                        set_filetype = true,
+                    },
+                },
+            },
+            opts = {
+                lspFeatures = {
+                    languages = {
+                        "r",
+                        "python",
+                        "julia",
+                        "bash",
+                        "lua",
+                        "html",
+                    },
+                },
+            },
+            "hrsh7th/nvim-cmp",
+            "neovim/nvim-lspconfig",
+            "nvim-treesitter/nvim-treesitter",
         },
     },
 })

@@ -30,26 +30,31 @@ require("nvim-treesitter.configs").setup({
                 ["if"] = "@function.inner",
                 ["ac"] = "@class.outer",
                 ["ic"] = "@class.inner",
+                ["as"] = {
+                    query = "@scope",
+                    query_group = "locals",
+                    desc = "Select language scope",
+                },
             },
         },
         move = {
             enable = true,
             set_jumps = true, -- whether to set jumps in the jumplist
             goto_next_start = {
-                ["]m"] = "@function.outer",
-                ["]]"] = "@class.outer",
+                ["]s"] = "@function.outer",
+                ["]w"] = "@class.outer",
             },
             goto_next_end = {
-                ["]M"] = "@function.outer",
-                ["]["] = "@class.outer",
+                ["]S"] = "@function.outer",
+                ["]W"] = "@class.outer",
             },
             goto_previous_start = {
-                ["[m"] = "@function.outer",
-                ["[["] = "@class.outer",
+                ["[s"] = "@function.outer",
+                ["[w"] = "@class.outer",
             },
             goto_previous_end = {
-                ["[M"] = "@function.outer",
-                ["[]"] = "@class.outer",
+                ["[S"] = "@function.outer",
+                ["[W"] = "@class.outer",
             },
         },
         swap = {

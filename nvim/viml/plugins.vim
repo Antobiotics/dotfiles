@@ -1,26 +1,3 @@
-let g:ripple_winpos = "vertical"
-let g:ripple_repls = {
-            \ "python": ["ptpython", "\<c-u>\<esc>[200~", "\<esc>[201~", 1],
-            \ "apl": "apl",
-            \ "alda": "alda repl",
-            \ "bc": "bc",
-            \ "bqn": "bqn",
-            \ "coconut" : "coconut",
-            \ "haskell" : "ghci",
-            \ "k": "k",
-            \ "julia": "julia",
-            \ "java": "jshell",
-            \ "lisp": "clisp",
-            \ "lua": "lua",
-            \ "ocaml": ["utop", "", ";;", 1],
-            \ "prolog": "gprolog",
-            \ "r": "R",
-            \ "ruby": "irb",
-            \ "scheme": "guile",
-            \ "sql": "psql postgres",
-            \ "shell": "zsh"}
-
-
 let maplocalleader="\<space>"
 
 let R_assign = 2 " double _ for <-

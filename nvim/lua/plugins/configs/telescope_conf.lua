@@ -4,19 +4,22 @@ if not ok then
 end
 telescope.setup({
     defaults = {
-        file_ignore_patterns = { "node%_modules/.*", ".*/_freeze/.*" },
-        find_files = {
-            find_command = {
-                "rg",
-                "--files",
-                "--hidden",
-                "--glob",
-                "!.git/*",
-                "--glob",
-                "!*/_freeze/*",
-                "--sort",
-                "path",
-            },
+        file_ignore_patterns = {
+            "node%_modules/.*",
+            ".*/_freeze/.*",
+            "poetry.lock",
+            ".git/.*",
+        },
+        vimgrep_arguments = {
+            "rg",
+            "--color=never",
+            "--no-heading",
+            "--hidden",
+            "--with-filename",
+            "--line-number",
+            "--column",
+            "--smart-case",
+            "--trim",
         },
     },
 })
@@ -65,9 +68,4 @@ vim.keymap.set(
     { silent = true, noremap = true, desc = "Keymaps" }
 )
 
-vim.keymap.set(
-    "n",
-    "<leader>fm",
-    builtins.marks,
-    { silent = true, noremap = true, desc = "marks" }
-)
+vim.keymap.set("n", "<leader>fm", builtins.marks, { silent = true, noremap = true, desc = "marks" })

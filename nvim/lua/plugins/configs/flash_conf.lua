@@ -1,6 +1,7 @@
 require("flash").setup({
-
-    continue = true,
+    jump = {
+        continue = true,
+    },
     label = {
         -- allow uppercase labels
         uppercase = true,
@@ -65,7 +66,6 @@ require("flash").setup({
             end,
             search = { wrap = false },
             highlight = { backdrop = true },
-            jump = { register = false },
         },
     },
 })

@@ -1,5 +1,6 @@
 require("quarto").setup({
     debug = false,
+    ft = { "quarto" },
     closePreviewOnExit = true,
     codeRunner = {
         enabled = true,
@@ -20,7 +21,6 @@ require("quarto").setup({
             enabled = true,
             triggers = { "BufWritePost" },
         },
-
         completion = {
             enabled = true,
         },

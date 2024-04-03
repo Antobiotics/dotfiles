@@ -315,9 +315,16 @@ require("lazy").setup({
             require("marks").setup({})
         end,
     },
-
+    -- commenting with e.g. `gcc` or `gcip`
+    -- respects TS, so it works in quarto documents
+    {
+        "numToStr/Comment.nvim",
+        version = nil,
+        branch = "master",
+        config = true,
+    },
     -- mini
-    { "tpope/vim-commentary" },
+    -- { "tpope/vim-commentary" },
     { "tpope/vim-surround" },
     { "jamessan/vim-gnupg" },
 
@@ -401,7 +408,26 @@ require("lazy").setup({
 
     -- Github
 
-    "tpope/vim-fugitive",
+    -- "tpope/vim-fugitive",
+    {
+        "kdheepak/lazygit.nvim",
+        cmd = {
+            "LazyGit",
+            "LazyGitConfig",
+            "LazyGitCurrentFile",
+            "LazyGitFilter",
+            "LazyGitFilterCurrentFile",
+        },
+        -- optional for floating window border decoration
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+        },
+        -- setting the keybinding for LazyGit with 'keys' is recommended in
+        -- order to load the plugin when the command is run for the first time
+        keys = {
+            { "<leader>lg", "<cmd>LazyGit<cr>", desc = "LazyGit" },
+        },
+    },
 
     -- REPL
     {
@@ -476,23 +502,9 @@ require("lazy").setup({
                     buffers = {
                         set_filetype = true,
                     },
+                    handle_leading_whitespace = true,
                 },
             },
-            opts = {
-                lspFeatures = {
-                    languages = {
-                        "r",
-                        "python",
-                        "julia",
-                        "bash",
-                        "lua",
-                        "html",
-                    },
-                },
-            },
-            "hrsh7th/nvim-cmp",
-            "neovim/nvim-lspconfig",
-            "nvim-treesitter/nvim-treesitter",
         },
     },
 })

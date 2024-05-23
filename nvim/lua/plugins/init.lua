@@ -280,23 +280,23 @@ require("lazy").setup({
     },
 
     -- Movements
-    {
-        "folke/flash.nvim",
-        event = "VeryLazy",
-        config = function()
-            require("plugins.configs.flash_conf")
-        end,
-        keys = {
-            {
-                "gt",
-                mode = { "n", "x", "o" },
-                function()
-                    require("flash").treesitter()
-                end,
-                desc = "Flash Treesitter",
-            },
-        },
-    },
+    -- {
+    --     "folke/flash.nvim",
+    --     event = "VeryLazy",
+    --     config = function()
+    --         require("plugins.configs.flash_conf")
+    --     end,
+    --     keys = {
+    --         {
+    --             "gt",
+    --             mode = { "n", "x", "o" },
+    --             function()
+    --                 require("flash").treesitter()
+    --             end,
+    --             desc = "Flash Treesitter",
+    --         },
+    --     },
+    -- },
 
     {
         "ThePrimeagen/harpoon",
@@ -419,15 +419,13 @@ require("lazy").setup({
         },
         config = true,
     },
+    { "almo7aya/openingh.nvim" },
 
     -- REPL
+    { "jamespeapen/Nvim-R" },
     {
         "jpalardy/vim-slime",
         init = function()
-            -- vim.b.slime_cell_delimiter = "# %%"
-            -- vim.g.slime_target = "tmux"
-            -- vim.g.slime_bracketed_paste = 1
-            -- vim.g.slime_default_config = { socket_name = "default", target_pane = "{last}" }
             vim.b["quarto_is_python_chunk"] = false
             Quarto_is_in_python_chunk = function()
                 require("otter.tools.functions").is_otter_language_context("python")
@@ -436,44 +434,22 @@ require("lazy").setup({
             vim.cmd([[
             let g:slime_dispatch_ipython_pause = 100
             function SlimeOverride_EscapeText_quarto(text)
-            call v:lua.Quarto_is_in_python_chunk()
-            if exists('g:slime_python_ipython') && len(split(a:text,"\n")) > 1 && b:quarto_is_python_chunk && !(exists('b:quarto_is_r_mode') && b:quarto_is_r_mode)
-            return ["%cpaste -q\n", g:slime_dispatch_ipython_pause, a:text, "--", "\n"]
-            else
-            if exists('b:quarto_is_r_mode') && b:quarto_is_r_mode && b:quarto_is_python_chunk
-            return [a:text, "\n"]
-            else
-            return [a:text]
-            end
+                call v:lua.Quarto_is_in_python_chunk()
+                if exists('g:slime_python_ipython') && len(split(a:text,"\n")) > 1 && b:quarto_is_python_chunk && !(exists('b:quarto_is_r_mode') && b:quarto_is_r_mode)
+                    return ["%cpaste -q\n", g:slime_dispatch_ipython_pause, a:text, "--", "\n"]
+                else
+                    if exists('b:quarto_is_r_mode') && b:quarto_is_r_mode && b:quarto_is_python_chunk
+                        return [a:text, "\n"]
+                else
+                    return [a:text]
+                end
             end
             endfunction
             ]])
 
-            local function mark_terminal()
-                vim.g.slime_last_channel = vim.b.terminal_job_id
-                vim.print(vim.g.slime_last_channel)
-            end
-
-            local function set_terminal()
-                vim.b.slime_config = { jobid = vim.g.slime_last_channel }
-            end
-
             vim.g.slime_target = "neovim"
             vim.g.slime_python_ipython = 1
-
-            vim.keymap.set(
-                "n",
-                "<leader>cm",
-                mark_terminal,
-                { desc = "mark terminal", silent = false }
-            )
-
-            vim.keymap.set(
-                "n",
-                "<leader>cs",
-                set_terminal,
-                { desc = "set terminal", silent = false }
-            )
+            vim.g.slime_bracketed_paste = 1
         end,
     },
 
@@ -494,6 +470,27 @@ require("lazy").setup({
                         set_filetype = true,
                     },
                     handle_leading_whitespace = true,
+                },
+            },
+        },
+    },
+
+    { -- directly open ipynb files as quarto docuements
+        -- and convert back behind the scenes
+        -- needs:
+        -- pip install jupytext
+        "GCBallesteros/jupytext.nvim",
+        opts = {
+            custom_language_formatting = {
+                python = {
+                    extension = "qmd",
+                    style = "quarto",
+                    force_ft = "quarto", -- you can set whatever filetype you want here
+                },
+                r = {
+                    extension = "qmd",
+                    style = "quarto",
+                    force_ft = "quarto", -- you can set whatever filetype you want here
                 },
             },
         },

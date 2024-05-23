@@ -5,7 +5,6 @@ local opt = vim.opt
 opt.clipboard = "unnamedplus"
 opt.mouse = "a"
 opt.foldmethod = "manual"
-opt.expandtab = true
 opt.modelines = 0
 
 -- Noise
@@ -29,6 +28,9 @@ opt.fileformats = "unix,mac,dos" -- Handle Mac and DOS line-endings
 -- Scroll when 4 lines from top/bottom
 opt.scrolloff = 4
 
+-- swapfiles
+vim.opt.swapfile = false
+
 -- GUI
 opt.ruler = true
 opt.showcmd = true
@@ -40,6 +42,11 @@ opt.relativenumber = true
 opt.colorcolumn = "100"
 
 -- Wildmode
+vim.opt.path:append("**")
+-- lazy file name tab completion
+vim.opt.wildmode = "list:longest,list:full"
+vim.opt.wildmenu = true
+vim.opt.wildignorecase = true
 opt.wildmode = "list:longest,full"
 opt.wildignore = {
     "*.o",

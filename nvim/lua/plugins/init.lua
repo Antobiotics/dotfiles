@@ -27,12 +27,6 @@ require("lazy").setup({
     "RRethy/nvim-base16",
     "luochen1990/rainbow",
     "myusuf3/numbers.vim",
-    {
-        "overcache/NeoSolarized",
-        config = function()
-            require("plugins.configs.neosolarized")
-        end,
-    },
 
     {
         "kyazdani42/nvim-tree.lua",
@@ -278,25 +272,6 @@ require("lazy").setup({
         },
         build = ":TSUpdate",
     },
-
-    -- Movements
-    -- {
-    --     "folke/flash.nvim",
-    --     event = "VeryLazy",
-    --     config = function()
-    --         require("plugins.configs.flash_conf")
-    --     end,
-    --     keys = {
-    --         {
-    --             "gt",
-    --             mode = { "n", "x", "o" },
-    --             function()
-    --                 require("flash").treesitter()
-    --             end,
-    --             desc = "Flash Treesitter",
-    --         },
-    --     },
-    -- },
 
     {
         "ThePrimeagen/harpoon",

@@ -4,7 +4,7 @@ require("quarto").setup({
     closePreviewOnExit = true,
     codeRunner = {
         enabled = true,
-        default_method = "slime", -- 'slime' or 'slime'
+        default_method = "slime",
         ft_runners = {
             python = "slime",
             r = "slime",
@@ -15,8 +15,8 @@ require("quarto").setup({
     },
     lspFeatures = {
         enabled = true,
-        languages = { "r", "python", "julia", "bash" },
-        chunks = "curly", -- 'curly' or 'all'
+        chunks = "curly",
+        languages = { "r", "python", "julia", "bash", "html" },
         diagnostics = {
             enabled = true,
             triggers = { "BufWritePost" },
@@ -54,7 +54,7 @@ vim.keymap.set("n", "<localleader>rA", runner.run_all, { desc = "run all cells",
 vim.keymap.set("n", "<localleader>rl", runner.run_line, { desc = "run line", silent = true })
 vim.keymap.set(
     "v",
-    "<localleader>r",
+    "<localleader>rs",
     runner.run_range,
     { desc = "run visual range", silent = true }
 )

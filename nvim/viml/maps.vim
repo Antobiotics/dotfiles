@@ -68,7 +68,7 @@ inoremap <Leader>th <Esc>:sp<CR><C-w><C-w>:term<CR>
 
 
 " Toggle search highlight
-nnoremap <silent> <C-C> :if (&hlsearch == 1) \| set nohlsearch \| else \| set hlsearch \| endif<cr>
+" nnoremap <silent> <C-C> :if (&hlsearch == 1) \| set nohlsearch \| else \| set hlsearch \| endif<cr>
 
 " Do not make Q go to ex-mode
 nnoremap Q <Nop>

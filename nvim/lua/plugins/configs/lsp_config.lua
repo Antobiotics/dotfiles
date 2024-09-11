@@ -55,6 +55,12 @@ local custom_attach = function(client, bufnr)
     buf_set_keymap("n", "<leader>lf", "<cmd>lua vim.lsp.buf.format({async=true})<CR>", opts)
     buf_set_keymap("n", "K", "<cmd>lua vim.lsp.buf.hover()<cr>", opts)
     buf_set_keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<cr>", opts)
+    vim.keymap.set(
+        "n",
+        "gp",
+        "<cmd>lua require('goto-preview').goto_preview_definition()<CR>",
+        { noremap = true }
+    )
     buf_set_keymap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<cr>", opts)
     buf_set_keymap("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<cr>", opts)
     buf_set_keymap("n", "go", "<cmd>lua vim.lsp.buf.type_definition()<cr>", opts)

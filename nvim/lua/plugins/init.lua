@@ -226,16 +226,19 @@ require("lazy").setup({
                 desc = "Quickfix List (Trouble)",
             },
             {
-                "gd",
-                "<cmd>Trouble lsp_definitions toggle focus=true auto_refresh=false<cr>",
-                desc = "Definitions (Trouble)",
-            },
-            {
                 "gr",
                 "<cmd>Trouble lsp toggle focus=true auto_refresh=false<cr>",
                 desc = "References (Trouble)",
             },
         },
+    },
+
+    {
+        "rmagatti/goto-preview",
+        event = "BufEnter",
+        config = function()
+            require("plugins.configs.preview_conf")
+        end,
     },
 
     -- LSP

@@ -53,6 +53,24 @@ local custom_attach = function(client, bufnr)
     buf_set_keymap("n", "<leader><C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
 
     buf_set_keymap("n", "<leader>lf", "<cmd>lua vim.lsp.buf.format({async=true})<CR>", opts)
+    buf_set_keymap("n", "K", "<cmd>lua vim.lsp.buf.hover()<cr>", opts)
+    buf_set_keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<cr>", opts)
+    vim.keymap.set(
+        "n",
+        "gp",
+        "<cmd>lua require('goto-preview').goto_preview_definition()<CR>",
+        { noremap = true }
+    )
+    buf_set_keymap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<cr>", opts)
+    buf_set_keymap("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<cr>", opts)
+    buf_set_keymap("n", "go", "<cmd>lua vim.lsp.buf.type_definition()<cr>", opts)
+    buf_set_keymap("n", "gs", "<cmd>lua vim.lsp.buf.signature_help()<cr>", opts)
+    buf_set_keymap("n", "lr", "<cmd>lua vim.lsp.buf.rename()<cr>", opts)
+    buf_set_keymap("n", "la", "<cmd>lua vim.lsp.buf.code_action()<cr>", opts)
+
+    buf_set_keymap("n", "gl", "<cmd>lua vim.diagnostic.open_float()<cr>", opts)
+    buf_set_keymap("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<cr>", opts)
+    buf_set_keymap("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<cr>", opts)
 
     require("lsp_signature").on_attach({
         bind = true,
@@ -118,17 +136,23 @@ lspconfig.r_language_server.setup({
 lspconfig.pyright.setup({
     capabilities = capabilities,
     on_attach = custom_attach,
-    before_init = function(new_config, new_root_dir)
-        local python_path = pyenv_path(new_root_dir)
-        new_config.settings.python.pythonPath = python_path
-    end,
     root_dir = util.root_pattern(
-        ".git",
         "setup.py",
         "setup.cfg",
         "pyproject.toml",
-        "requirements.txt"
+        "poetry.lock",
+        "requirements.txt",
+        "Pipfile",
+        ".git"
     ),
+    on_new_config = function(config, _)
+        local python_path = "python"
+        local virtual_env = vim.env.VIRTUAL_ENV or vim.env.PYENV_VIRTUAL_ENV
+        if virtual_env then
+            python_path = require("lspconfig.util").path.join(virtual_env, "bin", "python")
+        end
+        config.settings.python.pythonPath = python_path
+    end,
     flags = {
         debounce_text_changes = 1,
     },

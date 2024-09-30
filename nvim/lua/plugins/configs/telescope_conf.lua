@@ -2,6 +2,16 @@ local ok, telescope = pcall(require, "telescope")
 if not ok then
     return
 end
+
+telescope.load_extension("conflicts")
+telescope.load_extension("live_grep_args")
+
+local open_with_trouble = require("trouble.sources.telescope").open
+local live_grep_args_shortcuts = require("telescope-live-grep-args.shortcuts")
+
+-- Use this to add more results without clearing the trouble list
+local add_to_trouble = require("trouble.sources.telescope").add
+
 telescope.setup({
     defaults = {
         file_ignore_patterns = {
@@ -36,16 +46,22 @@ vim.keymap.set(
 vim.keymap.set(
     "n",
     "<leader>f",
-    builtins.live_grep,
-    { silent = true, noremap = true, desc = "Grep" }
+    telescope.extensions.live_grep_args.live_grep_args,
+    { silent = true, noremap = true, desc = "Live Grep (Args)" }
 )
 
-vim.keymap.set(
-    "n",
-    "<leader>ff",
-    builtins.grep_string,
-    { silent = true, noremap = true, desc = "Grep word" }
-)
+vim.keymap.set("n", "<leader>ff", live_grep_args_shortcuts.grep_word_under_cursor, {
+    silent = true,
+    noremap = true,
+    desc = "Word Grep (Args)",
+})
+
+-- vim.keymap.set(
+--     "n",
+--     "<leader>ff",
+--     builtins.grep_string,
+--     { silent = true, noremap = true, desc = "Grep word" }
+-- )
 
 vim.keymap.set(
     "n",
@@ -66,6 +82,13 @@ vim.keymap.set(
     "<leader>fk",
     builtins.keymaps,
     { silent = true, noremap = true, desc = "Keymaps" }
+)
+
+vim.keymap.set(
+    "n",
+    "<leader>fu",
+    builtins.resume,
+    { silent = true, noremap = true, desc = "Resume" }
 )
 
 vim.keymap.set("n", "<leader>fm", builtins.marks, { silent = true, noremap = true, desc = "marks" })

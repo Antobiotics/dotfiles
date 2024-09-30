@@ -17,7 +17,6 @@ alias ptpython="python -m ptpython"
 
 # Find
 alias fr='find . -name'
-alias fh='find $HOME -name'
 alias rg="rg --hidden --glob '!.git'"
 
 # Grep
@@ -40,6 +39,7 @@ tailf='tail -f'
 
 # Git
 alias gpom="git push origin master"
+alias gplos="git pull origin staging"
 alias gpo="git push origin "
 alias gpof="git push origin --force"
 alias gpall="git push --all"

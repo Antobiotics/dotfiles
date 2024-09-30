@@ -2,16 +2,22 @@ local vim = vim
 vim.opt.completeopt = "menu,menuone,noselect"
 
 local cmp = require("cmp")
+local luasnip = require("luasnip")
 
 local has_words_before = function()
     local line, col = unpack(vim.api.nvim_win_get_cursor(0))
     return col ~= 0
-        and vim.api
-                .nvim_buf_get_lines(0, line - 1, line, true)[1]
-                :sub(col, col)
-                :match("%s")
+        and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s")
             == nil
 end
+
+cmp.event:on("menu_opened", function()
+    vim.b.copilot_suggestion_hidden = true
+end)
+
+cmp.event:on("menu_closed", function()
+    vim.b.copilot_suggestion_hidden = false
+end)
 
 -- nvim-cmp setup
 cmp.setup({
@@ -82,6 +88,13 @@ cmp.setup({
                 fallback()
             end
         end),
+        ["S-<Tab>"] = vim.schedule_wrap(function(fallback)
+            if cmp.visible() and has_words_before() then
+                cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
+            else
+                fallback()
+            end
+        end),
     },
     sources = {
         { name = "copilot" },
@@ -97,8 +110,7 @@ cmp.setup({
 
                     for _, buf in ipairs(vim.api.nvim_list_bufs()) do
                         local line_count = vim.api.nvim_buf_line_count(buf)
-                        local byte_size =
-                            vim.api.nvim_buf_get_offset(buf, line_count)
+                        local byte_size = vim.api.nvim_buf_get_offset(buf, line_count)
 
                         if byte_size < LIMIT then
                             bufs[buf] = true
@@ -133,11 +145,3 @@ for _, cmd_type in ipairs({ ":", "/", "?", "@", "=" }) do
         },
     })
 end
-
-cmp.event:on("menu_opened", function()
-    vim.b.copilot_suggestion_hidden = true
-end)
-
-cmp.event:on("menu_closed", function()
-    vim.b.copilot_suggestion_hidden = false
-end)

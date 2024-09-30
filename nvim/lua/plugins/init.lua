@@ -19,6 +19,8 @@ require("lazy").setup({
                     return vim.fn.executable("make") == 1
                 end,
             },
+            { "Snikimonkd/telescope-git-conflicts.nvim" },
+            { "nvim-telescope/telescope-live-grep-args.nvim" },
         },
     },
 
@@ -27,12 +29,6 @@ require("lazy").setup({
     "RRethy/nvim-base16",
     "luochen1990/rainbow",
     "myusuf3/numbers.vim",
-    {
-        "overcache/NeoSolarized",
-        config = function()
-            require("plugins.configs.neosolarized")
-        end,
-    },
 
     {
         "kyazdani42/nvim-tree.lua",
@@ -200,34 +196,50 @@ require("lazy").setup({
         "folke/trouble.nvim",
         dependencies = { "nvim-tree/nvim-web-devicons" },
         config = function()
-            vim.keymap.set("n", "<leader>xx", function()
-                require("trouble").toggle()
-            end)
-            vim.keymap.set("n", "<leader>xn", function()
-                -- jump to the next item, skipping the groups
-                require("trouble").next({ skip_groups = true, jump = true })
-            end)
-            vim.keymap.set("n", "<leader>xp", function()
-                -- jump to the previous item, skipping the groups
-                require("trouble").previous({ skip_groups = true, jump = true })
-            end)
-            vim.keymap.set("n", "<leader>xw", function()
-                require("trouble").toggle("workspace_diagnostics")
-            end)
-            vim.keymap.set("n", "<leader>xd", function()
-                require("trouble").toggle("document_diagnostics")
-            end)
-            vim.keymap.set("n", "<leader>xq", function()
-                require("trouble").toggle("quickfix")
-            end)
-            vim.keymap.set("n", "<leader>xl", function()
-                require("trouble").toggle("loclist")
-            end)
-            vim.keymap.set("n", "gr", function()
-                require("trouble").toggle("lsp_references")
-            end)
+
+            require("plugins.configs.trouble_conf")
         end,
-        opts = {},
+        cmd = "Trouble",
+        keys = {
+            {
+                "<leader>xx",
+                "<cmd>Trouble diagnostics toggle<cr>",
+                desc = "Diagnostics (Trouble)",
+            },
+            {
+                "<leader>cd",
+                "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
+                desc = "Buffer Diagnostics (Trouble)",
+            },
+            {
+                "<leader>cs",
+                "<cmd>Trouble symbols toggle focus=false<cr>",
+                desc = "Symbols (Trouble)",
+            },
+            {
+                "<leader>xl",
+                "<cmd>Trouble loclist toggle<cr>",
+                desc = "Location List (Trouble)",
+            },
+            {
+                "<leader>xq",
+                "<cmd>Trouble qflist toggle<cr>",
+                desc = "Quickfix List (Trouble)",
+            },
+            {
+                "gr",
+                "<cmd>Trouble lsp toggle focus=true auto_refresh=false<cr>",
+                desc = "References (Trouble)",
+            },
+        },
+    },
+
+    {
+        "rmagatti/goto-preview",
+        event = "BufEnter",
+        config = function()
+            require("plugins.configs.preview_conf")
+        end,
     },
 
     -- LSP
@@ -242,18 +254,9 @@ require("lazy").setup({
             { "williamboman/mason.nvim", config = true },
             "williamboman/mason-lspconfig.nvim",
             "mason-lspconfig.nvim",
-            "lspsaga.nvim",
             "lsp_signature.nvim",
             "folke/neodev.nvim",
         },
-        lazy = false,
-    },
-
-    {
-        "nvimdev/lspsaga.nvim",
-        config = function()
-            require("plugins.configs.lspsaga_conf")
-        end,
         lazy = false,
     },
 
@@ -279,25 +282,6 @@ require("lazy").setup({
         build = ":TSUpdate",
     },
 
-    -- Movements
-    {
-        "folke/flash.nvim",
-        event = "VeryLazy",
-        config = function()
-            require("plugins.configs.flash_conf")
-        end,
-        keys = {
-            {
-                "gt",
-                mode = { "n", "x", "o" },
-                function()
-                    require("flash").treesitter()
-                end,
-                desc = "Flash Treesitter",
-            },
-        },
-    },
-
     {
         "ThePrimeagen/harpoon",
         requires = {
@@ -316,8 +300,15 @@ require("lazy").setup({
         end,
     },
 
+    -- commenting with e.g. `gcc` or `gcip`
+    -- respects TS, so it works in quarto documents
+    {
+        "numToStr/Comment.nvim",
+        version = nil,
+        branch = "master",
+        config = true,
+    },
     -- mini
-    { "tpope/vim-commentary" },
     { "tpope/vim-surround" },
     { "jamessan/vim-gnupg" },
 
@@ -337,80 +328,70 @@ require("lazy").setup({
 
     -- -- copilot
     {
-        "zbirenbaum/copilot.lua",
-        cmd = "Copilot",
-        build = ":Copilot auth",
-        dependencies = "copilot.lua",
-        event = "InsertEnter",
-        config = function()
-            require("copilot").setup({
-                panel = {
-                    enabled = false,
-                    -- auto_refresh = false,
-                    keymap = {
-                        jump_prev = "[[",
-                        jump_next = "]]",
-                        accept = "<CR>",
-                        refresh = "gr",
-                        open = "<M-CR>",
-                    },
-                    layout = {
-                        position = "bottom", -- | top | left | right
-                        ratio = 0.4,
-                    },
-                },
-                suggestion = {
-                    enabled = false,
-                    -- auto_trigger = true,
-                    debounce = 75,
-                    keymap = {
-                        accept = "<M-l>",
-                        accept_word = false,
-                        accept_line = false,
-                        next = "<M-]>",
-                        prev = "<M-[>",
-                        dismiss = "<C-]>",
-                    },
-                },
-                filetypes = {
-                    yaml = false,
-                    markdown = false,
-                    help = false,
-                    gitcommit = false,
-                    gitrebase = false,
-                    hgcommit = false,
-                    svn = false,
-                    cvs = false,
-                    ["."] = false,
-                },
-                copilot_node_command = "node", -- Node.js version must be > 16.x
-                server_opts_overrides = {},
-            })
-        end,
-    },
-
-    {
         "zbirenbaum/copilot-cmp",
+        event = "InsertEnter",
         config = function()
             require("copilot_cmp").setup()
         end,
+        dependencies = {
+            "zbirenbaum/copilot.lua",
+            cmd = "Copilot",
+            config = function()
+                require("copilot").setup()
+            end,
+        },
     },
 
-    -- Black
-    "psf/black",
-
     -- Github
+    {
+        "NeogitOrg/neogit",
+        dependencies = {
+            "nvim-lua/plenary.nvim", -- required
+            "sindrets/diffview.nvim", -- optional - Diff integration
 
-    "tpope/vim-fugitive",
+            -- Only one of these is needed, not both.
+            "nvim-telescope/telescope.nvim", -- optional
+            "ibhagwan/fzf-lua", -- optional
+        },
+        config = true,
+    },
+    { "almo7aya/openingh.nvim" },
 
     -- REPL
+    { "jamespeapen/Nvim-R" },
     {
         "jpalardy/vim-slime",
         init = function()
-            vim.b.slime_cell_delimiter = "# %%"
-            vim.g.slime_target = "tmux"
-            vim.g.slime_bracketed_paste = 1
-            vim.g.slime_default_config = { socket_name = "default", target_pane = "{last}" }
+            vim.b["quarto_is_python_chunk"] = false
+            Quarto_is_in_python_chunk = function()
+                require("otter.tools.functions").is_otter_language_context("python")
+            end
+
+            vim.cmd([[
+            let g:slime_dispatch_ipython_pause = 100
+            function SlimeOverride_EscapeText_quarto(text)
+                call v:lua.Quarto_is_in_python_chunk()
+                if exists('g:slime_python_ipython') && len(split(a:text,"\n")) > 1 && b:quarto_is_python_chunk && !(exists('b:quarto_is_r_mode') && b:quarto_is_r_mode)
+                    return ["%cpaste -q\n", slime#config#resolve("dispatch_ipython_pause"), a:text, "--\n"]
+                else
+                    if exists('b:quarto_is_r_mode') && b:quarto_is_r_mode && b:quarto_is_python_chunk
+                        return [a:text, "\n"]
+                else
+                    let empty_lines_pat = '\(^\|\n\)\zs\(\s*\n\+\)\+'
+                    let no_empty_lines = substitute(a:text, empty_lines_pat, "", "g")
+                    let dedent_pat = '\(^\|\n\)\zs'.matchstr(no_empty_lines, '^\s*')
+                    let dedented_lines = substitute(no_empty_lines, dedent_pat, "", "g")
+                    let except_pat = '\(elif\|else\|except\|finally\)\@!'
+                    let add_eol_pat = '\n\s[^\n]\+\n\zs\ze\('.except_pat.'\S\|$\)'
+                    return substitute(dedented_lines, add_eol_pat, "\n", "g")
+                end
+            end
+            endfunction
+            ]])
+
+            vim.g.slime_target = "neovim"
+            vim.g.slime_python_ipython = 1
+            -- vim.g.slime_bracketed_paste = 1
         end,
     },
 
@@ -419,6 +400,7 @@ require("lazy").setup({
         config = function()
             require("plugins.configs.quarto_conf")
         end,
+
         dependencies = {
             {
                 "jmbuhr/otter.nvim",
@@ -426,26 +408,88 @@ require("lazy").setup({
                 dependencies = {
                     { "neovim/nvim-lspconfig" },
                 },
-                opts = {
-                    buffers = {
-                        set_filetype = true,
-                    },
+                config = function()
+                    local otter = require("otter")
+                    otter.setup({
+                        lsp = {
+                            diagnostics_update_events = { "BuffWritePost" },
+                            hover = {
+                                border = "single",
+                            },
+                        },
+                        buffers = {
+                            set_filetype = true,
+                            write_to_disk = false,
+                        },
+                        strip_wrapping_quote_characters = { "'", '"', "`" },
+                        handle_leading_whitespace = true,
+                    })
+                    local languages = { "python", "markdown", "R", "neorg" }
+                    local completion = true
+                    local diagnostics = true
+                    -- treesitter query to look for embedded languages
+                    -- uses injections if nil or not set
+                    local tsquery = nil
+
+                    vim.api.nvim_create_autocmd({ "BufWinEnter", "BufEnter" }, {
+                        pattern = { "*.ipynb", "*.md", "norg" },
+                        desc = "Otter actions",
+                        callback = function()
+                            local bufnr = vim.api.nvim_get_current_buf()
+                            otter.activate(languages, completion, diagnostics, tsquery)
+                            vim.keymap.set("n", "gd", function()
+                                otter.ask_definition()
+                            end, { buffer = bufnr })
+                            vim.keymap.set("n", "K", function()
+                                otter.ask_hover()
+                            end, { buffer = bufnr })
+                            vim.keymap.set("n", "gr", function()
+                                otter.ask_references()
+                            end, { buffer = bufnr })
+                            vim.keymap.set("x", "<C-r><C-r>", function()
+                                otter.ask_references()
+                            end, { buffer = bufnr })
+                            vim.keymap.set("x", "<C-r>r", function()
+                                otter.ask_references()
+                            end, { buffer = bufnr })
+                            vim.keymap.set("n", "grn", function()
+                                otter.ask_rename()
+                            end, { buffer = bufnr })
+                        end,
+                    })
+                end,
+            },
+        },
+    },
+
+    { -- directly open ipynb files as quarto docuements
+        -- and convert back behind the scenes
+        -- needs:
+        -- pip install jupytext
+        "GCBallesteros/jupytext.nvim",
+        opts = {
+            custom_language_formatting = {
+                python = {
+                    extension = "qmd",
+                    style = "quarto",
+                    force_ft = "quarto", -- you can set whatever filetype you want here
+                },
+                r = {
+                    extension = "qmd",
+                    style = "quarto",
+                    force_ft = "quarto", -- you can set whatever filetype you want here
                 },
             },
-            opts = {
-                lspFeatures = {
-                    languages = {
-                        "r",
-                        "python",
-                        "julia",
-                        "bash",
-                        "lua",
-                        "html",
-                    },
-                },
-            },
-            "hrsh7th/nvim-cmp",
-            "neovim/nvim-lspconfig",
+        },
+    },
+
+    -- Testing
+    {
+        "nvim-neotest/neotest",
+        dependencies = {
+            "nvim-neotest/nvim-nio",
+            "nvim-lua/plenary.nvim",
+            "antoinemadec/FixCursorHold.nvim",
             "nvim-treesitter/nvim-treesitter",
         },
     },

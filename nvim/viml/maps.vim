@@ -5,15 +5,14 @@
 " noremap <Right> <Nop>
 
 " Windows
-nmap <silent> <Leader>w :wincmd k<CR>
-nmap <silent> <Leader>s :wincmd j<CR>
-nmap <silent> <Leader>a :wincmd h<CR>
-nmap <silent> <Leader>d :wincmd l<CR>
-nmap <silent> <Leader>m <C-W>m
+" nmap <silent> <Leader>ww :wincmd k<CR>
+" nmap <silent> <Leader>ws :wincmd j<CR>
+" nmap <silent> <Leader>wa :wincmd h<CR>
+" nmap <silent> <Leader>wd :wincmd l<CR>
 
 " Tabs
-nmap <silent> <Leader>e :tabn<CR>
-nmap <silent> <Leader>q :tabp<CR>
+" nmap <silent> <Leader>e :tabn<CR>
+" nmap <silent> <Leader>q :tabp<CR>
 
 " Common typos
 nmap :Wq :wq
@@ -62,16 +61,18 @@ noremap <Leader>tv :vsp<CR><C-w><C-w>:term<CR>
 inoremap <Leader>tv <Esc>:vsp<CR><C-w><C-w>:term<CR>
 
 " Quickly create a new terminal in a horizontal split
-tnoremap <Leader>th <C-\><C-n>:sp<CR><C-w><C-w>:term<CR>
-noremap <Leader>th :sp<CR><C-w><C-w>:term<CR>
-inoremap <Leader>th <Esc>:sp<CR><C-w><C-w>:term<CR>
+tnoremap <Leader>tx <C-\><C-n>:sp<CR><C-w><C-w>:term<CR>
+noremap <Leader>tx:sp<CR><C-w><C-w>:term<CR>
+inoremap <Leader>tx <Esc>:sp<CR><C-w><C-w>:term<CR>
 
 
 " Toggle search highlight
-nnoremap <silent> <C-C> :if (&hlsearch == 1) \| set nohlsearch \| else \| set hlsearch \| endif<cr>
+" nnoremap <silent> <C-C> :if (&hlsearch == 1) \| set nohlsearch \| else \| set hlsearch \| endif<cr>
 
 " Do not make Q go to ex-mode
 nnoremap Q <Nop>
+
+xnoremap("<leader>p", "\"_dP")
 
 " NvimTree
 function! ToggleNvimTree()

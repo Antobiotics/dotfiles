@@ -268,7 +268,7 @@ tmux_conf_theme_clock_style='24'
 #   - false (default)
 # on macOS, this requires installing reattach-to-user-namespace, see README.md
 # on Linux, this requires xsel or xclip
-tmux_conf_copy_to_os_clipboard=false
+tmux_conf_copy_to_os_clipboard=true
 
 # -- user customizations -------------------------------------------------------
 # this is the place to override or undo settings
@@ -284,13 +284,6 @@ set -g mouse on
 set -g status-keys vi
 set -g mode-keys vi
 
-# replace C-b by C-a instead of using both prefixes
-# set -gu prefix2
-# unbind C-a
-# unbind C-b
-# set -g prefix C-a
-# bind C-a send-prefix
-
 bind o send-keys -R; display "Cleared"
 
 bind -n S-Left  previous-window
@@ -303,13 +296,16 @@ bind-key -n C-S-Right swap-window -d -t +1
 bind c new-window -c '#{pane_current_path}'
 
 #open panel with current path
-bind v split-window -h -c '#{pane_current_path}'
-bind s split-window -v -c '#{pane_current_path}'
+bind _ split-window -h -c '#{pane_current_path}'
+bind - split-window -v -c '#{pane_current_path}'
 
 bind + run 'cut -c3- ~/.tmux.conf | sh -s _maximize_pane "* #{session_name}" #D'
 bind -n S-Up run 'cut -c3- ~/.tmux.conf | sh -s _maximize_pane "#{session_name}" #D'
 
 # -- plugins -------------------------------------------------------------------
 set -g @plugin 'tmux-plugins/tmux-resurrect'
-
-set -ga terminal-overrides ",xterm-256color:Tc"
+#
+set -g default-terminal "xterm-256color"
+# set -g default-terminal "xterm-kitty"
+set-option -ga terminal-overrides ",xterm-256color:Tc"
+set-option -g default-shell /bin/zsh

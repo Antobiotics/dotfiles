@@ -18,8 +18,6 @@ plugins=(git
     rust
     golang
     fzf
-    zsh-syntax-highlighting
-    zsh-completions
 )
 
 setopt CORRECT

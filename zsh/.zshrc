@@ -17,6 +17,7 @@ plugins=(git
     kubectl
     rust
     golang
+    rye
     fzf
     zsh-syntax-highlighting
     zsh-completions
@@ -37,22 +38,21 @@ ZSH_AUTOSUGGEST_MANUAL_REBIND=1
 COMPLETION_WAITING_DOTS=true
 DISABLE_UNTRACKED_FILES_DIRTY=true
 
+source_if_exists $HOME/.env
+source_if_exists $HOME/.aliases
+source_if_exists $HOME/.dice.sh
+
 platform=$(uname)
 export ZPLUG_HOME=$HOME/.zplug
 if [[ "$platform" != "Linux" ]]; then
+    export PATH="/opt/homebrew/bin:$PATH"
     export ZPLUG_HOME=$(brew --prefix)/opt/zplug
 fi
 
 source_if_exists $ZPLUG_HOME/init.zsh
 source_if_exists $ZSH/oh-my-zsh.sh
 
-source_if_exists $HOME/.env
-source_if_exists $HOME/.aliases
-source_if_exists $HOME/.dice.sh
-
-
 fpath=($ZSH/completions $fpath)
-
 
 zplug "pschmitt/emoji-fzf.zsh"
 zplug "romkatv/powerlevel10k", as:theme, depth:1
@@ -88,6 +88,7 @@ source_if_exists "$HOME/.cargo/env"
 
 eval "$(fzf --zsh)"
 export FZF_COMPLETION_TRIGGER='**'
+export FZF_DEFAULT_COMMAND='rg --files --hidden'
 export BAT_THEME="Solarized (light)"
 
 _fzf_compgen_path() {
@@ -123,23 +124,6 @@ PERL_LOCAL_LIB_ROOT="$HOME/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"
 PERL_MB_OPT="--install_base \"$HOME/perl5\""; export PERL_MB_OPT;
 PERL_MM_OPT="INSTALL_BASE=$HOME/perl5"; export PERL_MM_OPT;
 
-export PATH="$HOME/.poetry/bin:$PATH"
-export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
-
-export GPG_TTY=$(tty)
-export TERM=xterm-256color
-
-if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then . $HOME/.nix-profile/etc/profile.d/nix.sh; fi
 [[ ! -r $HOME/.opam/opam-init/init.zsh ]] || source $HOME/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
-
-if [[ "$OSTYPE" == "darwin"* ]]; then
-    eval "$(/opt/homebrew/bin/brew shellenv)"
-    PATH="$(brew --prefix)/opt/findutils/libexec/gnubin:$PATH"
-    PATH="$(brew --prefix)/opt/make/libexec/gnubin:$PATH"
-    PATH="$(brew --prefix)/opt/gnu-sed/libexec/gnubin:$PATH"
-    PATH="$(brew --prefix)/opt/coreutils/libexec/gnubin:$PATH"
-    PATH="/opt/homebrew/bin:$PATH"
-fi
-
-export PATH="/usr/local/opt/libpq/bin:$PATH"
-export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then . $HOME/.nix-profile/etc/profile.d/nix.sh; fi
+source "$HOME/.rye/env"

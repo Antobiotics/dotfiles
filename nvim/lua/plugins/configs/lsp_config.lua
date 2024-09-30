@@ -2,36 +2,6 @@ local vim = vim
 local lspconfig = require("lspconfig")
 local cmp_nvim_lsp = require("cmp_nvim_lsp")
 local util = require("lspconfig.util")
-local path = util.path
-
-local pyenv_path = function(workspace)
-    -- Use activated virtualenv.
-    if vim.env.VIRTUAL_ENV then
-        return path.join(vim.env.VIRTUAL_ENV, "bin", "python"), "virtual env"
-    end
-
-    -- Find and use virtualenv in workspace directory.
-    for _, pattern in ipairs({ "*", ".*" }) do
-        local match = vim.fn.glob(path.join(workspace, pattern, "pyvenv.cfg"))
-        local sep = "/"
-        local py = "bin" .. sep .. "python"
-        if match ~= "" then
-            print("found", match)
-            print(vim.fn.glob(path.join(workspace, pattern)))
-            match = string.gsub(match, "pyvenv.cfg", py)
-            return match, string.format("venv base folder: %s", match)
-        end
-        match = vim.fn.glob(path.join(workspace, pattern, "poetry.lock"))
-        if match ~= "" then
-            local venv_base_folder = vim.fn.trim(vim.fn.system("poetry env info -p"))
-            return path.join(venv_base_folder, "bin", "python"),
-                string.format("venv base folder: %s", venv_base_folder)
-        end
-    end
-
-    -- Fallback to system Python.
-    return exepath("python3") or exepath("python") or "python", "fallback to system python path"
-end
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
@@ -136,26 +106,20 @@ lspconfig.r_language_server.setup({
 lspconfig.pyright.setup({
     capabilities = capabilities,
     on_attach = custom_attach,
-    -- before_init = function(new_config, new_root_dir)
-    --     local python_path = pyenv_path(new_root_dir)
-    --     new_config.settings.python.pythonPath = python_path
-    -- end,
     root_dir = util.root_pattern(
-        ".git",
         "setup.py",
         "setup.cfg",
         "pyproject.toml",
         "poetry.lock",
         "requirements.txt",
-        "Pipfile"
+        "Pipfile",
+        ".git"
     ),
     on_new_config = function(config, _)
-        local python_path
+        local python_path = "python"
         local virtual_env = vim.env.VIRTUAL_ENV or vim.env.PYENV_VIRTUAL_ENV
         if virtual_env then
             python_path = require("lspconfig.util").path.join(virtual_env, "bin", "python")
-        else
-            python_path = "python"
         end
         config.settings.python.pythonPath = python_path
     end,

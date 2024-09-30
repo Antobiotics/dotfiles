@@ -17,7 +17,6 @@ alias ptpython="python -m ptpython"
 
 # Find
 alias fr='find . -name'
-alias fh='find $HOME -name'
 alias rg="rg --hidden --glob '!.git'"
 
 # Grep

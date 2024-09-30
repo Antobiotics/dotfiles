@@ -2,6 +2,7 @@ local vim = vim
 vim.opt.completeopt = "menu,menuone,noselect"
 
 local cmp = require("cmp")
+local luasnip = require("luasnip")
 
 local has_words_before = function()
     local line, col = unpack(vim.api.nvim_win_get_cursor(0))
@@ -20,9 +21,6 @@ end)
 
 -- nvim-cmp setup
 cmp.setup({
-    completion = {
-        autocomplete = false,
-    },
     snippet = {
         expand = function(args)
             require("luasnip").lsp_expand(args.body)
@@ -83,32 +81,20 @@ cmp.setup({
             behavior = cmp.ConfirmBehavior.Replace,
             select = true,
         }),
-        ["<Tab>"] = function(fallback)
-            if not cmp.select_next_item() then
-                if vim.bo.buftype ~= "prompt" and has_words_before() then
-                    cmp.complete()
-                else
-                    fallback()
-                end
+        ["<Tab>"] = vim.schedule_wrap(function(fallback)
+            if cmp.visible() and has_words_before() then
+                cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+            else
+                fallback()
             end
-        end,
-
-        ["<S-Tab>"] = function(fallback)
-            if not cmp.select_prev_item() then
-                if vim.bo.buftype ~= "prompt" and has_words_before() then
-                    cmp.complete()
-                else
-                    fallback()
-                end
+        end),
+        ["S-<Tab>"] = vim.schedule_wrap(function(fallback)
+            if cmp.visible() and has_words_before() then
+                cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
+            else
+                fallback()
             end
-        end,
-        -- ["<Tab>"] = vim.schedule_wrap(function(fallback)
-        --     if cmp.visible() and has_words_before() then
-        --         cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
-        --     else
-        --         fallback()
-        --     end
-        -- end),
+        end),
     },
     sources = {
         { name = "copilot" },

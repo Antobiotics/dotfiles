@@ -87,7 +87,7 @@ require("mason-lspconfig").setup({
 local language_servers = {
     "lua_ls",
     "rust_analyzer",
-    "ruff_lsp",
+    "ruff",
     "sqlls",
     "bashls",
     "r_language_server",
@@ -133,6 +133,17 @@ lspconfig.r_language_server.setup({
     },
 })
 
+local py_root_dir = util.root_pattern(
+    "setup.py",
+    "setup.cfg",
+    "pyproject.toml",
+    "poetry.lock",
+    "requirements.txt",
+    "requirements.lock",
+    "Pipfile",
+    ".git"
+)
+
 lspconfig.pyright.setup({
     capabilities = capabilities,
     on_attach = custom_attach,
@@ -142,6 +153,7 @@ lspconfig.pyright.setup({
         "pyproject.toml",
         "poetry.lock",
         "requirements.txt",
+        "requirements.lock",
         "Pipfile",
         ".git"
     ),
@@ -150,6 +162,12 @@ lspconfig.pyright.setup({
         local virtual_env = vim.env.VIRTUAL_ENV or vim.env.PYENV_VIRTUAL_ENV
         if virtual_env then
             python_path = require("lspconfig.util").path.join(virtual_env, "bin", "python")
+        else
+            -- if there is a .venv directory in the project root_dir, use that
+            --
+            if vim.fn.isdirectory(".venv") == 1 then
+                python_path = path.join(".venv", "bin", "python")
+            end
         end
         config.settings.python.pythonPath = python_path
     end,
@@ -167,7 +185,7 @@ lspconfig.pyright.setup({
     },
 })
 
-lspconfig.ruff_lsp.setup({
+lspconfig.ruff.setup({
     on_attach = custom_attach,
     capabilities = capabilities,
     flags = lsp_flags,
@@ -189,4 +207,27 @@ end
 lspconfig.helm_ls.setup({
     filetypes = { "helm" },
     cmd = { "helm_ls", "serve" },
+})
+
+local lsp_path = vim.env.NIL_PATH or "target/debug/nil"
+local nil_caps = vim.tbl_deep_extend(
+    "force",
+    vim.lsp.protocol.make_client_capabilities(),
+    require("cmp_nvim_lsp").default_capabilities(),
+    -- File watching is disabled by default for neovim.
+    -- See: https://github.com/neovim/neovim/pull/22405
+    { workspace = { didChangeWatchedFiles = { dynamicRegistration = true } } }
+)
+lspconfig.nil_ls.setup({
+    autostart = true,
+    capabilities = nil_caps,
+    cmd = { "nil" },
+    settings = {
+        ["nil"] = {
+            testSetting = 42,
+            formatting = {
+                command = { "nixfmt" },
+            },
+        },
+    },
 })

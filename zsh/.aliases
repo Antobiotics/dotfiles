@@ -65,6 +65,7 @@ alias weather='curl wttr.in'
 alias moon='curl wttr.in/Moon'
 alias timeout='gtimeout'
 alias myip='dig +short myip.opendns.com @resolver1.opendns.com'
+alias kubectl="minikube kubectl --"
 
 alias audio_restart='launchctl stop com.apple.audio.coreaudiod && sudo launchctl start com.apple.audio.coreaudio'
 

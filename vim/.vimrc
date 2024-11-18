@@ -468,8 +468,6 @@ highlight clear CursorColumn
 highlight CursorColumn term=none cterm=none
 set cursorcolumn
 
-
-
 " Implement cursor toggle...
 let g:cursorcolumn_visible = 0
 function! Toggle_CursorColumn (requested_state)

@@ -131,6 +131,28 @@ require("lazy").setup({
         },
     },
 
+    {
+        "kristijanhusak/vim-dadbod-ui",
+        dependencies = {
+            { "tpope/vim-dadbod", lazy = true },
+            {
+                "kristijanhusak/vim-dadbod-completion",
+                ft = { "sql", "mysql", "plsql" },
+                lazy = true,
+            }, -- Optional
+        },
+        cmd = {
+            "DBUI",
+            "DBUIToggle",
+            "DBUIAddConnection",
+            "DBUIFindBuffer",
+        },
+        init = function()
+            -- Your DBUI configuration
+            vim.g.db_ui_use_nerd_fonts = 1
+        end,
+    },
+
     -- Completion
     {
         "hrsh7th/nvim-cmp",
@@ -150,7 +172,7 @@ require("lazy").setup({
     },
 
     -- Snippets
-    "rafamadriz/friendly-snippets",
+    { "rafamadriz/friendly-snippets" },
 
     {
         "L3MON4D3/LuaSnip",
@@ -177,6 +199,7 @@ require("lazy").setup({
                 html = { "prettier" },
                 javascript = { "prettier" },
                 typescript = { "prettier" },
+                nix = { "nixfmt" },
                 ["*"] = { "trim_whitespace", "codespell" },
             },
             -- This can also be a function that returns the table.
@@ -196,7 +219,6 @@ require("lazy").setup({
         "folke/trouble.nvim",
         dependencies = { "nvim-tree/nvim-web-devicons" },
         config = function()
-
             require("plugins.configs.trouble_conf")
         end,
         cmd = "Trouble",
@@ -227,8 +249,13 @@ require("lazy").setup({
                 desc = "Quickfix List (Trouble)",
             },
             {
-                "gr",
+                "gR",
                 "<cmd>Trouble lsp toggle focus=true auto_refresh=false<cr>",
+                desc = "References (Trouble)",
+            },
+            {
+                "gr",
+                "<cmd>Trouble lsp_references toggle focus=true auto_refresh=false<cr>",
                 desc = "References (Trouble)",
             },
         },
@@ -313,18 +340,18 @@ require("lazy").setup({
     { "jamessan/vim-gnupg" },
 
     -- GPT
-    {
-        "jackMort/ChatGPT.nvim",
-        event = "VeryLazy",
-        config = function()
-            require("plugins.configs.chatgpt_conf")
-        end,
-        dependencies = {
-            "MunifTanjim/nui.nvim",
-            "nvim-lua/plenary.nvim",
-            "nvim-telescope/telescope.nvim",
-        },
-    },
+    -- {
+    --     "jackMort/ChatGPT.nvim",
+    --     event = "VeryLazy",
+    --     config = function()
+    --         require("plugins.configs.chatgpt_conf")
+    --     end,
+    --     dependencies = {
+    --         "MunifTanjim/nui.nvim",
+    --         "nvim-lua/plenary.nvim",
+    --         "nvim-telescope/telescope.nvim",
+    --     },
+    -- },
 
     -- -- copilot
     {
@@ -432,7 +459,7 @@ require("lazy").setup({
                     local tsquery = nil
 
                     vim.api.nvim_create_autocmd({ "BufWinEnter", "BufEnter" }, {
-                        pattern = { "*.ipynb", "*.md", "norg" },
+                        pattern = { "*.ipynb", "*.md", "*.qmd", "norg" },
                         desc = "Otter actions",
                         callback = function()
                             local bufnr = vim.api.nvim_get_current_buf()

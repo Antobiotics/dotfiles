@@ -32,6 +32,9 @@ nmap :Tc :tabclose
 nmap :Vsp :vsp
 nmap :Sp :sp
 
+nmap ]b<CR> :bnext
+nmap [b<CR> :bprev
+
 " copy/pasta
 " Paste from the system clipboard(in normal mode)
 nnoremap <silent><leader>y "*y

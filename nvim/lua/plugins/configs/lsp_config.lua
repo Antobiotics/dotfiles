@@ -1,6 +1,5 @@
 local vim = vim
 local lspconfig = require("lspconfig")
-local cmp_nvim_lsp = require("cmp_nvim_lsp")
 local util = require("lspconfig.util")
 
 -- Use an on_attach function to only map the following keys
@@ -42,10 +41,6 @@ local custom_attach = function(client, bufnr)
     buf_set_keymap("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<cr>", opts)
     buf_set_keymap("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<cr>", opts)
 
-    require("lsp_signature").on_attach({
-        bind = true,
-        hint_enable = false,
-    }, bufnr)
     client.server_capabilities.document_formatting = true
 end
 
@@ -57,7 +52,7 @@ require("mason-lspconfig").setup({
 local language_servers = {
     "lua_ls",
     "rust_analyzer",
-    "ruff_lsp",
+    "ruff",
     "sqlls",
     "bashls",
     "r_language_server",
@@ -70,20 +65,16 @@ require("mason-lspconfig").setup({
 
 require("mason-lspconfig").setup_handlers({
     function(server)
-        local capabilities = vim.lsp.protocol.make_client_capabilities()
-        capabilities = cmp_nvim_lsp.default_capabilities(capabilities)
-        capabilities.textDocument.completion.completionItem.snippetSupport = true
+        local capabilities = require("blink.cmp").get_lsp_capabilities()
         local opt = {
             capabilities = capabilities,
             on_attach = custom_attach,
         }
-        require("lspconfig")[server].setup(opt)
+        lspconfig[server].setup(opt)
     end,
 })
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = cmp_nvim_lsp.default_capabilities(capabilities)
-capabilities.textDocument.completion.completionItem.snippetSupport = true
+local capabilities = require("blink.cmp").get_lsp_capabilities()
 
 local lsp_flags = {
     allow_incremental_sync = true,
@@ -137,7 +128,7 @@ lspconfig.pyright.setup({
     },
 })
 
-lspconfig.ruff_lsp.setup({
+lspconfig.ruff.setup({
     on_attach = custom_attach,
     capabilities = capabilities,
     flags = lsp_flags,

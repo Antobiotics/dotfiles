@@ -47,17 +47,6 @@ require("lazy").setup({
     },
 
     {
-        "szw/vim-maximizer",
-        keys = {
-            {
-                "<leader>sm",
-                "<cmd>MaximizerToggle<CR>",
-                desc = "Maximize/minimize a split",
-            },
-        },
-    },
-
-    {
         "norcalli/nvim-colorizer.lua",
         event = "BufRead",
         config = function()
@@ -79,56 +68,6 @@ require("lazy").setup({
         config = function()
             require("plugins.configs.lualine_conf")
         end,
-    },
-
-    -- DBT
-    {
-        "cfmeyers/dbt.nvim",
-        dependencies = {
-            "nvim-lua/plenary.nvim",
-            "nvim-telescope/telescope.nvim",
-            "rcarriga/nvim-notify",
-        },
-    },
-
-    {
-        "PedramNavid/dbtpal",
-        config = function()
-            local dbt = require("dbtpal")
-            dbt.setup({
-                -- Path to the dbt executable
-                path_to_dbt = "dbt",
-
-                -- Path to the dbt project, if blank, will auto-detect
-                -- using currently open buffer for all sql,yml, and md files
-                path_to_dbt_project = "",
-
-                -- Path to dbt profiles directory
-                path_to_dbt_profiles_dir = vim.fn.expand("~/.dbt"),
-
-                -- Search for ref/source files in macros and models folders
-                extended_path_search = true,
-
-                -- Prevent modifying sql files in target/(compiled|run) folders
-                protect_compiled_files = true,
-            })
-
-            -- Setup key mappings
-            vim.keymap.set("n", "<leader>drm", dbt.run)
-            vim.keymap.set("n", "<leader>drc", dbt.run_children)
-            vim.keymap.set("n", "<leader>drp", dbt.run_parents)
-            vim.keymap.set("n", "<leader>drf", dbt.run_family)
-            vim.keymap.set("n", "<leader>dra", dbt.run_all)
-            vim.keymap.set("n", "<leader>drt", dbt.test)
-            vim.keymap.set("n", "<leader>dm", require("dbtpal.telescope").dbt_picker)
-
-            -- Enable Telescope Extension
-            -- require("telescope").load_extension("dbt_pal")
-        end,
-        requires = { { "nvim-lua/plenary.nvim" }, { "nvim-telescope/telescope.nvim" } },
-        dependencies = {
-            "nvim-lua/plenary.nvim",
-        },
     },
 
     {
@@ -337,6 +276,7 @@ require("lazy").setup({
     },
     -- mini
     { "tpope/vim-surround" },
+    { "adelarsq/vim-matchit" },
     { "jamessan/vim-gnupg" },
 
     -- GPT

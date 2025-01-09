@@ -61,6 +61,8 @@ alias gcaa='git commit -a --amend -C HEAD'
 alias gca='git commit --amend -C HEAD'
 alias gam='git amend'
 
+alias rr='rye run'
+
 alias weather='curl wttr.in'
 alias moon='curl wttr.in/Moon'
 alias timeout='gtimeout'

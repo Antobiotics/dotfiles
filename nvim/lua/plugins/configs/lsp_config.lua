@@ -1,6 +1,5 @@
 local vim = vim
 local lspconfig = require("lspconfig")
-local cmp_nvim_lsp = require("cmp_nvim_lsp")
 local util = require("lspconfig.util")
 local path = util.path
 
@@ -72,10 +71,6 @@ local custom_attach = function(client, bufnr)
     buf_set_keymap("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<cr>", opts)
     buf_set_keymap("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<cr>", opts)
 
-    require("lsp_signature").on_attach({
-        bind = true,
-        hint_enable = false,
-    }, bufnr)
     client.server_capabilities.document_formatting = true
 end
 
@@ -100,20 +95,16 @@ require("mason-lspconfig").setup({
 
 require("mason-lspconfig").setup_handlers({
     function(server)
-        local capabilities = vim.lsp.protocol.make_client_capabilities()
-        capabilities = cmp_nvim_lsp.default_capabilities(capabilities)
-        capabilities.textDocument.completion.completionItem.snippetSupport = true
+        local capabilities = require("blink.cmp").get_lsp_capabilities()
         local opt = {
             capabilities = capabilities,
             on_attach = custom_attach,
         }
-        require("lspconfig")[server].setup(opt)
+        lspconfig[server].setup(opt)
     end,
 })
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = cmp_nvim_lsp.default_capabilities(capabilities)
-capabilities.textDocument.completion.completionItem.snippetSupport = true
+local capabilities = require("blink.cmp").get_lsp_capabilities()
 
 local lsp_flags = {
     allow_incremental_sync = true,
@@ -213,7 +204,7 @@ local lsp_path = vim.env.NIL_PATH or "target/debug/nil"
 local nil_caps = vim.tbl_deep_extend(
     "force",
     vim.lsp.protocol.make_client_capabilities(),
-    require("cmp_nvim_lsp").default_capabilities(),
+    require("blink.cmp").get_lsp_capabilities(),
     -- File watching is disabled by default for neovim.
     -- See: https://github.com/neovim/neovim/pull/22405
     { workspace = { didChangeWatchedFiles = { dynamicRegistration = true } } }

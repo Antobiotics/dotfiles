@@ -2,6 +2,8 @@
 local vim = vim
 local opt = vim.opt
 
+opt.completeopt = "menuone,noinsert,noselect"
+
 opt.clipboard = "unnamedplus"
 opt.mouse = "a"
 opt.foldmethod = "manual"

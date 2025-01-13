@@ -32,6 +32,9 @@ nmap :Tc :tabclose
 nmap :Vsp :vsp
 nmap :Sp :sp
 
+nmap ]b :bnext<CR>
+nmap [b :bprev<CR>
+
 " copy/pasta
 " Paste from the system clipboard(in normal mode)
 nnoremap <silent><leader>y "*y
@@ -67,7 +70,7 @@ inoremap <Leader>tx <Esc>:sp<CR><C-w><C-w>:term<CR>
 
 
 " Toggle search highlight
-" nnoremap <silent> <C-C> :if (&hlsearch == 1) \| set nohlsearch \| else \| set hlsearch \| endif<cr>
+nnoremap <silent> <Leader>/ :if (&hlsearch == 1) \| set nohlsearch \| else \| set hlsearch \| endif<cr>
 
 " Do not make Q go to ex-mode
 nnoremap Q <Nop>

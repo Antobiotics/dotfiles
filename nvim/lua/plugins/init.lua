@@ -47,17 +47,6 @@ require("lazy").setup({
     },
 
     {
-        "szw/vim-maximizer",
-        keys = {
-            {
-                "<leader>sm",
-                "<cmd>MaximizerToggle<CR>",
-                desc = "Maximize/minimize a split",
-            },
-        },
-    },
-
-    {
         "norcalli/nvim-colorizer.lua",
         event = "BufRead",
         config = function()
@@ -81,81 +70,108 @@ require("lazy").setup({
         end,
     },
 
-    -- DBT
     {
-        "cfmeyers/dbt.nvim",
+        "kristijanhusak/vim-dadbod-ui",
         dependencies = {
-            "nvim-lua/plenary.nvim",
-            "nvim-telescope/telescope.nvim",
-            "rcarriga/nvim-notify",
+            { "tpope/vim-dadbod", lazy = true },
+            {
+                "kristijanhusak/vim-dadbod-completion",
+                ft = { "sql", "mysql", "plsql" },
+                lazy = true,
+            }, -- Optional
         },
-    },
-
-    {
-        "PedramNavid/dbtpal",
-        config = function()
-            local dbt = require("dbtpal")
-            dbt.setup({
-                -- Path to the dbt executable
-                path_to_dbt = "dbt",
-
-                -- Path to the dbt project, if blank, will auto-detect
-                -- using currently open buffer for all sql,yml, and md files
-                path_to_dbt_project = "",
-
-                -- Path to dbt profiles directory
-                path_to_dbt_profiles_dir = vim.fn.expand("~/.dbt"),
-
-                -- Search for ref/source files in macros and models folders
-                extended_path_search = true,
-
-                -- Prevent modifying sql files in target/(compiled|run) folders
-                protect_compiled_files = true,
-            })
-
-            -- Setup key mappings
-            vim.keymap.set("n", "<leader>drm", dbt.run)
-            vim.keymap.set("n", "<leader>drc", dbt.run_children)
-            vim.keymap.set("n", "<leader>drp", dbt.run_parents)
-            vim.keymap.set("n", "<leader>drf", dbt.run_family)
-            vim.keymap.set("n", "<leader>dra", dbt.run_all)
-            vim.keymap.set("n", "<leader>drt", dbt.test)
-            vim.keymap.set("n", "<leader>dm", require("dbtpal.telescope").dbt_picker)
-
-            -- Enable Telescope Extension
-            -- require("telescope").load_extension("dbt_pal")
+        cmd = {
+            "DBUI",
+            "DBUIToggle",
+            "DBUIAddConnection",
+            "DBUIFindBuffer",
+        },
+        init = function()
+            -- Your DBUI configuration
+            vim.g.db_ui_use_nerd_fonts = 1
         end,
-        requires = { { "nvim-lua/plenary.nvim" }, { "nvim-telescope/telescope.nvim" } },
-        dependencies = {
-            "nvim-lua/plenary.nvim",
-        },
     },
 
     -- Completion
     {
-        "hrsh7th/nvim-cmp",
-        config = function()
-            require("plugins.configs.nvim_cmp")
-        end,
+        "saghen/blink.cmp",
+        -- optional: provides snippets for the snippet source
         dependencies = {
-            "hrsh7th/cmp-nvim-lsp",
-            "saadparwaiz1/cmp_luasnip",
-            "L3MON4D3/LuaSnip",
             "rafamadriz/friendly-snippets",
-            "hrsh7th/cmp-buffer",
-            "hrsh7th/cmp-path",
-            "hrsh7th/cmp-emoji",
-            "jalvesaq/cmp-nvim-r",
+            "moyiz/blink-emoji.nvim",
+            "giuxtaposition/blink-cmp-copilot",
         },
+
+        -- use a release tag to download pre-built binaries
+        version = "*",
+        -- AND/OR build from source, requires nightly: https://rust-lang.github.io/rustup/concepts/channels.html#working-with-nightly-rust
+        -- build = 'cargo build --release',
+        -- If you use nix, you can build from source using latest nightly rust with:
+        -- build = 'nix run .#build-plugin',
+
+        ---@module 'blink.cmp'
+        ---@type blink.cmp.Config
+        opts = {
+            -- 'default' for mappings similar to built-in completion
+            -- 'super-tab' for mappings similar to vscode (tab to accept, arrow keys to navigate)
+            -- 'enter' for mappings similar to 'super-tab' but with 'enter' to accept
+            -- See the full "keymap" documentation for information on defining your own keymap.
+            keymap = { preset = "default" },
+            signature = { enabled = true },
+
+            completion = {
+                documentation = {
+                    auto_show = true,
+                    auto_show_delay_ms = 500,
+                },
+                trigger = {
+                    -- show_on_keyword = true,
+                    -- show_on_trigger_character = true,
+                    show_on_insert_on_trigger_character = true,
+                },
+                menu = {
+                    auto_show = function(ctx)
+                        return ctx.mode ~= "cmdline"
+                            or not vim.tbl_contains({ "/", "?" }, vim.fn.getcmdtype())
+                    end,
+                },
+            },
+
+            appearance = {
+                -- Sets the fallback highlight groups to nvim-cmp's highlight groups
+                -- Useful for when your theme doesn't support blink.cmp
+                -- Will be removed in a future release
+                use_nvim_cmp_as_default = true,
+                -- Set to 'mono' for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
+                -- Adjusts spacing to ensure icons are aligned
+                nerd_font_variant = "mono",
+            },
+
+            -- Default list of enabled providers defined so that you can extend it
+            -- elsewhere in your config, without redefining it, due to `opts_extend`
+            sources = {
+                default = { "lsp", "path", "snippets", "buffer", "copilot", emoji },
+                providers = {
+                    copilot = {
+                        name = "copilot",
+                        module = "blink-cmp-copilot",
+                        score_offset = 100,
+                        async = true,
+                    },
+                    emoji = {
+                        module = "blink-emoji",
+                        name = "Emoji",
+                        score_offset = 15, -- Tune by preference
+                        opts = { insert = true }, -- Insert emoji (default) or complete its name
+                    },
+                },
+            },
+        },
+        opts_extend = { "sources.default" },
     },
 
     -- Snippets
-    "rafamadriz/friendly-snippets",
-
-    {
-        "L3MON4D3/LuaSnip",
-        build = "make install_jsregexp",
-    },
+    { "rafamadriz/friendly-snippets" },
 
     -- Linting
     {
@@ -177,6 +193,7 @@ require("lazy").setup({
                 html = { "prettier" },
                 javascript = { "prettier" },
                 typescript = { "prettier" },
+                nix = { "nixfmt" },
                 ["*"] = { "trim_whitespace", "codespell" },
             },
             -- This can also be a function that returns the table.
@@ -226,8 +243,13 @@ require("lazy").setup({
                 desc = "Quickfix List (Trouble)",
             },
             {
-                "gr",
+                "gR",
                 "<cmd>Trouble lsp toggle focus=true auto_refresh=false<cr>",
+                desc = "References (Trouble)",
+            },
+            {
+                "gr",
+                "<cmd>Trouble lsp_references toggle focus=true auto_refresh=false<cr>",
                 desc = "References (Trouble)",
             },
         },
@@ -252,19 +274,11 @@ require("lazy").setup({
         dependencies = {
             { "williamboman/mason.nvim", config = true },
             "williamboman/mason-lspconfig.nvim",
+            "saghen/blink.cmp",
             "mason-lspconfig.nvim",
-            "lsp_signature.nvim",
             "folke/neodev.nvim",
         },
         lazy = false,
-    },
-
-    {
-        "ray-x/lsp_signature.nvim",
-        event = "VeryLazy",
-        config = function()
-            require("plugins.configs.lsp_signature_conf")
-        end,
     },
 
     -- treesitter
@@ -298,6 +312,7 @@ require("lazy").setup({
             require("marks").setup({})
         end,
     },
+
     -- commenting with e.g. `gcc` or `gcip`
     -- respects TS, so it works in quarto documents
     {
@@ -308,36 +323,33 @@ require("lazy").setup({
     },
     -- mini
     { "tpope/vim-surround" },
+    { "adelarsq/vim-matchit" },
     { "jamessan/vim-gnupg" },
 
     -- GPT
-    {
-        "jackMort/ChatGPT.nvim",
-        event = "VeryLazy",
-        config = function()
-            require("plugins.configs.chatgpt_conf")
-        end,
-        dependencies = {
-            "MunifTanjim/nui.nvim",
-            "nvim-lua/plenary.nvim",
-            "nvim-telescope/telescope.nvim",
-        },
-    },
+    -- {
+    --     "jackMort/ChatGPT.nvim",
+    --     event = "VeryLazy",
+    --     config = function()
+    --         require("plugins.configs.chatgpt_conf")
+    --     end,
+    --     dependencies = {
+    --         "MunifTanjim/nui.nvim",
+    --         "nvim-lua/plenary.nvim",
+    --         "nvim-telescope/telescope.nvim",
+    --     },
+    -- },
 
-    -- copilot
+    -- -- copilot
     {
-        "zbirenbaum/copilot-cmp",
-        event = "InsertEnter",
+        "zbirenbaum/copilot.lua",
+        cmd = "Copilot",
         config = function()
-            require("copilot_cmp").setup()
+            require("copilot").setup({
+                suggestion = { enabled = false },
+                panel = { enabled = false },
+            })
         end,
-        dependencies = {
-            "zbirenbaum/copilot.lua",
-            cmd = "Copilot",
-            config = function()
-                require("copilot").setup()
-            end,
-        },
     },
 
     -- Github
@@ -430,7 +442,7 @@ require("lazy").setup({
                     local tsquery = nil
 
                     vim.api.nvim_create_autocmd({ "BufWinEnter", "BufEnter" }, {
-                        pattern = { "*.ipynb", "*.md", "norg" },
+                        pattern = { "*.ipynb", "*.md", "*.qmd", "norg" },
                         desc = "Otter actions",
                         callback = function()
                             local bufnr = vim.api.nvim_get_current_buf()

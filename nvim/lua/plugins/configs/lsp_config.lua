@@ -103,6 +103,7 @@ lspconfig.pyright.setup({
         "pyproject.toml",
         "poetry.lock",
         "requirements.txt",
+        "requirements.lock",
         "Pipfile",
         ".git"
     ),
@@ -111,6 +112,12 @@ lspconfig.pyright.setup({
         local virtual_env = vim.env.VIRTUAL_ENV or vim.env.PYENV_VIRTUAL_ENV
         if virtual_env then
             python_path = require("lspconfig.util").path.join(virtual_env, "bin", "python")
+        else
+            -- if there is a .venv directory in the project root_dir, use that
+            if vim.fn.isdirectory(".venv") == 1 then
+                local path = util.path
+                python_path = path.join(".venv", "bin", "python")
+            end
         end
         config.settings.python.pythonPath = python_path
     end,

@@ -162,10 +162,11 @@ require("lazy").setup({
                 ["<S-Tab>"] = { "select_prev", "fallback" },
             },
             signature = { enabled = true },
-
             completion = {
                 list = {
-                    selection = "auto_insert",
+                    selection = {
+                        auto_insert = true
+                    },
                 },
                 documentation = {
                     auto_show = true,
@@ -225,8 +226,8 @@ require("lazy").setup({
                     emoji = {
                         module = "blink-emoji",
                         name = "Emoji",
-                        score_offset = 15, -- Tune by preference
-                        opts = { insert = true }, -- Insert emoji (default) or complete its name
+                        score_offset = 15,            -- Tune by preference
+                        opts = { insert = true },     -- Insert emoji (default) or complete its name
                     },
                 },
             },
@@ -412,12 +413,12 @@ require("lazy").setup({
     {
         "NeogitOrg/neogit",
         dependencies = {
-            "nvim-lua/plenary.nvim", -- required
+            "nvim-lua/plenary.nvim",  -- required
             "sindrets/diffview.nvim", -- optional - Diff integration
 
             -- Only one of these is needed, not both.
             "nvim-telescope/telescope.nvim", -- optional
-            "ibhagwan/fzf-lua", -- optional
+            "ibhagwan/fzf-lua",              -- optional
         },
         config = true,
     },

@@ -17,10 +17,7 @@ plugins=(git
     kubectl
     rust
     golang
-    rye
     fzf
-    zsh-syntax-highlighting
-    zsh-completions
 )
 
 setopt CORRECT

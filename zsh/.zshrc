@@ -35,10 +35,6 @@ ZSH_AUTOSUGGEST_MANUAL_REBIND=1
 COMPLETION_WAITING_DOTS=true
 DISABLE_UNTRACKED_FILES_DIRTY=true
 
-source_if_exists $HOME/.env
-source_if_exists $HOME/.aliases
-source_if_exists $HOME/.dice.sh
-
 platform=$(uname)
 export ZPLUG_HOME=$HOME/.zplug
 if [[ "$platform" != "Linux" ]]; then
@@ -82,6 +78,10 @@ fi
 
 source_if_exists "$HOME/.autosuggestions"
 source_if_exists "$HOME/.cargo/env"
+
+source_if_exists $HOME/.env
+source_if_exists $HOME/.aliases
+source_if_exists $HOME/.dice.sh
 
 eval "$(fzf --zsh)"
 export FZF_COMPLETION_TRIGGER='**'

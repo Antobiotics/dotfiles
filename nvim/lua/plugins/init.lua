@@ -157,20 +157,30 @@ require("lazy").setup({
             -- See the full "keymap" documentation for information on defining your own keymap.
             keymap = {
                 preset = "enter",
+
                 ["<C-y>"] = { "select_and_accept" },
                 ["<Tab>"] = { "select_next", "fallback" },
                 ["<S-Tab>"] = { "select_prev", "fallback" },
+                ["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
+                ["<C-e>"] = { "hide", "fallback" },
             },
-            signature = { enabled = true },
+            signature = {
+                enabled = true,
+                window = { border = "rounded" },
+            },
+
             completion = {
                 list = {
                     selection = {
+                        preselect = false,
                         auto_insert = true
                     },
                 },
                 documentation = {
                     auto_show = true,
                     auto_show_delay_ms = 500,
+                    treesitter_highlighting = true,
+                    window = { border = "rounded" },
                 },
                 ghost_text = {
                     enabled = true,
@@ -181,6 +191,10 @@ require("lazy").setup({
                     show_on_insert_on_trigger_character = false,
                 },
                 menu = {
+                    auto_show = true,
+                    draw = {
+                        treesitter = { "lsp" },
+                    },
                     cmdline_position = function()
                         if vim.g.ui_cmdline_pos ~= nil then
                             local pos = vim.g.ui_cmdline_pos -- (1, 0)-indexed
@@ -217,6 +231,9 @@ require("lazy").setup({
                     return {}
                 end,
                 providers = {
+                    cmdline = {
+                        min_keyword_length = 2,
+                    },
                     copilot = {
                         name = "copilot",
                         module = "blink-cmp-copilot",
@@ -226,13 +243,34 @@ require("lazy").setup({
                     emoji = {
                         module = "blink-emoji",
                         name = "Emoji",
-                        score_offset = 15,            -- Tune by preference
-                        opts = { insert = true },     -- Insert emoji (default) or complete its name
+                        score_offset = 15,        -- Tune by preference
+                        opts = { insert = true }, -- Insert emoji (default) or complete its name
+                    },
+                    path = {
+                        name = "Path",
+                        module = "blink.cmp.sources.path",
+                        score_offset = 25,
+                        fallbacks = { "snippets", "buffer" },
+                        opts = {
+                            trailing_slash = false,
+                            label_trailing_slash = true,
+                            get_cwd = function(context)
+                                return vim.fn.expand(("#%d:p:h"):format(context.bufnr))
+                            end,
+                            show_hidden_files_by_default = true,
+                        },
+                    },
+                    buffer = {
+                        name = "Buffer",
+                        module = "blink.cmp.sources.buffer",
+                        enabled = true,
+                        min_keyword_length = 3,
+                        score_offset = 15,
                     },
                 },
             },
         },
-        opts_extend = { "sources.default" },
+        opts_extend = { "sources.default", "sources.compat" },
     },
 
     -- Snippets

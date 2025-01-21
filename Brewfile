@@ -1,50 +1,29 @@
-
-tap 'caskroom/cask'
-tap 'homebrew/science'
-tap 'homebrew/dupes'
-
 brew 'git'
 brew 'npm'
 
 cask '1password/tap/1password-cli'
-cask 'iterm2'
-cask 'flux'
-cask 'spectacle'
 
 cask 'firefox'
 cask 'google-chrome'
 
-cask 'gimp'
 cask 'vlc'
 cask 'macdown'
 
-cask 'atom'
-cask 'sublime-text'
-
-brew 'macvim'
 brew 'neovim'
 brew 'mutt'
 
 cask 'xquartz'
 cask 'docker'
-cask 'docker-toolbox'
 
 brew 'the_silver_searcher'
 brew 'jsonnet'
 
-brew 'kafka'
-brew 'hadoop'
 brew 'cairo'
 brew 'curl'
 brew 'wget'
-brew 'terraform'
 brew 'tmux'
-brew 'shellcheck'
 brew 'p7zip'
-brew 'bundle'
-brew 'go'
 brew 'awscli'
-brew 'leveldb'
 
 brew 'coreutils'
 brew 'binutils'
@@ -61,7 +40,6 @@ brew 'gzip'
 brew 'watch'
 brew 'wdiff'
 
-brew 'gdb'  # gdb requires further actions to make it work. See `brew info gdb`.
 brew 'gpatch'
 brew 'less'
 brew 'm4'
@@ -116,10 +94,6 @@ brew 'ctags'
 brew 'htop'
 brew 'ack'
 
-cask 'vagrant'
-cask 'virtualbox'
-
-brew 'postgres'
 brew 'postgresql'
 brew 'redis'
 brew 'sqlite'
@@ -154,7 +128,6 @@ brew 'reattach-to-user-namespace'
 
 brew 'pyenv'
 brew 'pyenv-virtualenv'
-brew 'ruff'
-
-brew 'rust'
 brew 'lua-language-server'
+brew 'fzf'
+brew 'zplug'

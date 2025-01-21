@@ -34,7 +34,8 @@ alias tmux="tmux -u"
 alias j="jump"
 alias less="less -s -M +Gg"
 alias crontabedit="env EDITOR=nvim crontab -e"
-tailf='tail -f'
+alias tailf='tail -f'
+alias rr='rye run'
 
 # Git
 alias gpom="git push origin master"

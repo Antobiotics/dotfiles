@@ -1,10 +1,10 @@
 setup:
 	./bin/setup.sh
 
-setup_tmux:
+setup-tmux:
 	./bin/setup_tmux.sh
 
 link:
 	./bin/link.sh
 
-install: setup setup_tmux link
+install: setup setup-tmux link

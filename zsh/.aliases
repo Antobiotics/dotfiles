@@ -1,4 +1,3 @@
-
 # ls
 if ! command -v lsd &> /dev/null
 then

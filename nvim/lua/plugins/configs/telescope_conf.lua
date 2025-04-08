@@ -56,13 +56,6 @@ vim.keymap.set("n", "<leader>ff", live_grep_args_shortcuts.grep_word_under_curso
     desc = "Word Grep (Args)",
 })
 
--- vim.keymap.set(
---     "n",
---     "<leader>ff",
---     builtins.grep_string,
---     { silent = true, noremap = true, desc = "Grep word" }
--- )
-
 vim.keymap.set(
     "n",
     "<leader>fb",

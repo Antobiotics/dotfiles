@@ -1,7 +1,36 @@
 local vim = vim
 local lspconfig = require("lspconfig")
-local cmp_nvim_lsp = require("cmp_nvim_lsp")
 local util = require("lspconfig.util")
+local path = util.path
+
+local pyenv_path = function(workspace)
+    -- Use activated virtualenv.
+    if vim.env.VIRTUAL_ENV then
+        return path.join(vim.env.VIRTUAL_ENV, "bin", "python"), "virtual env"
+    end
+
+    -- Find and use virtualenv in workspace directory.
+    for _, pattern in ipairs({ "*", ".*" }) do
+        local match = vim.fn.glob(path.join(workspace, pattern, "pyvenv.cfg"))
+        local sep = "/"
+        local py = "bin" .. sep .. "python"
+        if match ~= "" then
+            print("found", match)
+            print(vim.fn.glob(path.join(workspace, pattern)))
+            match = string.gsub(match, "pyvenv.cfg", py)
+            return match, string.format("venv base folder: %s", match)
+        end
+        match = vim.fn.glob(path.join(workspace, pattern, "poetry.lock"))
+        if match ~= "" then
+            local venv_base_folder = vim.fn.trim(vim.fn.system("poetry env info -p"))
+            return path.join(venv_base_folder, "bin", "python"),
+                string.format("venv base folder: %s", venv_base_folder)
+        end
+    end
+
+    -- Fallback to system Python.
+    return exepath("python3") or exepath("python") or "python", "fallback to system python path"
+end
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
@@ -42,10 +71,6 @@ local custom_attach = function(client, bufnr)
     buf_set_keymap("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<cr>", opts)
     buf_set_keymap("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<cr>", opts)
 
-    require("lsp_signature").on_attach({
-        bind = true,
-        hint_enable = false,
-    }, bufnr)
     client.server_capabilities.document_formatting = true
 end
 
@@ -57,7 +82,7 @@ require("mason-lspconfig").setup({
 local language_servers = {
     "lua_ls",
     "rust_analyzer",
-    "ruff_lsp",
+    "ruff",
     "sqlls",
     "bashls",
     "r_language_server",
@@ -70,20 +95,16 @@ require("mason-lspconfig").setup({
 
 require("mason-lspconfig").setup_handlers({
     function(server)
-        local capabilities = vim.lsp.protocol.make_client_capabilities()
-        capabilities = cmp_nvim_lsp.default_capabilities(capabilities)
-        capabilities.textDocument.completion.completionItem.snippetSupport = true
+        local capabilities = require("blink.cmp").get_lsp_capabilities()
         local opt = {
             capabilities = capabilities,
             on_attach = custom_attach,
         }
-        require("lspconfig")[server].setup(opt)
+        lspconfig[server].setup(opt)
     end,
 })
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = cmp_nvim_lsp.default_capabilities(capabilities)
-capabilities.textDocument.completion.completionItem.snippetSupport = true
+local capabilities = require("blink.cmp").get_lsp_capabilities()
 
 local lsp_flags = {
     allow_incremental_sync = true,
@@ -103,6 +124,17 @@ lspconfig.r_language_server.setup({
     },
 })
 
+local py_root_dir = util.root_pattern(
+    "setup.py",
+    "setup.cfg",
+    "pyproject.toml",
+    "poetry.lock",
+    "requirements.txt",
+    "requirements.lock",
+    "Pipfile",
+    ".git"
+)
+
 lspconfig.pyright.setup({
     capabilities = capabilities,
     on_attach = custom_attach,
@@ -112,6 +144,7 @@ lspconfig.pyright.setup({
         "pyproject.toml",
         "poetry.lock",
         "requirements.txt",
+        "requirements.lock",
         "Pipfile",
         ".git"
     ),
@@ -120,6 +153,12 @@ lspconfig.pyright.setup({
         local virtual_env = vim.env.VIRTUAL_ENV or vim.env.PYENV_VIRTUAL_ENV
         if virtual_env then
             python_path = require("lspconfig.util").path.join(virtual_env, "bin", "python")
+        else
+            -- if there is a .venv directory in the project root_dir, use that
+            --
+            if vim.fn.isdirectory(".venv") == 1 then
+                python_path = path.join(".venv", "bin", "python")
+            end
         end
         config.settings.python.pythonPath = python_path
     end,
@@ -137,7 +176,7 @@ lspconfig.pyright.setup({
     },
 })
 
-lspconfig.ruff_lsp.setup({
+lspconfig.ruff.setup({
     on_attach = custom_attach,
     capabilities = capabilities,
     flags = lsp_flags,
@@ -159,4 +198,27 @@ end
 lspconfig.helm_ls.setup({
     filetypes = { "helm" },
     cmd = { "helm_ls", "serve" },
+})
+
+local lsp_path = vim.env.NIL_PATH or "target/debug/nil"
+local nil_caps = vim.tbl_deep_extend(
+    "force",
+    vim.lsp.protocol.make_client_capabilities(),
+    require("blink.cmp").get_lsp_capabilities(),
+    -- File watching is disabled by default for neovim.
+    -- See: https://github.com/neovim/neovim/pull/22405
+    { workspace = { didChangeWatchedFiles = { dynamicRegistration = true } } }
+)
+lspconfig.nil_ls.setup({
+    autostart = true,
+    capabilities = nil_caps,
+    cmd = { "nil" },
+    settings = {
+        ["nil"] = {
+            testSetting = 42,
+            formatting = {
+                command = { "nixfmt" },
+            },
+        },
+    },
 })

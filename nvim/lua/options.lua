@@ -31,7 +31,7 @@ opt.fileformats = "unix,mac,dos" -- Handle Mac and DOS line-endings
 opt.scrolloff = 4
 
 -- swapfiles
-vim.opt.swapfile = false
+opt.swapfile = false
 
 -- GUI
 opt.ruler = true
@@ -44,11 +44,11 @@ opt.relativenumber = true
 opt.colorcolumn = "100"
 
 -- Wildmode
-vim.opt.path:append("**")
+opt.path:append("**")
 -- lazy file name tab completion
-vim.opt.wildmode = "list:longest,list:full"
-vim.opt.wildmenu = true
-vim.opt.wildignorecase = true
+opt.wildmode = "list:longest,list:full"
+opt.wildmenu = true
+opt.wildignorecase = true
 opt.wildmode = "list:longest,full"
 opt.wildignore = {
     "*.o",
@@ -118,3 +118,5 @@ opt.virtualedit = "block"
 
 -- Theme
 opt.background = "light"
+
+vim.g.editorconfig = true

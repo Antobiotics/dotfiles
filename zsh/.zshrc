@@ -18,6 +18,7 @@ plugins=(git
     rust
     golang
     fzf
+    zsh-autosuggestions
 )
 
 setopt CORRECT
@@ -32,6 +33,7 @@ function source_if_exists {
 
 DISABLE_MAGIC_FUNCTIONS=true
 ZSH_AUTOSUGGEST_MANUAL_REBIND=1
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#79740e"
 COMPLETION_WAITING_DOTS=true
 DISABLE_UNTRACKED_FILES_DIRTY=true
 
@@ -81,7 +83,7 @@ source_if_exists "$HOME/.cargo/env"
 
 source_if_exists $HOME/.env
 source_if_exists $HOME/.aliases
-source_if_exists $HOME/.dice.sh
+source_if_exists $HOME/.work.sh
 
 eval "$(fzf --zsh)"
 export FZF_COMPLETION_TRIGGER='**'
@@ -124,3 +126,4 @@ PERL_MM_OPT="INSTALL_BASE=$HOME/perl5"; export PERL_MM_OPT;
 [[ ! -r $HOME/.opam/opam-init/init.zsh ]] || source $HOME/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
 if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then . $HOME/.nix-profile/etc/profile.d/nix.sh; fi
 source "$HOME/.rye/env"
+eval "$($HOME/.local/bin/mise activate zsh)"

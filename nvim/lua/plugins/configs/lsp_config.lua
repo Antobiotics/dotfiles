@@ -2,6 +2,18 @@ local vim = vim
 local lspconfig = require("lspconfig")
 local util = require("lspconfig.util")
 
+-- vim.diagnostic.config({
+--     -- virtual_text = {
+--     --     prefix = "●", -- Could be '●', '▎', 'x'
+--     --     spacing = 4,
+--     -- },
+--     virtual_lines = { current_line = true },
+--     -- signs = true,
+--     -- underline = true,
+--     -- update_in_insert = false,
+--     -- severity_sort = true,
+-- })
+
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
 local custom_attach = function(client, bufnr)
@@ -57,7 +69,9 @@ local language_servers = {
     "bashls",
     "r_language_server",
     "neocmake",
-    "pyright",
+    -- "pyright",
+    -- "basedpyright",
+    "harper_ls",
 }
 require("mason-lspconfig").setup({
     ensure_installed = language_servers,
@@ -113,7 +127,6 @@ lspconfig.pyright.setup({
         if virtual_env then
             python_path = require("lspconfig.util").path.join(virtual_env, "bin", "python")
         else
-            -- if there is a .venv directory in the project root_dir, use that
             if vim.fn.isdirectory(".venv") == 1 then
                 local path = util.path
                 python_path = path.join(".venv", "bin", "python")
@@ -130,7 +143,12 @@ lspconfig.pyright.setup({
                 autoSearchPaths = true,
                 useLibraryCodeForTypes = true,
                 diagnosticMode = "openFilesOnly",
+                exclude = { "**/node_modules", "**/__pycache__", "**/build", "**/venv", "**/dist", "**/notebooks" }
             },
+        },
+        pyright = {
+            -- Using Ruff's import organizer
+            disableOrganizeImports = true,
         },
     },
 })
@@ -158,3 +176,24 @@ lspconfig.helm_ls.setup({
     filetypes = { "helm" },
     cmd = { "helm_ls", "serve" },
 })
+
+lspconfig.harper_ls.setup {
+    settings = {
+        ["harper-ls"] = {
+            userDictPath = vim.fn.stdpath("config") .. "/spell/en.utf-8.add",
+            linters = {
+                SpellCheck = false,
+                SpelledNumbers = false,
+                AnA = true,
+                SentenceCapitalization = false,
+                UnclosedQuotes = true,
+                WrongQuotes = false,
+                LongSentences = true,
+                RepeatedWords = true,
+                Spaces = true,
+                Matcher = true,
+                CorrectNumberSuffix = true
+            },
+        }
+    },
+}

@@ -1,6 +1,7 @@
 require("lazy").setup({
     "nvim-lua/plenary.nvim",
     "nvim-lua/popup.nvim",
+    "tpope/vim-repeat",
 
     -- Search
     {
@@ -91,70 +92,20 @@ require("lazy").setup({
         },
     },
 
-    {
-        "PedramNavid/dbtpal",
-        config = function()
-            local dbt = require("dbtpal")
-            dbt.setup({
-                -- Path to the dbt executable
-                path_to_dbt = "dbt",
-
-                -- Path to the dbt project, if blank, will auto-detect
-                -- using currently open buffer for all sql,yml, and md files
-                path_to_dbt_project = "",
-
-                -- Path to dbt profiles directory
-                path_to_dbt_profiles_dir = vim.fn.expand("~/.dbt"),
-
-                -- Search for ref/source files in macros and models folders
-                extended_path_search = true,
-
-                -- Prevent modifying sql files in target/(compiled|run) folders
-                protect_compiled_files = true,
-            })
-
-            -- Setup key mappings
-            vim.keymap.set("n", "<leader>drm", dbt.run)
-            vim.keymap.set("n", "<leader>drc", dbt.run_children)
-            vim.keymap.set("n", "<leader>drp", dbt.run_parents)
-            vim.keymap.set("n", "<leader>drf", dbt.run_family)
-            vim.keymap.set("n", "<leader>dra", dbt.run_all)
-            vim.keymap.set("n", "<leader>drt", dbt.test)
-            vim.keymap.set("n", "<leader>dm", require("dbtpal.telescope").dbt_picker)
-
-            -- Enable Telescope Extension
-            -- require("telescope").load_extension("dbt_pal")
-        end,
-        requires = { { "nvim-lua/plenary.nvim" }, { "nvim-telescope/telescope.nvim" } },
-        dependencies = {
-            "nvim-lua/plenary.nvim",
-        },
-    },
-
     -- Completion
     {
         "saghen/blink.cmp",
-        -- optional: provides snippets for the snippet source
+        -- Optional: provides snippets for the snippet source
         dependencies = {
             "rafamadriz/friendly-snippets",
             "moyiz/blink-emoji.nvim",
             "giuxtaposition/blink-cmp-copilot",
         },
 
-        -- use a release tag to download pre-built binaries
         version = "*",
-        -- AND/OR build from source, requires nightly: https://rust-lang.github.io/rustup/concepts/channels.html#working-with-nightly-rust
-        -- build = 'cargo build --release',
-        -- If you use nix, you can build from source using latest nightly rust with:
-        -- build = 'nix run .#build-plugin',
-
         ---@module 'blink.cmp'
         ---@type blink.cmp.Config
         opts = {
-            -- 'default' for mappings similar to built-in completion
-            -- 'super-tab' for mappings similar to vscode (tab to accept, arrow keys to navigate)
-            -- 'enter' for mappings similar to 'super-tab' but with 'enter' to accept
-            -- See the full "keymap" documentation for information on defining your own keymap.
             keymap = {
                 preset = "enter",
 
@@ -170,6 +121,7 @@ require("lazy").setup({
             },
 
             completion = {
+                accept = { auto_brackets = { enabled = false }, },
                 list = {
                     selection = {
                         preselect = false,
@@ -207,29 +159,22 @@ require("lazy").setup({
             },
 
             appearance = {
-                -- Sets the fallback highlight groups to nvim-cmp's highlight groups
-                -- Useful for when your theme doesn't support blink.cmp
-                -- Will be removed in a future release
                 use_nvim_cmp_as_default = true,
-                -- Set to 'mono' for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
-                -- Adjusts spacing to ensure icons are aligned
                 nerd_font_variant = "mono",
             },
 
-            -- Default list of enabled providers defined so that you can extend it
-            -- elsewhere in your config, without redefining it, due to `opts_extend`
             sources = {
                 default = { "lsp", "path", "snippets", "buffer", "copilot", "emoji" },
-                cmdline = function()
-                    local type = vim.fn.getcmdtype()
-                    if type == "/" or type == "?" then
-                        return { "buffer" }
-                    end
-                    if type == ":" then
-                        return { "cmdline", "path" }
-                    end
-                    return {}
-                end,
+                -- cmdline = function()
+                --     local type = vim.fn.getcmdtype()
+                --     if type == "/" or type == "?" then
+                --         return { "buffer" }
+                --     end
+                --     if type == ":" then
+                --         return { "cmdline" }
+                --     end
+                --     return {}
+                -- end,
                 providers = {
                     cmdline = {
                         min_keyword_length = 2,
@@ -249,8 +194,8 @@ require("lazy").setup({
                     path = {
                         name = "Path",
                         module = "blink.cmp.sources.path",
-                        score_offset = 25,
-                        fallbacks = { "snippets", "buffer" },
+                        score_offset = 3,
+                        fallbacks = { "buffer" },
                         opts = {
                             trailing_slash = false,
                             label_trailing_slash = true,
@@ -409,7 +354,7 @@ require("lazy").setup({
             require("marks").setup({})
         end,
     },
-    -- commenting with e.g. `gcc` or `gcip`
+    -- Commenting with e.g. `gcc` or `gcip`
     -- respects TS, so it works in quarto documents
     {
         "numToStr/Comment.nvim",
@@ -419,21 +364,8 @@ require("lazy").setup({
     },
     -- mini
     { "tpope/vim-surround" },
+    { "tpope/vim-unimpaired" },
     { "jamessan/vim-gnupg" },
-
-    -- GPT
-    {
-        "jackMort/ChatGPT.nvim",
-        event = "VeryLazy",
-        config = function()
-            require("plugins.configs.chatgpt_conf")
-        end,
-        dependencies = {
-            "MunifTanjim/nui.nvim",
-            "nvim-lua/plenary.nvim",
-            "nvim-telescope/telescope.nvim",
-        },
-    },
 
     -- copilot
     {
@@ -447,7 +379,7 @@ require("lazy").setup({
         end,
     },
 
-    -- Github
+    -- GitHub
     {
         "NeogitOrg/neogit",
         dependencies = {
@@ -532,7 +464,7 @@ require("lazy").setup({
                     local languages = { "python", "markdown", "R", "neorg" }
                     local completion = true
                     local diagnostics = true
-                    -- treesitter query to look for embedded languages
+                    -- `treesitter` query to look for embedded languages
                     -- uses injections if nil or not set
                     local tsquery = nil
 
@@ -567,22 +499,44 @@ require("lazy").setup({
         },
     },
 
-    { -- directly open ipynb files as quarto docuements
-        -- and convert back behind the scenes
-        -- needs:
-        -- pip install jupytext
+    {
+        'kristijanhusak/vim-dadbod-ui',
+        dependencies = {
+            {
+                'tpope/vim-dadbod',
+                lazy = true
+            },
+            {
+                'kristijanhusak/vim-dadbod-completion',
+                ft = { 'sql', 'mysql', 'plsql' },
+                lazy = true,
+            }, -- Optional
+        },
+        cmd = {
+            'DBUI',
+            'DBUIToggle',
+            'DBUIAddConnection',
+            'DBUIFindBuffer',
+        },
+        init = function()
+            -- Your DBUI configuration
+            vim.g.db_ui_use_nerd_fonts = 1
+        end,
+    },
+
+    {
         "GCBallesteros/jupytext.nvim",
         opts = {
             custom_language_formatting = {
                 python = {
                     extension = "qmd",
                     style = "quarto",
-                    force_ft = "quarto", -- you can set whatever filetype you want here
+                    force_ft = "quarto",
                 },
                 r = {
                     extension = "qmd",
                     style = "quarto",
-                    force_ft = "quarto", -- you can set whatever filetype you want here
+                    force_ft = "quarto",
                 },
             },
         },

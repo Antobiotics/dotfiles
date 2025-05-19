@@ -39,13 +39,13 @@ vim.keymap.set(
 
 vim.keymap.set(
     "n",
-    "<leader>hn",
+    "]n",
     "<cmd>lua require('harpoon.ui').nav_next()<cr>",
     { desc = "Go to next harpoon mark" }
 )
 vim.keymap.set(
     "n",
-    "<leader>hp",
+    "[n",
     "<cmd>lua require('harpoon.ui').nav_prev()<cr>",
     { desc = "Go to previous harpoon mark" }
 )

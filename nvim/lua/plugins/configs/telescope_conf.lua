@@ -34,6 +34,37 @@ telescope.setup({
     },
 })
 
+local changed_on_branch = function()
+    local previewers = require("telescope.previewers")
+    local pickers = require("telescope.pickers")
+    local sorters = require("telescope.sorters")
+    local finders = require("telescope.finders")
+    pickers.new({}, {
+        results_title = "Modified in current branch",
+        finder = finders.new_oneshot_job({
+            "git",
+            "diff",
+            "--name-only",
+            "--diff-filter=ACMR",
+            "origin...",
+        }, {}),
+        sorter = sorters.get_fuzzy_file(),
+        previewer = previewers.new_termopen_previewer({
+            get_command = function(entry)
+                return {
+                    "git",
+                    "diff",
+                    "--diff-filter=ACMR",
+                    "origin...",
+                    "--",
+                    entry.value,
+                }
+            end,
+        }),
+    })
+        :find()
+end
+
 -- Keymaps
 local builtins = require("telescope.builtin")
 vim.keymap.set(
@@ -56,12 +87,9 @@ vim.keymap.set("n", "<leader>ff", live_grep_args_shortcuts.grep_word_under_curso
     desc = "Word Grep (Args)",
 })
 
--- vim.keymap.set(
---     "n",
---     "<leader>ff",
---     builtins.grep_string,
---     { silent = true, noremap = true, desc = "Grep word" }
--- )
+vim.keymap.set("n", "<leader>fg", function() changed_on_branch() end,
+    { silent = true, noremap = true, desc = "Modified files" })
+
 
 vim.keymap.set(
     "n",

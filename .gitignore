@@ -2,3 +2,4 @@ tags
 .tmux/
 .Rhistory
 nvim/plugin/packer_compiled.lua
+.DS_Store

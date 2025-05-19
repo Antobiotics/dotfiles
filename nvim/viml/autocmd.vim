@@ -8,3 +8,5 @@ augroup highlight_yank
     autocmd!
     au TextYankPost * silent! lua vim.highlight.on_yank{higroup="IncSearch", timeout=700}
 augroup END
+
+autocmd Filetype sql setlocal ts=2 sw=2

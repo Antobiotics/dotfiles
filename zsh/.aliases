@@ -36,6 +36,7 @@ alias less="less -s -M +Gg"
 alias crontabedit="env EDITOR=nvim crontab -e"
 alias tailf='tail -f'
 alias rr='rye run'
+alias mr='mise run'
 
 # Git
 alias gpom="git push origin master"

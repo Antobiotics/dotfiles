@@ -180,7 +180,7 @@ tmux_conf_theme_right_separator_sub='|'
 #     - #{username}
 #     - #{username_ssh}
 tmux_conf_theme_status_left=' ❐ #S '
-tmux_conf_theme_status_right='#{prefix}#{pairing}#{synchronized} , %R , %d %b '
+tmux_conf_theme_status_right='#{prefix}#{pairing}#{synchronized} , %R , %d %b , #{battery_bar} #{battery_status} '
 
 # status left style
 tmux_conf_theme_status_left_fg='#000000,#e4e4e4,#e4e4e4'  # black, white , white
@@ -219,8 +219,8 @@ tmux_conf_theme_synchronized_attr='none'
 # battery bar symbols
 tmux_conf_battery_bar_symbol_full='◼'
 tmux_conf_battery_bar_symbol_empty='◻'
-#tmux_conf_battery_bar_symbol_full='♥'
-#tmux_conf_battery_bar_symbol_empty='·'
+# tmux_conf_battery_bar_symbol_full='♥'
+# tmux_conf_battery_bar_symbol_empty='·'
 
 # battery bar length (in number of symbols), possible values are:
 #   - auto

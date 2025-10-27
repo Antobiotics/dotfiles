@@ -1,4 +1,18 @@
 local vim = vim
+local lspconfig = require("lspconfig")
+local util = require("lspconfig.util")
+
+-- vim.diagnostic.config({
+--     -- virtual_text = {
+--     --     prefix = "●", -- Could be '●', '▎', 'x'
+--     --     spacing = 4,
+--     -- },
+--     virtual_lines = { current_line = true },
+--     -- signs = true,
+--     -- underline = true,
+--     -- update_in_insert = false,
+--     -- severity_sort = true,
+-- })
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
@@ -42,19 +56,10 @@ local custom_attach = function(client, bufnr)
     client.server_capabilities.document_formatting = true
 end
 
-local function get_python_path(workspace)
-    -- Use activated virtualenv.
-    if vim.env.VIRTUAL_ENV or vim.env.PYENV_VIRTUAL_ENV then
-        -- return path.join(vim.env.VIRTUAL_ENV, "bin", "python")
-        return vim.env.VIRTUAL_ENV .. "/bin/python"
-    end
-
-    if vim.fn.isdirectory(workspace .. "/.venv") == 1 then
-        return workspace .. "/.venv/bin/python"
-    end
-    return vim.fn.exepath("python3") or vim.fn.exepath("python") or "python"
-end
-
+require("mason").setup()
+require("mason-lspconfig").setup({
+    automatic_installation = true,
+})
 
 local language_servers = {
     "lua_ls",
@@ -62,50 +67,72 @@ local language_servers = {
     "ruff",
     "sqlls",
     "bashls",
+    -- "r_language_server",
     "neocmake",
+    -- "pyright",
     -- "basedpyright",
     "harper_ls",
 }
-
-require("mason").setup()
 require("mason-lspconfig").setup({
-    automatic_installation = true,
     ensure_installed = language_servers,
 })
 
-vim.lsp.buf_attach_client_options = {
-    debounce_text_changes = 150
+require("mason-lspconfig").setup_handlers({
+    function(server)
+        local capabilities = require("blink.cmp").get_lsp_capabilities()
+        local opt = {
+            capabilities = capabilities,
+            on_attach = custom_attach,
+        }
+        lspconfig[server].setup(opt)
+    end,
+})
+
+local capabilities = require("blink.cmp").get_lsp_capabilities()
+
+local lsp_flags = {
+    allow_incremental_sync = true,
+    debounce_text_changes = 150,
 }
 
-vim.diagnostic.config({
-    virtual_text = false,
-    virtual_lines = false,
-    signs = true,
-    update_in_insert = false,
-    underline = true,
-})
+-- lspconfig.r_language_server.setup({
+--     on_attach = custom_attach,
+--     capabilities = capabilities,
+--     flags = lsp_flags,
+--     settings = {
+--         r = {
+--             lsp = {
+--                 rich_documentation = false,
+--             },
+--         },
+--     },
+-- })
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-
-vim.lsp.config("*", {
+lspconfig.pyright.setup({
     capabilities = capabilities,
     on_attach = custom_attach,
-})
-
-vim.lsp.config("pyright", {
-    capabilities = capabilities,
-    on_attach = custom_attach,
-    root_dir = vim.fs.dirname(vim.fs.find({
-        "pyproject.toml",
+    root_dir = util.root_pattern(
         "setup.py",
         "setup.cfg",
+        "pyproject.toml",
+        "poetry.lock",
         "requirements.txt",
+        "requirements.lock",
         "Pipfile",
-        "pyrightconfig.json",
-        ".git",
-    }, { upward = true, path = vim.fs.dirname(vim.api.nvim_buf_get_name(0)) })[1]),
-    before_init = function(_, config)
-        config.settings.python.pythonPath = get_python_path(config.root_dir)
+        ".git"
+    ),
+    on_new_config = function(config, _)
+        local python_path = "python"
+        local virtual_env = vim.env.VIRTUAL_ENV or vim.env.PYENV_VIRTUAL_ENV
+        if virtual_env then
+            python_path = require("lspconfig.util").path.join(virtual_env, "bin", "python")
+        else
+            if vim.fn.isdirectory(".venv") == 1 then
+                local path = util.path
+                python_path = path.join(".venv", "bin", "python")
+            end
+        end
+        config.settings.python.pythonPath = python_path
     end,
     flags = {
         debounce_text_changes = 1,
@@ -124,19 +151,33 @@ vim.lsp.config("pyright", {
             disableOrganizeImports = true,
         },
     },
-
 })
 
-vim.lsp.config("ruff", {
+lspconfig.ruff.setup({
     on_attach = custom_attach,
     capabilities = capabilities,
-    flags = {
-        allow_incremental_sync = true,
-        debounce_text_changes = 150,
-    }
+    flags = lsp_flags,
 })
 
-vim.lsp.config("harper_ls", {
+local configs = require("lspconfig.configs")
+if not configs.helm_ls then
+    configs.helm_ls = {
+        default_config = {
+            cmd = { "helm_ls", "serve" },
+            filetypes = { "helm" },
+            root_dir = function(fname)
+                return util.root_pattern("Chart.yaml")(fname)
+            end,
+        },
+    }
+end
+
+lspconfig.helm_ls.setup({
+    filetypes = { "helm" },
+    cmd = { "helm_ls", "serve" },
+})
+
+lspconfig.harper_ls.setup {
     settings = {
         ["harper-ls"] = {
             userDictPath = vim.fn.stdpath("config") .. "/spell/en.utf-8.add",
@@ -155,9 +196,4 @@ vim.lsp.config("harper_ls", {
             },
         }
     },
-})
-
-vim.lsp.enable(language_servers)
-vim.lsp.enable("pyright")
--- vim.lsp.enable("ruff")
-vim.lsp.enable("harper_ls")
+}

@@ -49,7 +49,6 @@ opt.path:append("**")
 opt.wildmode = "list:longest,list:full"
 opt.wildmenu = true
 opt.wildignorecase = true
-opt.wildmode = "list:longest,full"
 opt.wildignore = {
     "*.o",
     "*.obj",

@@ -65,6 +65,19 @@ local changed_on_branch = function()
         :find()
 end
 
+local actions = require "telescope.actions"
+require("telescope").setup {
+    pickers = {
+        buffers = {
+            mappings = {
+                i = {
+                    ["<c-d>"] = actions.delete_buffer + actions.move_to_top,
+                }
+            }
+        }
+    }
+}
+
 -- Keymaps
 local builtins = require("telescope.builtin")
 vim.keymap.set(

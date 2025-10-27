@@ -18,7 +18,7 @@ plugins=(git
     rust
     golang
     fzf
-    zsh-autosuggestions
+    # zsh-autosuggestions
 )
 
 setopt CORRECT
@@ -54,6 +54,8 @@ zplug "romkatv/powerlevel10k", as:theme, depth:1
 zplug "zsh-users/zsh-completions",              defer:0
 zplug "zsh-users/zsh-syntax-highlighting",      defer:2, on:"zsh-users/zsh-completions"
 zplug "zsh-users/zsh-history-substring-search", defer:3, on:"zsh-users/zsh-syntax-highlighting"
+# zplug "jeffreytse/zsh-vi-mode"
+
 export EMOJI_FZF_BINDKEY="^s"
 
 if ! zplug check --verbose; then
@@ -127,3 +129,6 @@ PERL_MM_OPT="INSTALL_BASE=$HOME/perl5"; export PERL_MM_OPT;
 if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then . $HOME/.nix-profile/etc/profile.d/nix.sh; fi
 source "$HOME/.rye/env"
 eval "$($HOME/.local/bin/mise activate zsh)"
+
+# opencode
+export PATH=/Users/gregoirelejay/.opencode/bin:$PATH

@@ -28,7 +28,7 @@ require("lazy").setup({
     -- Theme
     "nvim-tree/nvim-web-devicons",
     "RRethy/nvim-base16",
-    "luochen1990/rainbow",
+    "HiPhish/rainbow-delimiters.nvim",
     "myusuf3/numbers.vim",
 
     {
@@ -92,7 +92,7 @@ require("lazy").setup({
         },
     },
 
-    -- Completion
+    -- Optional: provides snippets for the snippet source   -- Completion
     {
         "saghen/blink.cmp",
         -- Optional: provides snippets for the snippet source
@@ -177,7 +177,7 @@ require("lazy").setup({
                 -- end,
                 providers = {
                     cmdline = {
-                        min_keyword_length = 2,
+                        min_keyword_length = 0,
                     },
                     copilot = {
                         name = "copilot",
@@ -313,19 +313,32 @@ require("lazy").setup({
         config = function()
             require("plugins.configs.lsp_config")
         end,
+        -- dependencies = {
+        --     {
+        --         "mason-org/mason.nvim",
+        --         config = true,
+        --         version = "^1.0.0"
+        --     },
+        --     { "mason-org/mason-lspconfig.nvim", version = "^1.0.0" },
+        --     "saghen/blink.cmp",
+        --     "folke/neodev.nvim",
+        -- },
         dependencies = {
-            { "williamboman/mason.nvim", config = true },
-            "williamboman/mason-lspconfig.nvim",
+            {
+                "mason-org/mason.nvim",
+                config = true,
+                -- version = "^1.0.0"
+            },
+            { "mason-org/mason-lspconfig.nvim",
+                -- version = "^1.0.0"
+            },
             "saghen/blink.cmp",
-            "mason-lspconfig.nvim",
             "folke/neodev.nvim",
         },
         lazy = false,
     },
 
     -- treesitter
-    "mrjones2014/nvim-ts-rainbow",
-
     {
         "nvim-treesitter/nvim-treesitter",
         config = function()
@@ -373,6 +386,7 @@ require("lazy").setup({
         cmd = "Copilot",
         config = function()
             require("copilot").setup({
+                copilot_model = 'claude-sonnet-4',
                 suggestion = { enabled = false },
                 panel = { enabled = false },
             })

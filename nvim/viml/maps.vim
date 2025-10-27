@@ -32,22 +32,21 @@ nmap :Tc :tabclose
 nmap :Vsp :vsp
 nmap :Sp :sp
 
-nmap ]b<CR> :bnext
-nmap [b<CR> :bprev
-
 " copy/pasta
 " Paste from the system clipboard(in normal mode)
-nnoremap <silent><leader>y "*y
+" nnoremap <silent><leader>y "*y
 " Paste from the system clipboard(in visual mode)
-vnoremap <silent><leader>y "*y
+" vnoremap <silent><leader>y "*y
 " Cut from the system clipboard(in normal mode)
-nnoremap <silent><leader>x "*x
+" nnoremap <silent><leader>x "*x
 " Cut from the system clipboard(in visual mode)
-vnoremap <silent><leader>x "*x
+" vnoremap <silent><leader>x "*x
 " Paste from the system clipboard(in normal mode)
-nnoremap <silent><leader>p "*p
+" nnoremap <silent><leader>p "*p
 " Paste from the system clipboard(in visual mode)
-nnoremap <silent><leader>p "*p
+" nnoremap <silent><leader>p "*p
+
+nnoremap <leader>q :bdelete<CR>
 
 " Misc
 " Leader Escape in terminal mode takes you to normal mode
@@ -68,9 +67,8 @@ tnoremap <Leader>tx <C-\><C-n>:sp<CR><C-w><C-w>:term<CR>
 noremap <Leader>tx:sp<CR><C-w><C-w>:term<CR>
 inoremap <Leader>tx <Esc>:sp<CR><C-w><C-w>:term<CR>
 
-
 " Toggle search highlight
-" nnoremap <silent> <C-C> :if (&hlsearch == 1) \| set nohlsearch \| else \| set hlsearch \| endif<cr>
+nnoremap <silent> <Leader>h :if (&hlsearch == 1) \| set nohlsearch \| else \| set hlsearch \| endif<cr>
 
 " Do not make Q go to ex-mode
 nnoremap Q <Nop>

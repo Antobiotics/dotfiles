@@ -20,5 +20,6 @@ let R_csv_app = ':tabnew term://vd'
 
 set spelllang=en
 set spellsuggest=best,9
+set nospell
 nnoremap <silent> <F10> :set spell!<cr>
 inoremap <silent> <F10> <C-O>:set spell!<cr>

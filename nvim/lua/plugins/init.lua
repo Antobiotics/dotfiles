@@ -386,7 +386,7 @@ require("lazy").setup({
         cmd = "Copilot",
         config = function()
             require("copilot").setup({
-                copilot_model = 'claude-sonnet-4',
+                copilot_model = 'gpt-41-copilot',
                 suggestion = { enabled = false },
                 panel = { enabled = false },
             })

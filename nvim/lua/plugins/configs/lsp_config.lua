@@ -43,15 +43,24 @@ local custom_attach = function(client, bufnr)
 end
 
 local function get_python_path(workspace)
+    -- vim.print("I can access the vim module!")
+    -- vim.print("Workspace: " .. workspace)
+
+    if vim.fn.isdirectory(workspace .. "/.venv") == 1 then
+        -- vim.print("Using workspace .venv")
+        local ppath = workspace .. "/.venv/bin/python"
+        -- vim.print("Python path: " .. ppath)
+        return ppath
+    end
+
     -- Use activated virtualenv.
     if vim.env.VIRTUAL_ENV or vim.env.PYENV_VIRTUAL_ENV then
         -- return path.join(vim.env.VIRTUAL_ENV, "bin", "python")
+        -- vim.print("Using virtual environment: " .. vim.env.VIRTUAL_ENV)
         return vim.env.VIRTUAL_ENV .. "/bin/python"
     end
 
-    if vim.fn.isdirectory(workspace .. "/.venv") == 1 then
-        return workspace .. "/.venv/bin/python"
-    end
+    -- vim.print("Using system python")
     return vim.fn.exepath("python3") or vim.fn.exepath("python") or "python"
 end
 
@@ -63,8 +72,10 @@ local language_servers = {
     "sqlls",
     "bashls",
     "neocmake",
+    "pyright",
     -- "basedpyright",
     "harper_ls",
+    "jdtls"
 }
 
 require("mason").setup()
@@ -103,7 +114,7 @@ vim.lsp.config("pyright", {
         "Pipfile",
         "pyrightconfig.json",
         ".git",
-    }, { upward = true, path = vim.fs.dirname(vim.api.nvim_buf_get_name(0)) })[1]),
+    }, { upward = true })[1]),
     before_init = function(_, config)
         config.settings.python.pythonPath = get_python_path(config.root_dir)
     end,
@@ -126,6 +137,34 @@ vim.lsp.config("pyright", {
     },
 
 })
+
+-- vim.lsp.config('basedpyright', {
+--     capabilities = capabilities,
+--     on_attach = custom_attach,
+--     root_dir = vim.fs.dirname(vim.fs.find({
+--         "pyproject.toml",
+--         "setup.py",
+--         "setup.cfg",
+--         "requirements.txt",
+--         "Pipfile",
+--         "pyrightconfig.json",
+--         ".git",
+--     }, { upward = true, path = vim.fs.dirname(vim.api.nvim_buf_get_name(0)) })[1]),
+--     before_init = function(_, config)
+--         config.settings.python.pythonPath = get_python_path(config.root_dir)
+--     end,
+--     settings = {
+--         basedpyright = {
+--             analysis = {
+--                 autoSearchPaths = true,
+--                 diagnosticMode = "openFilesOnly",
+--                 useLibraryCodeForTypes = true,
+--                 typeCheckingMode = "standard",
+--                 exclude = { "**/node_modules", "**/__pycache__", "**/build", "**/venv", "**/dist", "**/notebooks", "**/.venv" }
+--             },
+--         },
+--     },
+-- })
 
 vim.lsp.config("ruff", {
     on_attach = custom_attach,
@@ -157,7 +196,18 @@ vim.lsp.config("harper_ls", {
     },
 })
 
+vim.lsp.config("jdtls", {
+    on_attach = custom_attach,
+    capabilities = capabilities,
+    flags = {
+        allow_incremental_sync = true,
+        debounce_text_changes = 150,
+    },
+    root_dir = vim.fs.dirname(vim.fs.find({ '.gradlew', '.git', 'mvnw' }, { upward = true })[1]),
+    -- Remove or fix any workspace_folders setting
+    workspace_folders = nil, -- Let it auto-detect
+})
+
 vim.lsp.enable(language_servers)
-vim.lsp.enable("pyright")
--- vim.lsp.enable("ruff")
+vim.lsp.enable { "ruff", "pyright" }
 vim.lsp.enable("harper_ls")

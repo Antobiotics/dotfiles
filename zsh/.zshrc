@@ -132,3 +132,11 @@ eval "$($HOME/.local/bin/mise activate zsh)"
 
 # opencode
 export PATH=/Users/gregoirelejay/.opencode/bin:$PATH
+
+# pnpm
+export PNPM_HOME="/Users/gregoirelejay/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end

@@ -35,7 +35,8 @@ alias j="jump"
 alias less="less -s -M +Gg"
 alias crontabedit="env EDITOR=nvim crontab -e"
 alias tailf='tail -f'
-alias rr='rye run'
+alias rr='uv run'
+alias ur='uv run'
 alias mr='mise run'
 
 # Git

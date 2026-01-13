@@ -43,20 +43,13 @@ local custom_attach = function(client, bufnr)
 end
 
 local function get_python_path(workspace)
-    -- vim.print("I can access the vim module!")
-    -- vim.print("Workspace: " .. workspace)
-
     if vim.fn.isdirectory(workspace .. "/.venv") == 1 then
-        -- vim.print("Using workspace .venv")
         local ppath = workspace .. "/.venv/bin/python"
-        -- vim.print("Python path: " .. ppath)
         return ppath
     end
 
     -- Use activated virtualenv.
     if vim.env.VIRTUAL_ENV or vim.env.PYENV_VIRTUAL_ENV then
-        -- return path.join(vim.env.VIRTUAL_ENV, "bin", "python")
-        -- vim.print("Using virtual environment: " .. vim.env.VIRTUAL_ENV)
         return vim.env.VIRTUAL_ENV .. "/bin/python"
     end
 
